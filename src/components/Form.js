@@ -26,7 +26,10 @@ class Form extends React.Component {
             this.props.passGameNumber(e, this.state.gameNumber);
           }}
         >
-          FIND MY GAME
+          FIND GAME
+        </button>
+        <button className="form-button" onClick={this.props.extractGameData}>
+          CONFIRM
         </button>
       </form>
     );
