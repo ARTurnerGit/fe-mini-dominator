@@ -1,8 +1,9 @@
 * {
   margin: 0;
   padding: 0;
+  background-color: black;
+  color: white;
 }
-
 .form-container {
   position: absolute;
   border: 2px solid crimson;
@@ -15,7 +16,6 @@
   justify-content: space-around;
   align-items: center;
 }
-
 .form-header {
   font-size: 30px;
   width: 80%;
@@ -31,7 +31,6 @@
   width: 50%;
   margin: 1.5vh 1vw;
 }
-
 .iframe {
   width: 80vw;
   height: 80vh;
@@ -40,4 +39,46 @@
   left: 10vw;
   border: 2px solid crimson;
   border-radius: 5px;
+}
+.map-container {
+  position: "absolute";
+  width: 1024px;
+  height: 725px;
+  justify-content: center;
+  z-index: -1;
+}
+.territory {
+  width: 18px;
+  height: 18px;
+  background-color: transparent;
+  color: white;
+  font-weight: bold;
+  border: 3px solid lightgrey;
+  border-radius: 100%;
+  text-align: center;
+}
+.alunturner {
+  border: 3px solid black;
+}
+.OrderoftheBath {
+  border: 3px solid pink;
+}
+.Gusreynolds {
+  border: 3px solid orange;
+}
+.Heapsrob {
+  border: 3px solid green;
+}
+.LeRenard {
+  border: 3px solid lightblue;
+}
+.Excalibur_83 {
+  border: 3px solid darkblue;
+}
+
+.log-msg {
+  position: absolute;
+  top: 10px;
+  right: 40px;
+  color: white;
 }
