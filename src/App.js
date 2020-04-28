@@ -7,6 +7,7 @@ import Form from "./components/Form";
 import Iframe from "./components/Iframe";
 import Gamescreen from "./components/Gamescreen.js";
 import Logger from "./components/Logger.js";
+import Roundtracker from "./components/Roundtracker.js";
 
 class App extends React.Component {
   state = {
@@ -17,6 +18,7 @@ class App extends React.Component {
     territories: {},
     gamelog: [],
     logCounter: 0,
+    roundCounter: 1,
   };
 
   passGameNumber = (e, inputGameNumber) => {
@@ -41,7 +43,11 @@ class App extends React.Component {
     if (prevState.players !== this.state.players) {
       this.checkForFirstMentions();
     }
+    if (prevState.logCounter !== this.state.logCounter) {
+      this.logWizard();
+    }
   }
+
   checkForFirstMentions = () => {
     const territoryNames = Object.keys(territoryData);
     const firstMentions = [];
@@ -78,6 +84,92 @@ class App extends React.Component {
     });
   };
 
+  logWizard = () => {
+    let currentString = this.state.gamelog[this.state.logCounter];
+    if (/Round \d/.test(currentString)) {
+      this.setState((currentState) => {
+        return { roundCounter: currentState.roundCounter + 1 };
+      });
+    }
+    if (/reinforced/.test(currentString)) {
+      let territory = currentString.split("(")[0].trim();
+      let troopIncrease = parseInt(currentString.match(/\d+/)[0]);
+      this.setState((currentState) => {
+        let updatedTerritories = { ...currentState.territories };
+        updatedTerritories[territory].troops =
+          updatedTerritories[territory].troops + troopIncrease;
+        return { territories: updatedTerritories };
+      });
+    }
+    if (/attacked/.test(currentString)) {
+      const attTerritory = currentString
+        .split("attacked")[0]
+        .split("(")[0]
+        .trim();
+      const defTerritory = currentString
+        .split("attacked")[1]
+        .split("(")[0]
+        .trim();
+      const [defLosses, attLosses] = currentString.match(/\d+/g);
+
+      this.setState((currentState) => {
+        let updatedTerritories = { ...currentState.territories };
+
+        updatedTerritories[attTerritory].troops =
+          updatedTerritories[attTerritory].troops - attLosses;
+
+        updatedTerritories[defTerritory].troops =
+          updatedTerritories[defTerritory].troops - defLosses;
+
+        return { territories: updatedTerritories };
+      });
+    }
+    if (/occupied/.test(currentString)) {
+      const depTerritory = currentString
+        .split("occupied")[0]
+        .split("(")[0]
+        .trim();
+      const arrTerritory = currentString
+        .split("occupied")[1]
+        .split("with")[0]
+        .trim();
+      const troopMove = parseInt(currentString.match(/\d+/)[0]);
+      this.setState((currentState) => {
+        let updatedTerritories = { ...currentState.territories };
+
+        updatedTerritories[depTerritory].troops =
+          updatedTerritories[depTerritory].troops - troopMove;
+
+        updatedTerritories[arrTerritory].troops =
+          updatedTerritories[arrTerritory].troops + troopMove;
+
+        return { territories: updatedTerritories };
+      });
+    }
+    if (/fortified/.test(currentString)) {
+      const arrTerritory = currentString
+        .split("fortified from")[0]
+        .split("(")[0]
+        .trim();
+      const depTerritory = currentString
+        .split("fortified from")[1]
+        .split("(")[0]
+        .trim();
+      const troopMove = parseInt(currentString.match(/\d+/)[0]);
+      this.setState((currentState) => {
+        let updatedTerritories = { ...currentState.territories };
+
+        updatedTerritories[depTerritory].troops =
+          updatedTerritories[depTerritory].troops - troopMove;
+
+        updatedTerritories[arrTerritory].troops =
+          updatedTerritories[arrTerritory].troops + troopMove;
+
+        return { territories: updatedTerritories };
+      });
+    }
+  };
+
   render() {
     return (
       <div className="App">
@@ -96,7 +188,12 @@ class App extends React.Component {
             playNextInLog={this.playNextInLog}
           />
         )}
-        <Logger msg={this.state.gamelog[this.state.logCounter]} />
+        {this.state.gameConfirmed && (
+          <Logger msg={this.state.gamelog[this.state.logCounter]} />
+        )}
+        {this.state.gameConfirmed && (
+          <Roundtracker roundCounter={this.state.roundCounter} />
+        )}
       </div>
     );
   }

@@ -19,6 +19,7 @@ const gameLogData = [
   "OrderoftheBath received 3 troops for 9 territories.",
   "Corinthia (OrderoftheBath) was reinforced by OrderoftheBath with 3 troops.",
   "Corinthia (OrderoftheBath) attacked Argolis (alunturner) conquering it, killing 3, losing 4.",
+  "Corinthia (OrderoftheBath) occupied Argolis with 1 troop.",
   "Thesprotia (LeRenard) was fortified from Pelagonia (OrderoftheBath) with 2 troops.",
   "OrderoftheBath received a card.",
   "OrderoftheBath ended the turn.",
