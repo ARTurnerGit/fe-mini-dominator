@@ -42,11 +42,15 @@
 }
 .map-container {
   position: "absolute";
-  width: 1024px;
-  height: 725px;
+  height: 100vh;
   justify-content: center;
   z-index: -1;
 }
+
+.map {
+  height: 100%;
+}
+
 .territory {
   width: 18px;
   height: 18px;

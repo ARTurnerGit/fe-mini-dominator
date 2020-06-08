@@ -1,6 +1,10 @@
 import React from "react";
 
 function Territory({ territories }) {
+  // 795 x 1024px originally
+  const height = window.innerHeight;
+  const sf = height / 795;
+  console.log(sf);
   return Object.entries(territories).map(([terrName, terrObj]) => {
     return (
       <div
@@ -8,8 +12,8 @@ function Territory({ territories }) {
         className={`territory ${terrObj.owner}`}
         style={{
           position: "absolute",
-          left: terrObj.xpos + "px",
-          top: terrObj.ypos + "px",
+          left: (sf * parseInt(terrObj.xpos, 10)).toString() + "px",
+          top: (sf * parseInt(terrObj.ypos, 10)).toString() + "px",
         }}
       >
         {terrObj.troops}
