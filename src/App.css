@@ -84,7 +84,7 @@
   position: absolute;
   bottom: 0;
   right: 0;
-  font-size: 30px;
+  font-size: 25px;
   color: white;
   width: 25vw;
   text-align: right;
@@ -96,6 +96,6 @@
   top: 0;
   right: 0;
   text-align: right;
-  font-size: 40px;
+  font-size: 30px;
   color: white;
 }
