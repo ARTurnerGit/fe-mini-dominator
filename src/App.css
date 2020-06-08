@@ -78,9 +78,9 @@
 
 .log-msg {
   position: absolute;
-  top: 10vh;
+  bottom: 0;
   right: 0;
-  font-size: 20px;
+  font-size: 30px;
   color: white;
   width: 25vw;
   text-align: right;
@@ -89,7 +89,6 @@
 .round-tracker {
   position: absolute;
   width: 25vw;
-  height: 10vh;
   top: 0;
   right: 0;
   text-align: right;

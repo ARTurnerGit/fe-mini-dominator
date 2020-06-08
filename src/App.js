@@ -19,13 +19,14 @@ class App extends React.Component {
     gamelog: [],
     logCounter: 0,
     roundCounter: 1,
+    playerToGo: "",
   };
 
   passGameNumber = (e, inputGameNumber) => {
     e.preventDefault();
     this.setState({
       gameNumber: inputGameNumber,
-      haveGameNumber: !this.state.haveGameNumber,
+      haveGameNumber: true,
     });
   };
 
@@ -192,6 +193,22 @@ class App extends React.Component {
         return { territories: updatedTerritories };
       });
     }
+    if (/started the turn/.test(currentString)) {
+      this.setState({ playerToGo: currentString.split(" ")[0] });
+    }
+    if (/troops on/.test(currentString)) {
+      const troopsReceived = parseInt(currentString.split("received")[1]);
+      const territoryReceiving = currentString.split("on")[1].trim();
+
+      this.setState((currentState) => {
+        const newTerritories = { ...currentState.territories };
+
+        newTerritories[territoryReceiving].troops =
+          newTerritories[territoryReceiving].troops + troopsReceived;
+
+        return { territories: newTerritories };
+      });
+    }
   };
 
   render() {
@@ -216,7 +233,10 @@ class App extends React.Component {
           <Logger msg={this.state.gamelog[this.state.logCounter]} />
         )}
         {this.state.gameConfirmed && (
-          <Roundtracker roundCounter={this.state.roundCounter} />
+          <Roundtracker
+            roundCounter={this.state.roundCounter}
+            playerToGo={this.state.playerToGo}
+          />
         )}
       </div>
     );

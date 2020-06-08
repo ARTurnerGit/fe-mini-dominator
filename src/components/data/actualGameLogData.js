@@ -245,6 +245,7 @@ const gameLogData = [
   "Macedon (alunturner) attacked Thessalonica (Excalibur_83) conquering it, killing 1, losing 1.",
   "Macedon (alunturner) occupied Thessalonica with 3 troops.",
   "Thessalonica (alunturner) attacked Chalcidice (Excalibur_83) conquering it, killing 1, losing 1.",
+  "Thessalonica (alunturner) occupied Chalcidice with 1 troop.",
   "Icaria (alunturner) attacked North Cyclades (Excalibur_83) killing 1, losing 2.",
   "Karpathos (alunturner) was fortified from Caria (alunturner) with 1 troop.",
   "alunturner received a card.",
