@@ -4,7 +4,6 @@ function Territory({ territories }) {
   // 795 x 1024px originally
   const height = window.innerHeight;
   const sf = height / 795;
-  console.log(sf);
   return Object.entries(territories).map(([terrName, terrObj]) => {
     return (
       <div
