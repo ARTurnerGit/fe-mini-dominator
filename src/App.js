@@ -93,7 +93,10 @@ class App extends React.Component {
     }
     if (/reinforced/.test(currentString)) {
       let territory = currentString.split("(")[0].trim();
-      let troopIncrease = parseInt(currentString.match(/\d+/)[0]);
+      let troopIncrease = parseInt(
+        currentString.split("with")[1].match(/\d+/)[0]
+      );
+
       this.setState((currentState) => {
         let updatedTerritories = { ...currentState.territories };
         updatedTerritories[territory].troops =
@@ -110,7 +113,9 @@ class App extends React.Component {
         .split("attacked")[1]
         .split("(")[0]
         .trim();
-      const [defLosses, attLosses] = currentString.match(/\d+/g);
+      const [defLosses, attLosses] = currentString
+        .split("killing")[1]
+        .match(/\d+/g);
 
       this.setState((currentState) => {
         let updatedTerritories = { ...currentState.territories };
@@ -133,7 +138,9 @@ class App extends React.Component {
         .split("occupied")[1]
         .split("with")[0]
         .trim();
-      const troopMove = parseInt(currentString.match(/\d+/)[0]);
+      const troopMove = parseInt(
+        currentString.split("with")[1].match(/\d+/)[0]
+      );
       this.setState((currentState) => {
         let updatedTerritories = { ...currentState.territories };
 
@@ -155,7 +162,9 @@ class App extends React.Component {
         .split("fortified from")[1]
         .split("(")[0]
         .trim();
-      const troopMove = parseInt(currentString.match(/\d+/)[0]);
+      const troopMove = parseInt(
+        currentString.split("with")[1].match(/\d+/)[0]
+      );
       this.setState((currentState) => {
         let updatedTerritories = { ...currentState.territories };
 
@@ -165,6 +174,21 @@ class App extends React.Component {
         updatedTerritories[arrTerritory].troops =
           updatedTerritories[arrTerritory].troops + troopMove;
 
+        return { territories: updatedTerritories };
+      });
+    }
+    if (/conquering/.test(currentString)) {
+      const newOwner = currentString
+        .split("attacked")[0]
+        .match(/\(.+?\)/)[0]
+        .slice(1, -1);
+      const territoryToChangeHands = currentString
+        .split("attacked")[1]
+        .split("(")[0]
+        .trim();
+      this.setState((currentState) => {
+        let updatedTerritories = { ...currentState.territories };
+        updatedTerritories[territoryToChangeHands].owner = newOwner;
         return { territories: updatedTerritories };
       });
     }
