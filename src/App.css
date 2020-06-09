@@ -61,6 +61,11 @@
   border-radius: 100%;
   text-align: center;
 }
+.highlighted {
+  background-color: white;
+  color: black;
+}
+
 .alunturner {
   border: 3px solid black;
 }

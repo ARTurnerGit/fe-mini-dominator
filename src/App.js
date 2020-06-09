@@ -86,6 +86,17 @@ class App extends React.Component {
   };
 
   logWizard = () => {
+    // turn off highlighting...
+    this.setState((currentState) => {
+      const newTerritories = { ...currentState.territories };
+
+      Object.values(newTerritories).forEach(
+        (territoryObj) => (territoryObj.highlighted = false)
+      );
+      return { territories: newTerritories };
+    });
+
+    // ...then check what happens in the log
     let currentString = this.state.gamelog[this.state.logCounter];
     if (/Round \d/.test(currentString)) {
       this.setState((currentState) => {
@@ -102,6 +113,7 @@ class App extends React.Component {
         let updatedTerritories = { ...currentState.territories };
         updatedTerritories[territory].troops =
           updatedTerritories[territory].troops + troopIncrease;
+        updatedTerritories[territory].highlighted = true;
         return { territories: updatedTerritories };
       });
     }
@@ -123,9 +135,11 @@ class App extends React.Component {
 
         updatedTerritories[attTerritory].troops =
           updatedTerritories[attTerritory].troops - attLosses;
+        updatedTerritories[attTerritory].highlighted = true;
 
         updatedTerritories[defTerritory].troops =
           updatedTerritories[defTerritory].troops - defLosses;
+        updatedTerritories[defTerritory].highlighted = true;
 
         return { territories: updatedTerritories };
       });
@@ -147,9 +161,11 @@ class App extends React.Component {
 
         updatedTerritories[depTerritory].troops =
           updatedTerritories[depTerritory].troops - troopMove;
+        updatedTerritories[depTerritory].highlighted = true;
 
         updatedTerritories[arrTerritory].troops =
           updatedTerritories[arrTerritory].troops + troopMove;
+        updatedTerritories[arrTerritory].highlighted = true;
 
         return { territories: updatedTerritories };
       });
@@ -171,9 +187,11 @@ class App extends React.Component {
 
         updatedTerritories[depTerritory].troops =
           updatedTerritories[depTerritory].troops - troopMove;
+        updatedTerritories[depTerritory].highlighted = true;
 
         updatedTerritories[arrTerritory].troops =
           updatedTerritories[arrTerritory].troops + troopMove;
+        updatedTerritories[arrTerritory].highlighted = true;
 
         return { territories: updatedTerritories };
       });
@@ -190,6 +208,7 @@ class App extends React.Component {
       this.setState((currentState) => {
         let updatedTerritories = { ...currentState.territories };
         updatedTerritories[territoryToChangeHands].owner = newOwner;
+        updatedTerritories[territoryToChangeHands].highlighted = true;
         return { territories: updatedTerritories };
       });
     }
@@ -205,6 +224,7 @@ class App extends React.Component {
 
         newTerritories[territoryReceiving].troops =
           newTerritories[territoryReceiving].troops + troopsReceived;
+        newTerritories[territoryReceiving].highlighted = true;
 
         return { territories: newTerritories };
       });
