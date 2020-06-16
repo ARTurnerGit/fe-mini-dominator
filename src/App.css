@@ -57,7 +57,7 @@
   background-color: transparent;
   color: white;
   font-weight: bold;
-  border: 3px solid lightgrey;
+  border: 3px solid #918e8b;
   border-radius: 100%;
   text-align: center;
   transition: width 0.1s, height 0.1s;
@@ -73,40 +73,41 @@
 }
 
 .alunturner {
-  border: 3px solid black;
+  border: 3px solid #181818;
 }
 .OrderoftheBath {
-  border: 3px solid pink;
+  border: 3px solid #fb65ee;
 }
 .Gusreynolds {
-  border: 3px solid orange;
+  border: 3px solid #ff8001;
 }
 .Heapsrob {
-  border: 3px solid green;
+  border: 3px solid #1bad22;
 }
 .LeRenard {
-  border: 3px solid lightblue;
+  border: 3px solid #05dbee;
 }
 .Excalibur_83 {
-  border: 3px solid darkblue;
+  border: 3px solid #0e12bd;
 }
 
-.log-msg {
+.sidebar {
   position: absolute;
-  bottom: 0;
   right: 0;
-  font-size: 25px;
-  color: white;
-  width: 25vw;
-  text-align: right;
-}
-
-.round-tracker {
-  position: absolute;
-  width: 25vw;
   top: 0;
-  right: 0;
-  text-align: right;
+  width: 30vw;
+  height: 100vh;
+  display: flex;
+  flex-direction: column;
+}
+.round-tracker {
+  text-align: left;
   font-size: 30px;
   color: white;
+}
+.log-msg {
+  text-align: right;
+  font-size: 20px;
+  color: white;
+  margin: 2vh 0;
 }

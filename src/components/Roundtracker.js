@@ -4,7 +4,7 @@ function Roundtracker({ roundCounter, playerToGo }) {
   return (
     <div className="round-tracker">
       ROUND: {roundCounter} <br />
-      TURN: {playerToGo}
+      {playerToGo}
     </div>
   );
 }

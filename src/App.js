@@ -8,6 +8,7 @@ import Iframe from "./components/Iframe";
 import Gamescreen from "./components/Gamescreen.js";
 import Logger from "./components/Logger.js";
 import Roundtracker from "./components/Roundtracker.js";
+import StatTracker from "./components/StatTracker.js";
 
 class App extends React.Component {
   state = {
@@ -232,31 +233,41 @@ class App extends React.Component {
   };
 
   render() {
+    const {
+      players,
+      territories,
+      haveGameNumber,
+      gameConfirmed,
+      gameNumber,
+      roundCounter,
+      playerToGo,
+      gamelog,
+      logCounter,
+    } = this.state;
     return (
       <div className="App">
-        {!this.state.gameConfirmed && (
+        {!gameConfirmed && (
           <Form
             passGameNumber={this.passGameNumber}
             extractGameData={this.extractGameData}
           />
         )}
-        {this.state.haveGameNumber && !this.state.gameConfirmed && (
-          <Iframe gameNumber={this.state.gameNumber} />
-        )}
-        {this.state.gameConfirmed && (
-          <Gamescreen
-            territories={this.state.territories}
-            playNextInLog={this.playNextInLog}
-          />
-        )}
-        {this.state.gameConfirmed && (
-          <Logger msg={this.state.gamelog[this.state.logCounter]} />
-        )}
-        {this.state.gameConfirmed && (
-          <Roundtracker
-            roundCounter={this.state.roundCounter}
-            playerToGo={this.state.playerToGo}
-          />
+        {haveGameNumber && !gameConfirmed && <Iframe gameNumber={gameNumber} />}
+        {gameConfirmed && (
+          <>
+            <Gamescreen
+              territories={territories}
+              playNextInLog={this.playNextInLog}
+            />
+            <div className="sidebar">
+              <Roundtracker
+                roundCounter={roundCounter}
+                playerToGo={playerToGo}
+              />
+              <Logger msg={gamelog[logCounter]} />
+              <StatTracker players={players} territories={territories} />
+            </div>
+          </>
         )}
       </div>
     );
