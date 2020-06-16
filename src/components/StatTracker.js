@@ -15,7 +15,10 @@ function StatTracker({ players, territories }) {
         {players.map((playerObj) => {
           return (
             <tr key={playerObj.playerName}>
-              <td>{playerObj.playerName}</td>
+              <td>
+                <i className="fas fa-user-circle"></i>
+                {playerObj.playerName}
+              </td>
               <td>{playerObj.cards}</td>
               <td>
                 {Object.values(territories).reduce((acc, terrObj) => {
