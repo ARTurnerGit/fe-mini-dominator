@@ -9,6 +9,7 @@ import Gamescreen from "./components/Gamescreen.js";
 import Logger from "./components/Logger.js";
 import Roundtracker from "./components/Roundtracker.js";
 import StatTracker from "./components/StatTracker.js";
+import Controller from "./components/Controller.js";
 
 class App extends React.Component {
   state = {
@@ -291,6 +292,7 @@ class App extends React.Component {
                 playerToGo={playerToGo}
               />
               <Logger msg={gamelog[logCounter]} />
+              <Controller />
               <StatTracker players={players} territories={territories} />
             </div>
           </>
