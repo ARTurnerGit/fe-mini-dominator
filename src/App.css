@@ -111,3 +111,23 @@
   color: white;
   margin: 2vh 0;
 }
+.stat-tracker {
+  position: absolute;
+  bottom: 0;
+  width: 100%;
+  text-align: center;
+}
+.name-entry {
+  text-align: left;
+  display: flex;
+  justify-content: flex-start;
+  align-content: center;
+  padding: 0.5vh 0.5vw;
+}
+
+th {
+  border-bottom: 1.5px solid lightgray;
+}
+td {
+  border-bottom: 0.75px solid lightgray;
+}

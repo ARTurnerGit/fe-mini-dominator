@@ -4,7 +4,7 @@ import { faUserCircle } from "@fortawesome/free-solid-svg-icons";
 
 function StatTracker({ players, territories }) {
   return (
-    <table>
+    <table className="stat-tracker">
       <thead>
         <tr>
           <th>Player</th>
@@ -17,7 +17,7 @@ function StatTracker({ players, territories }) {
         {players.map((playerObj) => {
           return (
             <tr key={playerObj.playerName}>
-              <td>
+              <td className="name-entry">
                 <FontAwesomeIcon
                   icon={faUserCircle}
                   className={playerObj.playerName}
