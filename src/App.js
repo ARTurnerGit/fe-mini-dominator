@@ -230,6 +230,32 @@ class App extends React.Component {
         return { territories: newTerritories };
       });
     }
+    if (/received a card/.test(currentString)) {
+      let currentPlayer = currentString.split(" ")[0];
+      this.setState((curr) => {
+        let updatedPlayers = curr.players.map((player) => {
+          if (player.playerName === currentPlayer) {
+            player.cards += 1;
+            return player;
+          }
+          return player;
+        });
+        return { players: updatedPlayers };
+      });
+    }
+    if (/turning in/.test(currentString)) {
+      let currentPlayer = currentString.split(" ")[0];
+      this.setState((curr) => {
+        let updatedPlayers = curr.players.map((player) => {
+          if (player.playerName === currentPlayer) {
+            player.cards -= 3;
+            return player;
+          }
+          return player;
+        });
+        return { players: updatedPlayers };
+      });
+    }
   };
 
   render() {
