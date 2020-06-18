@@ -26,24 +26,8 @@ function StatTracker({ players, territories }) {
                 {playerObj.playerName}
               </td>
               <td>{playerObj.cards}</td>
-              <td>
-                {Object.values(territories).reduce((acc, terrObj) => {
-                  if (terrObj.owner === playerObj.playerName) {
-                    return (acc += 1);
-                  } else {
-                    return acc;
-                  }
-                }, 0)}
-              </td>
-              <td>
-                {Object.values(territories).reduce((acc, terrObj) => {
-                  if (terrObj.owner === playerObj.playerName) {
-                    return (acc += terrObj.troops);
-                  } else {
-                    return acc;
-                  }
-                }, 0)}
-              </td>
+              <td>{playerObj.territories}</td>
+              <td>{playerObj.troops}</td>
             </tr>
           );
         })}

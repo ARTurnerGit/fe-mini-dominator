@@ -42,12 +42,41 @@ class App extends React.Component {
     });
   };
 
-  componentDidUpdate(prevProps, prevState, snapshot) {
+  countTerritoriesAndTroops = () => {
+    this.setState((curr) => {
+      let playersCopy = curr.players.map((player) => ({ ...player }));
+
+      let updatedPlayers = playersCopy.map((player) => {
+        let { playerTerritories, playerTroops } = Object.values(
+          curr.territories
+        ).reduce(
+          (acc, terrObj) => {
+            if (terrObj.owner === player.playerName) {
+              acc.playerTerritories += 1;
+              acc.playerTroops += terrObj.troops;
+              return acc;
+            }
+            return acc;
+          },
+          { playerTerritories: 0, playerTroops: 0 }
+        );
+
+        player.territories = playerTerritories;
+        player.troops = playerTroops;
+        return player;
+      });
+
+      return { players: updatedPlayers };
+    });
+  };
+
+  componentDidUpdate(prevProps, prevState) {
     if (prevState.players !== this.state.players) {
       this.checkForFirstMentions();
     }
     if (prevState.logCounter !== this.state.logCounter) {
       this.logWizard();
+      this.countTerritoriesAndTroops();
     }
   }
 
