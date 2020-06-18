@@ -46,27 +46,18 @@ class App extends React.Component {
     this.setState((curr) => {
       let playersCopy = curr.players.map((player) => ({ ...player }));
 
-      let updatedPlayers = playersCopy.map((player) => {
-        let { playerTerritories, playerTroops } = Object.values(
-          curr.territories
-        ).reduce(
-          (acc, terrObj) => {
-            if (terrObj.owner === player.playerName) {
-              acc.playerTerritories += 1;
-              acc.playerTroops += terrObj.troops;
-              return acc;
-            }
-            return acc;
-          },
-          { playerTerritories: 0, playerTroops: 0 }
-        );
-
-        player.territories = playerTerritories;
-        player.troops = playerTroops;
-        return player;
+      playersCopy.forEach((player) => {
+        player.territories = 0;
+        player.troops = 0;
+        Object.values(curr.territories).forEach((terrObj) => {
+          if (terrObj.owner === player.playerName) {
+            player.territories += 1;
+            player.troops += terrObj.troops;
+          }
+        });
       });
 
-      return { players: updatedPlayers };
+      return { players: playersCopy };
     });
   };
 
@@ -76,7 +67,7 @@ class App extends React.Component {
     }
     if (prevState.logCounter !== this.state.logCounter) {
       this.logWizard();
-      this.countTerritoriesAndTroops();
+      // this.countTerritoriesAndTroops();
     }
   }
 
@@ -118,8 +109,8 @@ class App extends React.Component {
 
   logWizard = () => {
     // turn off highlighting...
-    this.setState((currentState) => {
-      const newTerritories = { ...currentState.territories };
+    this.setState((curr) => {
+      let newTerritories = JSON.parse(JSON.stringify(curr.territories));
 
       Object.values(newTerritories).forEach(
         (territoryObj) => (territoryObj.highlighted = false)
@@ -128,10 +119,12 @@ class App extends React.Component {
     });
 
     // ...then check what happens in the log
-    let currentString = this.state.gamelog[this.state.logCounter];
+    const { gamelog, logCounter } = this.state;
+    let currentString = gamelog[logCounter];
+
     if (/Round \d/.test(currentString)) {
-      this.setState((currentState) => {
-        return { roundCounter: currentState.roundCounter + 1 };
+      this.setState((curr) => {
+        return { roundCounter: curr.roundCounter + 1 };
       });
     }
     if (/reinforced/.test(currentString)) {
@@ -140,8 +133,8 @@ class App extends React.Component {
         currentString.split("with")[1].match(/\d+/)[0]
       );
 
-      this.setState((currentState) => {
-        let updatedTerritories = { ...currentState.territories };
+      this.setState((curr) => {
+        let updatedTerritories = JSON.parse(JSON.stringify(curr.territories));
         updatedTerritories[territory].troops =
           updatedTerritories[territory].troops + troopIncrease;
         updatedTerritories[territory].highlighted = true;
@@ -161,8 +154,8 @@ class App extends React.Component {
         .split("killing")[1]
         .match(/\d+/g);
 
-      this.setState((currentState) => {
-        let updatedTerritories = { ...currentState.territories };
+      this.setState((curr) => {
+        let updatedTerritories = JSON.parse(JSON.stringify(curr.territories));
 
         updatedTerritories[attTerritory].troops =
           updatedTerritories[attTerritory].troops - attLosses;
@@ -187,8 +180,8 @@ class App extends React.Component {
       const troopMove = parseInt(
         currentString.split("with")[1].match(/\d+/)[0]
       );
-      this.setState((currentState) => {
-        let updatedTerritories = { ...currentState.territories };
+      this.setState((curr) => {
+        let updatedTerritories = JSON.parse(JSON.stringify(curr.territories));
 
         updatedTerritories[depTerritory].troops =
           updatedTerritories[depTerritory].troops - troopMove;
@@ -213,8 +206,8 @@ class App extends React.Component {
       const troopMove = parseInt(
         currentString.split("with")[1].match(/\d+/)[0]
       );
-      this.setState((currentState) => {
-        let updatedTerritories = { ...currentState.territories };
+      this.setState((curr) => {
+        let updatedTerritories = JSON.parse(JSON.stringify(curr.territories));
 
         updatedTerritories[depTerritory].troops =
           updatedTerritories[depTerritory].troops - troopMove;
@@ -236,8 +229,9 @@ class App extends React.Component {
         .split("attacked")[1]
         .split("(")[0]
         .trim();
-      this.setState((currentState) => {
-        let updatedTerritories = { ...currentState.territories };
+      this.setState((curr) => {
+        let updatedTerritories = JSON.parse(JSON.stringify(curr.territories));
+
         updatedTerritories[territoryToChangeHands].owner = newOwner;
         updatedTerritories[territoryToChangeHands].highlighted = true;
         return { territories: updatedTerritories };
@@ -250,43 +244,47 @@ class App extends React.Component {
       const troopsReceived = parseInt(currentString.split("received")[1]);
       const territoryReceiving = currentString.split("on")[1].trim();
 
-      this.setState((currentState) => {
-        const newTerritories = { ...currentState.territories };
-
-        newTerritories[territoryReceiving].troops =
-          newTerritories[territoryReceiving].troops + troopsReceived;
-        newTerritories[territoryReceiving].highlighted = true;
-
-        return { territories: newTerritories };
-      });
-    }
-    if (/received a card/.test(currentString)) {
-      let currentPlayer = currentString.split(" ")[0];
       this.setState((curr) => {
-        let updatedPlayers = curr.players.map((player) => {
-          if (player.playerName === currentPlayer) {
-            player.cards += 1;
-            return player;
-          }
-          return player;
-        });
-        return { players: updatedPlayers };
+        let updatedTerritories = JSON.parse(JSON.stringify(curr.territories));
+
+        updatedTerritories[territoryReceiving].troops =
+          updatedTerritories[territoryReceiving].troops + troopsReceived;
+        updatedTerritories[territoryReceiving].highlighted = true;
+
+        return { territories: updatedTerritories };
       });
     }
-    if (/turning in/.test(currentString)) {
-      let currentPlayer = currentString.split(" ")[0];
-      this.setState((curr) => {
-        let updatedPlayers = curr.players.map((player) => {
-          if (player.playerName === currentPlayer) {
-            player.cards -= 3;
-            return player;
-          }
-          return player;
-        });
-        return { players: updatedPlayers };
-      });
-    }
+    // if (/received a card/.test(currentString)) {
+    //   let currentPlayer = currentString.split(" ")[0];
+    // let playersCopy = curr.players.map((player) => {
+    //   return { ...player };
+    // });
+
+    // let updatedPlayers = playersCopy.map((playerCopy) => {
+    //   if (playerCopy.playerName === currentPlayer) {
+    //     playerCopy.cards += 1;
+    //   }
+    //   return playerCopy;
+    // });
+
+    // return { players: playersCopy };
+    // }
   };
+  // }
+  // if (/turning in/.test(currentString)) {
+  //   let currentPlayer = currentString.split(" ")[0];
+  //   this.setState((curr) => {
+  //     let updatedPlayers = curr.players.map((player) => {
+  //       if (player.playerName === currentPlayer) {
+  //         player.cards -= 3;
+  //         return player;
+  //       }
+  //       return player;
+  //     });
+  //     return { players: updatedPlayers };
+  //   });
+  // }
+  // };
 
   render() {
     const {
@@ -321,7 +319,7 @@ class App extends React.Component {
                 playerToGo={playerToGo}
               />
               <Logger msg={gamelog[logCounter]} />
-              <Controller />
+              <Controller playNextInLog={this.playNextInLog} />
               <StatTracker players={players} territories={territories} />
             </div>
           </>
