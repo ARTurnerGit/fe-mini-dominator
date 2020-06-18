@@ -19,7 +19,7 @@ class App extends React.Component {
     players: [],
     territories: {},
     gamelog: [],
-    logCounter: 0,
+    logCounter: null,
     roundCounter: 1,
     playerToGo: "",
   };
@@ -44,7 +44,7 @@ class App extends React.Component {
 
   countTerritoriesAndTroops = () => {
     this.setState((curr) => {
-      let playersCopy = curr.players.map((player) => ({ ...player }));
+      let playersCopy = JSON.parse(JSON.stringify(curr.players));
 
       playersCopy.forEach((player) => {
         player.territories = 0;
@@ -62,12 +62,12 @@ class App extends React.Component {
   };
 
   componentDidUpdate(prevProps, prevState) {
-    if (prevState.players !== this.state.players) {
-      this.checkForFirstMentions();
-    }
     if (prevState.logCounter !== this.state.logCounter) {
+      if (this.state.logCounter === 0) {
+        this.checkForFirstMentions();
+      }
       this.logWizard();
-      // this.countTerritoriesAndTroops();
+      this.countTerritoriesAndTroops();
     }
   }
 
@@ -102,8 +102,12 @@ class App extends React.Component {
   };
 
   playNextInLog = () => {
-    this.setState((currentState) => {
-      return { logCounter: currentState.logCounter + 1 };
+    this.setState((curr) => {
+      if (curr.logCounter === null) {
+        return { logCounter: 0 };
+      } else {
+        return { logCounter: curr.logCounter + 1 };
+      }
     });
   };
 
@@ -254,37 +258,36 @@ class App extends React.Component {
         return { territories: updatedTerritories };
       });
     }
-    // if (/received a card/.test(currentString)) {
-    //   let currentPlayer = currentString.split(" ")[0];
-    // let playersCopy = curr.players.map((player) => {
-    //   return { ...player };
-    // });
+    if (/received a card/.test(currentString)) {
+      let currentPlayer = currentString.split(" ")[0];
+      this.setState((curr) => {
+        let playersCopy = JSON.parse(JSON.stringify(curr.players));
 
-    // let updatedPlayers = playersCopy.map((playerCopy) => {
-    //   if (playerCopy.playerName === currentPlayer) {
-    //     playerCopy.cards += 1;
-    //   }
-    //   return playerCopy;
-    // });
+        let updatedPlayers = playersCopy.map((playerCopy) => {
+          if (playerCopy.playerName === currentPlayer) {
+            playerCopy.cards += 1;
+          }
+          return playerCopy;
+        });
 
-    // return { players: playersCopy };
-    // }
+        return { players: updatedPlayers };
+      });
+    }
+    if (/turning in/.test(currentString)) {
+      let currentPlayer = currentString.split(" ")[0];
+      this.setState((curr) => {
+        let playersCopy = JSON.parse(JSON.stringify(curr.players));
+
+        let updatedPlayers = playersCopy.map((player) => {
+          if (player.playerName === currentPlayer) {
+            player.cards -= 3;
+          }
+          return player;
+        });
+        return { players: updatedPlayers };
+      });
+    }
   };
-  // }
-  // if (/turning in/.test(currentString)) {
-  //   let currentPlayer = currentString.split(" ")[0];
-  //   this.setState((curr) => {
-  //     let updatedPlayers = curr.players.map((player) => {
-  //       if (player.playerName === currentPlayer) {
-  //         player.cards -= 3;
-  //         return player;
-  //       }
-  //       return player;
-  //     });
-  //     return { players: updatedPlayers };
-  //   });
-  // }
-  // };
 
   render() {
     const {
