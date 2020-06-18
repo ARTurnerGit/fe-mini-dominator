@@ -1,8 +1,11 @@
 import React from "react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faUserCircle } from "@fortawesome/free-solid-svg-icons";
+import {
+  faUserCircle,
+  faSkullCrossbones,
+} from "@fortawesome/free-solid-svg-icons";
 
-function StatTracker({ players, territories }) {
+function StatTracker({ players }) {
   return (
     <table className="stat-tracker">
       <thead>
@@ -18,11 +21,19 @@ function StatTracker({ players, territories }) {
           return (
             <tr key={playerObj.playerName}>
               <td className="name-entry">
-                <FontAwesomeIcon
-                  icon={faUserCircle}
-                  className={playerObj.playerName}
-                  style={{ borderRadius: "100%" }}
-                />
+                {playerObj.territories !== 0 ? (
+                  <FontAwesomeIcon
+                    icon={faUserCircle}
+                    className={playerObj.playerName}
+                    style={{ borderRadius: "100%" }}
+                  />
+                ) : (
+                  <FontAwesomeIcon
+                    icon={faSkullCrossbones}
+                    className={playerObj.playerName}
+                    style={{ borderRadius: "100%" }}
+                  />
+                )}
                 {playerObj.playerName}
               </td>
               <td>{playerObj.cards}</td>

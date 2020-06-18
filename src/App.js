@@ -323,7 +323,7 @@ class App extends React.Component {
               />
               <Logger msg={gamelog[logCounter]} />
               <Controller playNextInLog={this.playNextInLog} />
-              <StatTracker players={players} territories={territories} />
+              <StatTracker players={players} />
             </div>
           </>
         )}
