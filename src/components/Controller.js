@@ -3,7 +3,8 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {
   faPlay,
   faPause,
-  faStepBackward,
+  faFastBackward,
+  faStepForward,
 } from "@fortawesome/free-solid-svg-icons";
 
 class Controller extends React.Component {
@@ -27,13 +28,16 @@ class Controller extends React.Component {
     return (
       <div className="controller">
         <button onClick={this.props.handleReset}>
-          <FontAwesomeIcon icon={faStepBackward} />
+          <FontAwesomeIcon icon={faFastBackward} />
         </button>
         <button onClick={this.handlePlay}>
           <FontAwesomeIcon icon={faPlay} />
         </button>
         <button onClick={this.handlePause}>
           <FontAwesomeIcon icon={faPause} />
+        </button>
+        <button>
+          <FontAwesomeIcon icon={faStepForward}></FontAwesomeIcon>
         </button>
       </div>
     );
