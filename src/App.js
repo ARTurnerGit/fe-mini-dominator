@@ -92,8 +92,8 @@ class App extends React.Component {
       }
     });
 
-    this.setState((currentState) => {
-      const copyOfTerritories = { ...currentState.territories };
+    this.setState((curr) => {
+      const copyOfTerritories = JSON.parse(JSON.stringify(curr.territories));
       firstMentions.forEach(([place, owner]) => {
         copyOfTerritories[place].owner = owner;
       });
@@ -108,6 +108,29 @@ class App extends React.Component {
       } else {
         return { logCounter: curr.logCounter + 1 };
       }
+    });
+  };
+
+  handleReset = () => {
+    this.setState((curr) => {
+      let territoriesCopy = JSON.parse(JSON.stringify(curr.territories));
+      let playersCopy = JSON.parse(JSON.stringify(curr.players));
+
+      for (let territory in territoriesCopy) {
+        territoriesCopy[territory].troops = 3;
+      }
+
+      for (let player of playersCopy) {
+        player.cards = 0;
+      }
+
+      return {
+        players: playersCopy,
+        territories: territoriesCopy,
+        logCounter: 0,
+        roundCounter: 1,
+        playerToGo: "",
+      };
     });
   };
 
@@ -343,7 +366,10 @@ class App extends React.Component {
                 playerToGo={playerToGo}
               />
               <Logger msg={gamelog[logCounter]} />
-              <Controller playNextInLog={this.playNextInLog} />
+              <Controller
+                playNextInLog={this.playNextInLog}
+                handleReset={this.handleReset}
+              />
               <StatTracker players={players} playerToGo={playerToGo} />
             </div>
           </>
