@@ -241,7 +241,10 @@ class App extends React.Component {
         return { territories: updatedTerritories };
       });
     }
-    if (/started the turn/.test(currentString)) {
+    if (
+      /joined the game/.test(currentString) ||
+      /started the turn/.test(currentString)
+    ) {
       this.setState({ playerToGo: currentString.split(" ")[0] });
     }
     if (/troops on/.test(currentString)) {
@@ -341,7 +344,7 @@ class App extends React.Component {
               />
               <Logger msg={gamelog[logCounter]} />
               <Controller playNextInLog={this.playNextInLog} />
-              <StatTracker players={players} />
+              <StatTracker players={players} playerToGo={playerToGo} />
             </div>
           </>
         )}

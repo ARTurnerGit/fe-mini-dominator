@@ -5,7 +5,7 @@ import {
   faSkullCrossbones,
 } from "@fortawesome/free-solid-svg-icons";
 
-function StatTracker({ players }) {
+function StatTracker({ players, playerToGo }) {
   return (
     <table className="stat-tracker">
       <thead>
@@ -29,7 +29,11 @@ function StatTracker({ players }) {
                         : faSkullCrossbones
                     }
                     className={playerObj.playerName}
-                    style={{ borderRadius: "100%" }}
+                    style={
+                      playerToGo === playerObj.playerName
+                        ? { borderRadius: "100%" }
+                        : { borderRadius: "100%", opacity: "40%" }
+                    }
                   />
                 }
                 {playerObj.playerName}

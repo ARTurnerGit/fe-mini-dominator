@@ -19,6 +19,7 @@ class Controller extends React.Component {
   render() {
     return (
       <>
+        <button>RESET</button>
         <button onClick={this.handlePlay}>
           <FontAwesomeIcon icon={faPlay} />
         </button>
