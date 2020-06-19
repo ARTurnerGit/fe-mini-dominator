@@ -21,19 +21,17 @@ function StatTracker({ players }) {
           return (
             <tr key={playerObj.playerName}>
               <td className="name-entry">
-                {playerObj.territories !== 0 ? (
+                {
                   <FontAwesomeIcon
-                    icon={faUserCircle}
+                    icon={
+                      playerObj.territories !== 0
+                        ? faUserCircle
+                        : faSkullCrossbones
+                    }
                     className={playerObj.playerName}
                     style={{ borderRadius: "100%" }}
                   />
-                ) : (
-                  <FontAwesomeIcon
-                    icon={faSkullCrossbones}
-                    className={playerObj.playerName}
-                    style={{ borderRadius: "100%" }}
-                  />
-                )}
+                }
                 {playerObj.playerName}
               </td>
               <td>{playerObj.cards}</td>

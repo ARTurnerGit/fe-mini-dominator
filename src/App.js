@@ -287,6 +287,24 @@ class App extends React.Component {
         return { players: updatedPlayers };
       });
     }
+    if (/was defeated by/.test(currentString)) {
+      let [loserName, winnerName] = currentString
+        .slice(0, -1)
+        .split(" was defeated by ");
+      this.setState((curr) => {
+        let playersCopy = JSON.parse(JSON.stringify(curr.players));
+        let losingPlayer = playersCopy.find(
+          (player) => player.playerName === loserName
+        );
+        let winningPlayer = playersCopy.find(
+          (player) => player.playerName === winnerName
+        );
+        let cardsToTransfer = losingPlayer.cards;
+        losingPlayer.cards -= cardsToTransfer;
+        winningPlayer.cards += cardsToTransfer;
+        return { players: playersCopy };
+      });
+    }
   };
 
   render() {
