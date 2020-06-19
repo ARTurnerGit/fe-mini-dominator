@@ -111,6 +111,25 @@
   color: white;
   margin: 2vh 0;
 }
+
+.controller {
+  width: 100%;
+  position: absolute;
+  top: 50%;
+  margin: 0 auto;
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+  padding: 4vh 0;
+}
+
+.controller button {
+  height: 8vh;
+  width: 8vh;
+  border-radius: 100%;
+  font-size: 180%;
+}
+
 .stat-tracker {
   position: absolute;
   bottom: 0;

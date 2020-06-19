@@ -1,6 +1,10 @@
 import React from "react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faPlay, faPause } from "@fortawesome/free-solid-svg-icons";
+import {
+  faPlay,
+  faPause,
+  faStepBackward,
+} from "@fortawesome/free-solid-svg-icons";
 
 class Controller extends React.Component {
   state = { intervalID: null };
@@ -21,15 +25,17 @@ class Controller extends React.Component {
 
   render() {
     return (
-      <>
-        <button onClick={this.props.handleReset}>RESET</button>
+      <div className="controller">
+        <button onClick={this.props.handleReset}>
+          <FontAwesomeIcon icon={faStepBackward} />
+        </button>
         <button onClick={this.handlePlay}>
           <FontAwesomeIcon icon={faPlay} />
         </button>
         <button onClick={this.handlePause}>
           <FontAwesomeIcon icon={faPause} />
         </button>
-      </>
+      </div>
     );
   }
 }
