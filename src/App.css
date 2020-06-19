@@ -130,6 +130,12 @@
   font-size: 180%;
 }
 
+.controller button:focus {
+  outline: 0;
+  border-color: blue;
+  border-radius: 100%;
+}
+
 .stat-tracker {
   position: absolute;
   bottom: 0;
