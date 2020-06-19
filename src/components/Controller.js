@@ -36,7 +36,7 @@ class Controller extends React.Component {
         <button onClick={this.handlePause}>
           <FontAwesomeIcon icon={faPause} />
         </button>
-        <button>
+        <button onClick={this.props.playNextInLog}>
           <FontAwesomeIcon icon={faStepForward}></FontAwesomeIcon>
         </button>
       </div>
