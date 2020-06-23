@@ -16,7 +16,8 @@ class App extends React.Component {
     gameNumber: "",
     haveGameNumber: false,
     gameConfirmed: false,
-    players: [],
+    map: {},
+    players: {},
     territories: {},
     gamelog: [],
     logCounter: null,
@@ -48,6 +49,7 @@ class App extends React.Component {
       this.setState({
         gameConfirmed: true,
         ...territories,
+        ...players,
         ...map,
         ...gamelog,
       });
