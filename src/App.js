@@ -69,12 +69,6 @@ class App extends React.Component {
       this.logWizard();
       this.countTerritoriesAndTroops();
     }
-    if (
-      prevState.gameConfirmed !== this.state.gameConfirmed &&
-      this.state.gameConfirmed
-    ) {
-      // send off all the requests and set the state
-    }
   }
 
   checkForFirstMentions = () => {
