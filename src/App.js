@@ -303,15 +303,13 @@ class App extends React.Component {
       let currentPlayer = currentString.split(" ")[0];
       this.setState((curr) => {
         let playersCopy = JSON.parse(JSON.stringify(curr.players));
-
-        let updatedPlayers = playersCopy.map((playerCopy) => {
-          if (playerCopy.playerName === currentPlayer) {
-            playerCopy.cards += 1;
+        Object.entries(playersCopy).forEach(([playerName, { cards }]) => {
+          if (playerName === currentPlayer) {
+            cards += 1;
           }
-          return playerCopy;
         });
 
-        return { players: updatedPlayers };
+        return { players: playersCopy };
       });
     }
     if (/turning in/.test(currentString)) {
