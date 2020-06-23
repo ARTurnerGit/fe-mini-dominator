@@ -17,9 +17,9 @@ function StatTracker({ players, playerToGo }) {
         </tr>
       </thead>
       <tbody>
-        {players.map((playerObj) => {
+        {Object.entries(players).map(([playerName, playerObj]) => {
           return (
-            <tr key={playerObj.playerName}>
+            <tr key={playerName}>
               <td className="name-entry">
                 {
                   <FontAwesomeIcon
@@ -28,15 +28,15 @@ function StatTracker({ players, playerToGo }) {
                         ? faUserCircle
                         : faSkullCrossbones
                     }
-                    className={playerObj.playerName}
+                    className={playerName}
                     style={
-                      playerToGo === playerObj.playerName
+                      playerToGo === playerName
                         ? { borderRadius: "100%" }
                         : { borderRadius: "100%", opacity: "40%" }
                     }
                   />
                 }
-                {playerObj.playerName}
+                {playerName}
               </td>
               <td>{playerObj.cards}</td>
               <td>{playerObj.territories}</td>
