@@ -1,9 +1,6 @@
 import React from "react";
 
-function Territory({ territories }) {
-  // 795 x 1024px originally
-  const height = window.innerHeight;
-  const sf = height / 795;
+function Territory({ territories, sf }) {
   return Object.entries(territories).map(([terrName, terrObj]) => {
     return (
       <div
