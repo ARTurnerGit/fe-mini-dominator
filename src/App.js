@@ -88,12 +88,13 @@ class App extends React.Component {
   }
 
   checkForFirstMentions = () => {
-    const territoryNames = Object.keys(territoryData);
+    const { gamelog, territories } = this.state;
+    const territoryNames = Object.keys(territories);
     const firstMentions = [];
 
     territoryNames.forEach((territory) => {
       const placeAndNameReg = new RegExp(`${territory} \\(.*?\\)`);
-      const firstMentionString = this.state.gamelog.find((logString) =>
+      const firstMentionString = gamelog.find((logString) =>
         placeAndNameReg.test(logString)
       );
 
