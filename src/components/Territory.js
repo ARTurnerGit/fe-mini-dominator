@@ -1,6 +1,6 @@
 import React from "react";
 
-function Territory({ territories, sf }) {
+function Territory({ territories, sf, players }) {
   return Object.entries(territories).map(([terrName, terrObj]) => {
     return (
       <div
@@ -8,7 +8,7 @@ function Territory({ territories, sf }) {
         className={
           "territory" +
           " " +
-          terrObj.owner +
+          players[terrObj.owner].colour +
           " " +
           (terrObj.highlighted && "highlighted")
         }

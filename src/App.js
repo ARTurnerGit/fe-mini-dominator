@@ -364,7 +364,7 @@ class App extends React.Component {
         {haveGameNumber && !gameConfirmed && <Iframe gameNumber={gameNumber} />}
         {gameConfirmed && (
           <>
-            <Gamescreen map={map} territories={territories} />
+            <Gamescreen map={map} territories={territories} players={players} />
             <div className="sidebar">
               <Roundtracker
                 roundCounter={roundCounter}

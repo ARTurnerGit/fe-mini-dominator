@@ -28,7 +28,7 @@ function StatTracker({ players, playerToGo }) {
                         ? faUserCircle
                         : faSkullCrossbones
                     }
-                    className={playerName}
+                    className={playerObj.colour}
                     style={
                       playerToGo === playerName
                         ? { borderRadius: "100%" }
