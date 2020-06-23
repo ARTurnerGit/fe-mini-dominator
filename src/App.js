@@ -34,16 +34,23 @@ class App extends React.Component {
 
   extractGameData = (e) => {
     e.preventDefault();
-    let proxyAddress =
-      "https://dominator-proxy-server.herokuapp.com/997721/gamelog";
-    let resourcesToRequest = ["territories", "map", "players", "gamelog"];
-    let promises = resourcesToRequest.map((request) => {});
+    let { gameNumber } = this.state;
+    let proxyAddress = "https://dominator-proxy-server.herokuapp.com/";
+    let resourcesToRequest = ["/territories", "/map", "/players", "/gamelog"];
+    let requests = resourcesToRequest.map((resource) => {
+      return new Request(proxyAddress + gameNumber + resource);
+    });
+    let promises = requests.map((request) =>
+      fetch(request).then((res) => res.json())
+    );
 
-    this.setState({
-      gameConfirmed: true,
-      // players: playerData,
-      // territories: territoryData,
-      // gamelog: gameLogData,
+    Promise.all(promises).then(([territories, map, players, gamelog]) => {
+      this.setState({
+        gameConfirmed: true,
+        ...territories,
+        ...map,
+        ...gamelog,
+      });
     });
   };
 
