@@ -60,18 +60,16 @@ class App extends React.Component {
     this.setState((curr) => {
       let playersCopy = JSON.parse(JSON.stringify(curr.players));
 
-      Object.entries(playersCopy).forEach(
-        ([playerName, { territories, troops }]) => {
-          territories = 0;
-          troops = 0;
-          Object.values(curr.territories).forEach((terrObj) => {
-            if (terrObj.owner === playerName) {
-              territories += 1;
-              troops += terrObj.troops;
-            }
-          });
-        }
-      );
+      Object.entries(playersCopy).forEach(([playerName, playerObj]) => {
+        playerObj.territories = 0;
+        playerObj.troops = 0;
+        Object.values(curr.territories).forEach((terrObj) => {
+          if (terrObj.owner === playerName) {
+            playerObj.territories += 1;
+            playerObj.troops += terrObj.troops;
+          }
+        });
+      });
 
       return { players: playersCopy };
     });
@@ -304,9 +302,9 @@ class App extends React.Component {
 
       this.setState((curr) => {
         let playersCopy = JSON.parse(JSON.stringify(curr.players));
-        Object.entries(playersCopy).forEach(([playerName, { cards }]) => {
+        Object.entries(playersCopy).forEach(([playerName, playerObj]) => {
           if (playerName === currentPlayer) {
-            cards += 1;
+            playerObj.cards += 1;
           }
         });
 
