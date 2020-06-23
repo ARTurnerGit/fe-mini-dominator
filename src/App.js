@@ -60,16 +60,18 @@ class App extends React.Component {
     this.setState((curr) => {
       let playersCopy = JSON.parse(JSON.stringify(curr.players));
 
-      playersCopy.forEach((player) => {
-        player.territories = 0;
-        player.troops = 0;
-        Object.values(curr.territories).forEach((terrObj) => {
-          if (terrObj.owner === player.playerName) {
-            player.territories += 1;
-            player.troops += terrObj.troops;
-          }
-        });
-      });
+      Object.entries(playersCopy).forEach(
+        ([playerName, { territories, troops }]) => {
+          territories = 0;
+          troops = 0;
+          Object.values(curr.territories).forEach((terrObj) => {
+            if (terrObj.owner === playerName) {
+              territories += 1;
+              troops += terrObj.troops;
+            }
+          });
+        }
+      );
 
       return { players: playersCopy };
     });
