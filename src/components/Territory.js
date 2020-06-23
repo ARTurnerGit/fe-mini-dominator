@@ -8,7 +8,7 @@ function Territory({ territories, sf, players }) {
         className={
           "territory" +
           " " +
-          players[terrObj.owner].colour +
+          // (terrObj.owner !== "" && players[`${terrObj.owner}`]["colour"]) +
           " " +
           (terrObj.highlighted && "highlighted")
         }
