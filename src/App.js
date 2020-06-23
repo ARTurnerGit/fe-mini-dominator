@@ -135,8 +135,8 @@ class App extends React.Component {
         territoriesCopy[territory].troops = 3;
       }
 
-      for (let player of playersCopy) {
-        player.cards = 0;
+      for (let player in playersCopy) {
+        playersCopy[player].cards = 0;
       }
 
       return {
