@@ -301,6 +301,7 @@ class App extends React.Component {
     }
     if (/received a card/.test(currentString)) {
       let currentPlayer = currentString.split(" ")[0];
+
       this.setState((curr) => {
         let playersCopy = JSON.parse(JSON.stringify(curr.players));
         Object.entries(playersCopy).forEach(([playerName, { cards }]) => {
@@ -332,15 +333,10 @@ class App extends React.Component {
         .split(" was defeated by ");
       this.setState((curr) => {
         let playersCopy = JSON.parse(JSON.stringify(curr.players));
-        let losingPlayer = playersCopy.find(
-          (player) => player.playerName === loserName
-        );
-        let winningPlayer = playersCopy.find(
-          (player) => player.playerName === winnerName
-        );
-        let cardsToTransfer = losingPlayer.cards;
-        losingPlayer.cards -= cardsToTransfer;
-        winningPlayer.cards += cardsToTransfer;
+
+        let cardsToTransfer = playersCopy[loserName].cards;
+        playersCopy[loserName].cards -= cardsToTransfer;
+        playersCopy[winnerName].cards += cardsToTransfer;
         return { players: playersCopy };
       });
     }
