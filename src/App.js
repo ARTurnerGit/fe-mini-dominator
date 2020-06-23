@@ -120,11 +120,9 @@ class App extends React.Component {
 
   playNextInLog = () => {
     this.setState((curr) => {
-      if (curr.logCounter === null) {
-        return { logCounter: 0 };
-      } else {
-        return { logCounter: curr.logCounter + 1 };
-      }
+      return curr.logCounter === null
+        ? { logCounter: 0 }
+        : { logCounter: curr.logCounter + 1 };
     });
   };
 
