@@ -34,11 +34,23 @@ class App extends React.Component {
 
   extractGameData = (e) => {
     e.preventDefault();
-    this.setState({
-      gameConfirmed: true,
-      players: playerData,
-      territories: territoryData,
-      gamelog: gameLogData,
+    let { gameNumber } = this.state;
+    let proxyAddress = "https://dominator-proxy-server.herokuapp.com/";
+    let resourcesToRequest = ["/territories", "/map", "/players", "/gamelog"];
+    let requests = resourcesToRequest.map((resource) => {
+      return new Request(proxyAddress + gameNumber + resource);
+    });
+    let promises = requests.map((request) =>
+      fetch(request).then((res) => res.json())
+    );
+
+    Promise.all(promises).then(([territories, map, players, gamelog]) => {
+      this.setState({
+        gameConfirmed: true,
+        ...territories,
+        ...map,
+        ...gamelog,
+      });
     });
   };
 
@@ -344,6 +356,7 @@ class App extends React.Component {
       playerToGo,
       gamelog,
       logCounter,
+      map,
     } = this.state;
     return (
       <div className="App">
@@ -356,7 +369,7 @@ class App extends React.Component {
         {haveGameNumber && !gameConfirmed && <Iframe gameNumber={gameNumber} />}
         {gameConfirmed && (
           <>
-            <Gamescreen territories={territories} />
+            <Gamescreen map={map} territories={territories} />
             <div className="sidebar">
               <Roundtracker
                 roundCounter={roundCounter}
