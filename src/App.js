@@ -117,10 +117,13 @@ class App extends React.Component {
   };
 
   playNextInLog = () => {
+    console.log({
+      [this.state.logCounter]: this.state.gamelog[this.state.logCounter],
+    });
     this.setState((curr) => {
-      return curr.logCounter === null
-        ? { logCounter: 0 }
-        : { logCounter: curr.logCounter + 1 };
+      if (curr.logCounter === null) return { logCounter: 0 };
+      else if (curr.logCounter < curr.gamelog.length)
+        return { logCounter: curr.logCounter + 1 };
     });
   };
 
@@ -161,182 +164,183 @@ class App extends React.Component {
     // ...then check what happens in the log
     const { gamelog, logCounter } = this.state;
     let currentString = gamelog[logCounter];
-
-    if (/Round \d/.test(currentString)) {
-      this.setState((curr) => {
-        return { roundCounter: curr.roundCounter + 1 };
-      });
-    }
-    if (/reinforced/.test(currentString)) {
-      let territory = currentString.split("(")[0].trim();
-      let troopIncrease = parseInt(
-        currentString.split("with")[1].match(/\d+/)[0]
-      );
-
-      this.setState((curr) => {
-        let updatedTerritories = JSON.parse(JSON.stringify(curr.territories));
-        updatedTerritories[territory].troops =
-          updatedTerritories[territory].troops + troopIncrease;
-        updatedTerritories[territory].highlighted = true;
-        return { territories: updatedTerritories };
-      });
-    }
-    if (/attacked/.test(currentString)) {
-      const attTerritory = currentString
-        .split("attacked")[0]
-        .split("(")[0]
-        .trim();
-      const defTerritory = currentString
-        .split("attacked")[1]
-        .split("(")[0]
-        .trim();
-      const [defLosses, attLosses] = currentString
-        .split("killing")[1]
-        .match(/\d+/g);
-
-      this.setState((curr) => {
-        let updatedTerritories = JSON.parse(JSON.stringify(curr.territories));
-
-        updatedTerritories[attTerritory].troops =
-          updatedTerritories[attTerritory].troops - attLosses;
-        updatedTerritories[attTerritory].highlighted = true;
-
-        updatedTerritories[defTerritory].troops =
-          updatedTerritories[defTerritory].troops - defLosses;
-        updatedTerritories[defTerritory].highlighted = true;
-
-        return { territories: updatedTerritories };
-      });
-    }
-    if (/occupied/.test(currentString)) {
-      const depTerritory = currentString
-        .split("occupied")[0]
-        .split("(")[0]
-        .trim();
-      const arrTerritory = currentString
-        .split("occupied")[1]
-        .split("with")[0]
-        .trim();
-      const troopMove = parseInt(
-        currentString.split("with")[1].match(/\d+/)[0]
-      );
-      this.setState((curr) => {
-        let updatedTerritories = JSON.parse(JSON.stringify(curr.territories));
-
-        updatedTerritories[depTerritory].troops =
-          updatedTerritories[depTerritory].troops - troopMove;
-        updatedTerritories[depTerritory].highlighted = true;
-
-        updatedTerritories[arrTerritory].troops =
-          updatedTerritories[arrTerritory].troops + troopMove;
-        updatedTerritories[arrTerritory].highlighted = true;
-
-        return { territories: updatedTerritories };
-      });
-    }
-    if (/fortified/.test(currentString)) {
-      const arrTerritory = currentString
-        .split("fortified from")[0]
-        .split("(")[0]
-        .trim();
-      const depTerritory = currentString
-        .split("fortified from")[1]
-        .split("(")[0]
-        .trim();
-      const troopMove = parseInt(
-        currentString.split("with")[1].match(/\d+/)[0]
-      );
-      this.setState((curr) => {
-        let updatedTerritories = JSON.parse(JSON.stringify(curr.territories));
-
-        updatedTerritories[depTerritory].troops =
-          updatedTerritories[depTerritory].troops - troopMove;
-        updatedTerritories[depTerritory].highlighted = true;
-
-        updatedTerritories[arrTerritory].troops =
-          updatedTerritories[arrTerritory].troops + troopMove;
-        updatedTerritories[arrTerritory].highlighted = true;
-
-        return { territories: updatedTerritories };
-      });
-    }
-    if (/conquering/.test(currentString)) {
-      const newOwner = currentString
-        .split("attacked")[0]
-        .match(/\(.+?\)/)[0]
-        .slice(1, -1);
-      const territoryToChangeHands = currentString
-        .split("attacked")[1]
-        .split("(")[0]
-        .trim();
-      this.setState((curr) => {
-        let updatedTerritories = JSON.parse(JSON.stringify(curr.territories));
-
-        updatedTerritories[territoryToChangeHands].owner = newOwner;
-        updatedTerritories[territoryToChangeHands].highlighted = true;
-        return { territories: updatedTerritories };
-      });
-    }
-    if (
-      /joined the game/.test(currentString) ||
-      /started the turn/.test(currentString)
-    ) {
-      this.setState({ playerToGo: currentString.split(" ")[0] });
-    }
-    if (/troops on/.test(currentString)) {
-      const troopsReceived = parseInt(currentString.split("received")[1]);
-      const territoryReceiving = currentString.split("on")[1].trim();
-
-      this.setState((curr) => {
-        let updatedTerritories = JSON.parse(JSON.stringify(curr.territories));
-
-        updatedTerritories[territoryReceiving].troops =
-          updatedTerritories[territoryReceiving].troops + troopsReceived;
-        updatedTerritories[territoryReceiving].highlighted = true;
-
-        return { territories: updatedTerritories };
-      });
-    }
-    if (/received a card/.test(currentString)) {
-      let currentPlayer = currentString.split(" ")[0];
-
-      this.setState((curr) => {
-        let playersCopy = JSON.parse(JSON.stringify(curr.players));
-        Object.entries(playersCopy).forEach(([playerName, playerObj]) => {
-          if (playerName === currentPlayer) {
-            playerObj.cards += 1;
-          }
+    try {
+      if (/Round \d/.test(currentString)) {
+        this.setState((curr) => {
+          return { roundCounter: curr.roundCounter + 1 };
         });
+      }
+      if (/reinforced/.test(currentString)) {
+        let territory = currentString.split("(")[0].trim();
+        let troopIncrease = parseInt(
+          currentString.split("with")[1].match(/\d+/)[0]
+        );
 
-        return { players: playersCopy };
-      });
-    }
-    if (/turning in/.test(currentString)) {
-      let currentPlayer = currentString.split(" ")[0];
-      this.setState((curr) => {
-        let playersCopy = JSON.parse(JSON.stringify(curr.players));
-
-        let updatedPlayers = playersCopy.map((player) => {
-          if (player.playerName === currentPlayer) {
-            player.cards -= 3;
-          }
-          return player;
+        this.setState((curr) => {
+          let updatedTerritories = JSON.parse(JSON.stringify(curr.territories));
+          updatedTerritories[territory].troops =
+            updatedTerritories[territory].troops + troopIncrease;
+          updatedTerritories[territory].highlighted = true;
+          return { territories: updatedTerritories };
         });
-        return { players: updatedPlayers };
-      });
-    }
-    if (/was defeated by/.test(currentString)) {
-      let [loserName, winnerName] = currentString
-        .slice(0, -1)
-        .split(" was defeated by ");
-      this.setState((curr) => {
-        let playersCopy = JSON.parse(JSON.stringify(curr.players));
+      }
+      if (/attacked/.test(currentString)) {
+        const attTerritory = currentString
+          .split("attacked")[0]
+          .split("(")[0]
+          .trim();
+        const defTerritory = currentString
+          .split("attacked")[1]
+          .split("(")[0]
+          .trim();
+        const [defLosses, attLosses] = currentString
+          .split("killing")[1]
+          .match(/\d+/g);
 
-        let cardsToTransfer = playersCopy[loserName].cards;
-        playersCopy[loserName].cards -= cardsToTransfer;
-        playersCopy[winnerName].cards += cardsToTransfer;
-        return { players: playersCopy };
-      });
+        this.setState((curr) => {
+          let updatedTerritories = JSON.parse(JSON.stringify(curr.territories));
+
+          updatedTerritories[attTerritory].troops =
+            updatedTerritories[attTerritory].troops - attLosses;
+          updatedTerritories[attTerritory].highlighted = true;
+
+          updatedTerritories[defTerritory].troops =
+            updatedTerritories[defTerritory].troops - defLosses;
+          updatedTerritories[defTerritory].highlighted = true;
+
+          return { territories: updatedTerritories };
+        });
+      }
+      if (/occupied/.test(currentString)) {
+        const depTerritory = currentString
+          .split("occupied")[0]
+          .split("(")[0]
+          .trim();
+        const arrTerritory = currentString
+          .split("occupied")[1]
+          .split("with")[0]
+          .trim();
+        const troopMove = parseInt(
+          currentString.split("with")[1].match(/\d+/)[0]
+        );
+        this.setState((curr) => {
+          let updatedTerritories = JSON.parse(JSON.stringify(curr.territories));
+
+          updatedTerritories[depTerritory].troops =
+            updatedTerritories[depTerritory].troops - troopMove;
+          updatedTerritories[depTerritory].highlighted = true;
+
+          updatedTerritories[arrTerritory].troops =
+            updatedTerritories[arrTerritory].troops + troopMove;
+          updatedTerritories[arrTerritory].highlighted = true;
+
+          return { territories: updatedTerritories };
+        });
+      }
+      if (/fortified/.test(currentString)) {
+        const arrTerritory = currentString
+          .split("fortified from")[0]
+          .split("(")[0]
+          .trim();
+        const depTerritory = currentString
+          .split("fortified from")[1]
+          .split("(")[0]
+          .trim();
+        const troopMove = parseInt(
+          currentString.split("with")[1].match(/\d+/)[0]
+        );
+        this.setState((curr) => {
+          let updatedTerritories = JSON.parse(JSON.stringify(curr.territories));
+
+          updatedTerritories[depTerritory].troops =
+            updatedTerritories[depTerritory].troops - troopMove;
+          updatedTerritories[depTerritory].highlighted = true;
+
+          updatedTerritories[arrTerritory].troops =
+            updatedTerritories[arrTerritory].troops + troopMove;
+          updatedTerritories[arrTerritory].highlighted = true;
+
+          return { territories: updatedTerritories };
+        });
+      }
+      if (/conquering/.test(currentString)) {
+        const newOwner = currentString
+          .split("attacked")[0]
+          .match(/\(.+?\)/)[0]
+          .slice(1, -1);
+        const territoryToChangeHands = currentString
+          .split("attacked")[1]
+          .split("(")[0]
+          .trim();
+        this.setState((curr) => {
+          let updatedTerritories = JSON.parse(JSON.stringify(curr.territories));
+
+          updatedTerritories[territoryToChangeHands].owner = newOwner;
+          updatedTerritories[territoryToChangeHands].highlighted = true;
+          return { territories: updatedTerritories };
+        });
+      }
+      if (
+        /joined the game/.test(currentString) ||
+        /started the turn/.test(currentString)
+      ) {
+        this.setState({ playerToGo: currentString.split(" ")[0] });
+      }
+      if (/troops on/.test(currentString)) {
+        const troopsReceived = parseInt(currentString.split("received")[1]);
+        const territoryReceiving = currentString.split("on")[1].trim();
+
+        this.setState((curr) => {
+          let updatedTerritories = JSON.parse(JSON.stringify(curr.territories));
+
+          updatedTerritories[territoryReceiving].troops =
+            updatedTerritories[territoryReceiving].troops + troopsReceived;
+          updatedTerritories[territoryReceiving].highlighted = true;
+
+          return { territories: updatedTerritories };
+        });
+      }
+      if (/received a card/.test(currentString)) {
+        let currentPlayer = currentString.split(" ")[0];
+
+        this.setState((curr) => {
+          let playersCopy = JSON.parse(JSON.stringify(curr.players));
+          Object.entries(playersCopy).forEach(([playerName, playerObj]) => {
+            if (playerName === currentPlayer) {
+              playerObj.cards += 1;
+            }
+          });
+
+          return { players: playersCopy };
+        });
+      }
+      if (/turning in/.test(currentString)) {
+        let currentPlayer = currentString.split(" ")[0];
+        this.setState((curr) => {
+          let playersCopy = JSON.parse(JSON.stringify(curr.players));
+          Object.entries(playersCopy).forEach(([playerName, playerObj]) => {
+            if (playerName === currentPlayer) {
+              playerObj.cards -= 3;
+            }
+          });
+          return { players: playersCopy };
+        });
+      }
+      if (/was defeated by/.test(currentString)) {
+        let [loserName, winnerName] = currentString
+          .slice(0, -1)
+          .split(" was defeated by ");
+        this.setState((curr) => {
+          let playersCopy = JSON.parse(JSON.stringify(curr.players));
+
+          let cardsToTransfer = playersCopy[loserName].cards;
+          playersCopy[loserName].cards -= cardsToTransfer;
+          playersCopy[winnerName].cards += cardsToTransfer;
+          return { players: playersCopy };
+        });
+      }
+    } catch (err) {
+      console.log({ err, logCounter, currentString });
     }
   };
 
