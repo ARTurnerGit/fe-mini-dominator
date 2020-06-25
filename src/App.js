@@ -1,6 +1,3 @@
-// import playerData from "./components/data/actualPlayerData.js";
-// import territoryData from "./components/data/actualTerritoryData.js";
-// import gameLogData from "./components/data/actualGameLogData.js";
 import React from "react";
 import "./App.css";
 import Form from "./components/Form";
