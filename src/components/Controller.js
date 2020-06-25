@@ -13,7 +13,7 @@ class Controller extends React.Component {
   handlePlay = () => {
     if (this.state.intervalID === null) {
       let { playNextInLog } = this.props;
-      let intervalID = setInterval(playNextInLog, 50);
+      let intervalID = setInterval(playNextInLog, 100);
       this.setState({ intervalID });
     }
   };

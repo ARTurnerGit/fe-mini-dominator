@@ -100,25 +100,6 @@
   border: 3px solid #05dbee;
 }
 
-/* .alunturner {
-  border: 3px solid #181818;
-}
-.OrderoftheBath {
-  border: 3px solid #fb65ee;
-}
-.Gusreynolds {
-  border: 3px solid #ff8001;
-}
-.Heapsrob {
-  border: 3px solid #1bad22;
-}
-.LeRenard {
-  border: 3px solid #05dbee;
-}
-.Excalibur_83 {
-  border: 3px solid #0e12bd;
-} */
-
 .sidebar {
   position: absolute;
   right: 0;
@@ -143,7 +124,7 @@
 .controller {
   width: 100%;
   position: absolute;
-  top: 50%;
+  top: 30%;
   margin: 0 auto;
   display: flex;
   justify-content: space-around;
