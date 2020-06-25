@@ -24,6 +24,14 @@ class Controller extends React.Component {
     this.setState({ intervalID: null });
   };
 
+  componentDidUpdate(prevProps, prevState) {
+    if (
+      prevProps.logCounter !== this.props.logCounter &&
+      this.props.logCounter === this.props.logLength - 1
+    ) {
+      this.handlePause();
+    }
+  }
   render() {
     return (
       <div className="controller">

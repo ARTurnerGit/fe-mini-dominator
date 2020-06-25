@@ -375,6 +375,8 @@ class App extends React.Component {
               <Controller
                 playNextInLog={this.playNextInLog}
                 handleReset={this.handleReset}
+                logCounter={logCounter}
+                logLength={gamelog.length}
               />
               <StatTracker players={players} playerToGo={playerToGo} />
             </div>
