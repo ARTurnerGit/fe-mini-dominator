@@ -72,7 +72,35 @@
   align-items: center;
 }
 
-.alunturner {
+.player-1 {
+  border: 3px solid #1bad22;
+}
+.player-2 {
+  border: 3px solid #0e12bd;
+}
+.player-3 {
+  border: 3px solid #d90505;
+}
+.player-4 {
+  border: 3px solid #fb65ee;
+}
+.player-5 {
+  border: 3px solid #ab009d;
+}
+.player-6 {
+  border: 3px solid #ff8001;
+}
+.player-7 {
+  border: 3px solid #181818;
+}
+.player-8 {
+  border: 3px solid #e8f102;
+}
+.player-9 {
+  border: 3px solid #05dbee;
+}
+
+/* .alunturner {
   border: 3px solid #181818;
 }
 .OrderoftheBath {
@@ -89,7 +117,7 @@
 }
 .Excalibur_83 {
   border: 3px solid #0e12bd;
-}
+} */
 
 .sidebar {
   position: absolute;
