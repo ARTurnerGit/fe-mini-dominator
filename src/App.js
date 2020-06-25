@@ -114,9 +114,6 @@ class App extends React.Component {
   };
 
   playNextInLog = () => {
-    console.log({
-      [this.state.logCounter]: this.state.gamelog[this.state.logCounter],
-    });
     this.setState((curr) => {
       if (curr.logCounter === null) return { logCounter: 0 };
       else if (curr.logCounter < curr.gamelog.length)
