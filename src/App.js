@@ -206,7 +206,10 @@ class App extends React.Component {
             updatedTerritories[defTerritory].troops - defLosses;
           updatedTerritories[defTerritory].highlighted = true;
 
-          if (updatedTerritories[attTerritory].troops === 2) {
+          if (
+            updatedTerritories[attTerritory].troops === 2 &&
+            /conquering/.test(currentString)
+          ) {
             updatedTerritories[attTerritory].troops = 1;
             updatedTerritories[defTerritory].troops = 1;
           }
