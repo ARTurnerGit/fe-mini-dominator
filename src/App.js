@@ -206,6 +206,11 @@ class App extends React.Component {
             updatedTerritories[defTerritory].troops - defLosses;
           updatedTerritories[defTerritory].highlighted = true;
 
+          if (updatedTerritories[attTerritory].troops === 2) {
+            updatedTerritories[attTerritory].troops = 1;
+            updatedTerritories[defTerritory].troops = 1;
+          }
+
           return { territories: updatedTerritories };
         });
       }
