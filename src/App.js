@@ -1,4 +1,5 @@
 import React from "react";
+import he from "he";
 import "./App.css";
 import Form from "./components/Form";
 import Iframe from "./components/Iframe";
@@ -159,12 +160,13 @@ class App extends React.Component {
     // ...then check what happens in the log
     const { gamelog, logCounter } = this.state;
     let currentString = gamelog[logCounter];
+
     if (/[^A-Za-z0-9\s,.\\(\\)]/.test(currentString)) {
-      currentString = currentString.replace(
-        /[^A-Za-z0-9\s,.\\(\\)]/,
-        (match) => `&#${match.charCodeAt(0)};`
-      );
-      console.log({ currentString });
+      if (/'/.test(currentString)) {
+        currentString = currentString.replace("'", "&#39;");
+      } else {
+        currentString = he.encode(currentString, { useNamedReferences: true });
+      }
     }
     try {
       if (/Round \d/.test(currentString)) {
