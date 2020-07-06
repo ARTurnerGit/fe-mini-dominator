@@ -230,14 +230,6 @@ class App extends React.Component {
         });
       }
       if (/occupied/.test(currentString)) {
-        // const depTerritory = currentString
-        //   .split("occupied")[0]
-        //   .split("(")[0]
-        //   .trim();
-        // const arrTerritory = currentString
-        //   .split("occupied")[1]
-        //   .split("with")[0]
-        //   .trim();
         const [depString, arrString] = currentString.split(" occupied ");
         const depTerritory = depString.slice(0, depString.lastIndexOf("(") - 1);
         const arrTerritory = arrString.split(" with")[0];
@@ -259,8 +251,11 @@ class App extends React.Component {
         });
       }
       if (/reinforced/.test(currentString)) {
-        let territory = currentString.split("(")[0].trim();
-        let troopIncrease = parseInt(
+        const territory = currentString.slice(
+          0,
+          currentString.lastIndexOf("(") - 1
+        );
+        const troopIncrease = parseInt(
           currentString.split("with")[1].match(/\d+/)[0]
         );
 
