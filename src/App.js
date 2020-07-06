@@ -164,6 +164,32 @@ class App extends React.Component {
           return { roundCounter: curr.roundCounter + 1 };
         });
       }
+      if (/fortified/.test(currentString)) {
+        const arrTerritory = currentString
+          .split("fortified from")[0]
+          .split("(")[0]
+          .trim();
+        const depTerritory = currentString
+          .split("fortified from")[1]
+          .split("(")[0]
+          .trim();
+        const troopMove = parseInt(
+          currentString.split("with")[1].match(/\d+/)[0]
+        );
+        this.setState((curr) => {
+          let updatedTerritories = JSON.parse(JSON.stringify(curr.territories));
+
+          updatedTerritories[depTerritory].troops =
+            updatedTerritories[depTerritory].troops - troopMove;
+          updatedTerritories[depTerritory].highlighted = true;
+
+          updatedTerritories[arrTerritory].troops =
+            updatedTerritories[arrTerritory].troops + troopMove;
+          updatedTerritories[arrTerritory].highlighted = true;
+
+          return { territories: updatedTerritories };
+        });
+      }
       if (/reinforced/.test(currentString)) {
         let territory = currentString.split("(")[0].trim();
         let troopIncrease = parseInt(
@@ -231,32 +257,7 @@ class App extends React.Component {
           return { territories: updatedTerritories };
         });
       }
-      if (/fortified/.test(currentString)) {
-        const arrTerritory = currentString
-          .split("fortified from")[0]
-          .split("(")[0]
-          .trim();
-        const depTerritory = currentString
-          .split("fortified from")[1]
-          .split("(")[0]
-          .trim();
-        const troopMove = parseInt(
-          currentString.split("with")[1].match(/\d+/)[0]
-        );
-        this.setState((curr) => {
-          let updatedTerritories = JSON.parse(JSON.stringify(curr.territories));
 
-          updatedTerritories[depTerritory].troops =
-            updatedTerritories[depTerritory].troops - troopMove;
-          updatedTerritories[depTerritory].highlighted = true;
-
-          updatedTerritories[arrTerritory].troops =
-            updatedTerritories[arrTerritory].troops + troopMove;
-          updatedTerritories[arrTerritory].highlighted = true;
-
-          return { territories: updatedTerritories };
-        });
-      }
       if (/conquering/.test(currentString)) {
         const newOwner = currentString
           .split("attacked")[0]
