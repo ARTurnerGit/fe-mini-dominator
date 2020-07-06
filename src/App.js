@@ -275,7 +275,7 @@ class App extends React.Component {
       }
       if (/troops on/.test(currentString)) {
         const troopsReceived = parseInt(currentString.split("received")[1]);
-        const territoryReceiving = currentString.split("on")[1].trim();
+        const territoryReceiving = currentString.split(" on ")[1];
 
         this.setState((curr) => {
           let updatedTerritories = JSON.parse(JSON.stringify(curr.territories));
