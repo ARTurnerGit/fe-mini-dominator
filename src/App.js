@@ -187,29 +187,18 @@ class App extends React.Component {
           return { territories: updatedTerritories };
         });
       }
-      if (/reinforced/.test(currentString)) {
-        let territory = currentString.split("(")[0].trim();
-        let troopIncrease = parseInt(
-          currentString.split("with")[1].match(/\d+/)[0]
-        );
-
-        this.setState((curr) => {
-          let updatedTerritories = JSON.parse(JSON.stringify(curr.territories));
-          updatedTerritories[territory].troops =
-            updatedTerritories[territory].troops + troopIncrease;
-          updatedTerritories[territory].highlighted = true;
-          return { territories: updatedTerritories };
-        });
-      }
       if (/attacked/.test(currentString)) {
-        const attTerritory = currentString
-          .split("attacked")[0]
-          .split("(")[0]
-          .trim();
-        const defTerritory = currentString
-          .split("attacked")[1]
-          .split("(")[0]
-          .trim();
+        // const attTerritory = currentString
+        //   .split("attacked")[0]
+        //   .split("(")[0]
+        //   .trim();
+        // const defTerritory = currentString
+        //   .split("attacked")[1]
+        //   .split("(")[0]
+        //   .trim();
+        const [attString, defString] = currentString.split(" attacked ");
+        const attTerritory = attString.slice(0, attString.lastIndexOf("(") - 1);
+        const defTerritory = defString.slice(0, defString.lastIndexOf("(") - 1);
         const [defLosses, attLosses] = currentString
           .split("killing")[1]
           .match(/\d+/g);
@@ -225,6 +214,34 @@ class App extends React.Component {
             updatedTerritories[defTerritory].troops - defLosses;
           updatedTerritories[defTerritory].highlighted = true;
 
+          return { territories: updatedTerritories };
+        });
+      }
+      if (/conquering/.test(currentString)) {
+        // const newOwner = currentString
+        //   .split("attacked")[0]
+        //   .match(/\(.+?\)/)[0]
+        //   .slice(1, -1);
+        // const territoryToChangeHands = currentString
+        //   .split("attacked")[1]
+        //   .split("(")[0]
+        //   .trim();
+        const [newOwnerString, territoryString] = currentString.split(
+          " attacked "
+        );
+        const newOwner = newOwnerString.slice(
+          newOwnerString.lastIndexOf("(") + 1,
+          -1
+        );
+        const territoryToChangeHands = territoryString.slice(
+          0,
+          territoryString.lastIndexOf("(") - 1
+        );
+        this.setState((curr) => {
+          let updatedTerritories = JSON.parse(JSON.stringify(curr.territories));
+
+          updatedTerritories[territoryToChangeHands].owner = newOwner;
+          updatedTerritories[territoryToChangeHands].highlighted = true;
           return { territories: updatedTerritories };
         });
       }
@@ -254,21 +271,17 @@ class App extends React.Component {
           return { territories: updatedTerritories };
         });
       }
+      if (/reinforced/.test(currentString)) {
+        let territory = currentString.split("(")[0].trim();
+        let troopIncrease = parseInt(
+          currentString.split("with")[1].match(/\d+/)[0]
+        );
 
-      if (/conquering/.test(currentString)) {
-        const newOwner = currentString
-          .split("attacked")[0]
-          .match(/\(.+?\)/)[0]
-          .slice(1, -1);
-        const territoryToChangeHands = currentString
-          .split("attacked")[1]
-          .split("(")[0]
-          .trim();
         this.setState((curr) => {
           let updatedTerritories = JSON.parse(JSON.stringify(curr.territories));
-
-          updatedTerritories[territoryToChangeHands].owner = newOwner;
-          updatedTerritories[territoryToChangeHands].highlighted = true;
+          updatedTerritories[territory].troops =
+            updatedTerritories[territory].troops + troopIncrease;
+          updatedTerritories[territory].highlighted = true;
           return { territories: updatedTerritories };
         });
       }
