@@ -159,6 +159,13 @@ class App extends React.Component {
     // ...then check what happens in the log
     const { gamelog, logCounter } = this.state;
     let currentString = gamelog[logCounter];
+    if (/[^A-Za-z0-9\s,.\\(\\)]/.test(currentString)) {
+      currentString = currentString.replace(
+        /[^A-Za-z0-9\s,.\\(\\)]/,
+        (match) => `&#${match.charCodeAt(0)};`
+      );
+      console.log({ currentString });
+    }
     try {
       if (/Round \d/.test(currentString)) {
         this.setState((curr) => {
