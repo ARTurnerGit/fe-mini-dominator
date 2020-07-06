@@ -165,14 +165,11 @@ class App extends React.Component {
         });
       }
       if (/fortified/.test(currentString)) {
-        const arrTerritory = currentString
-          .split("fortified from")[0]
-          .split("(")[0]
-          .trim();
-        const depTerritory = currentString
-          .split("fortified from")[1]
-          .split("(")[0]
-          .trim();
+        const [arrString, depString] = currentString.split(
+          " was fortified from "
+        );
+        const arrTerritory = arrString.slice(0, arrString.lastIndexOf("(") - 1);
+        const depTerritory = depString.slice(0, depString.lastIndexOf("(") - 1);
         const troopMove = parseInt(
           currentString.split("with")[1].match(/\d+/)[0]
         );
