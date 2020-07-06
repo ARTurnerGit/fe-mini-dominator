@@ -92,6 +92,7 @@ class App extends React.Component {
         .replace("(", "\\(")
         .replace(")", "\\)");
       const placeAndNameReg = new RegExp(`${escapedTerritory} \\(.*?\\)`);
+
       const firstMentionString = gamelog.find((logString) =>
         placeAndNameReg.test(logString)
       );
