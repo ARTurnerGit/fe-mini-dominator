@@ -88,22 +88,22 @@ class App extends React.Component {
     const firstMentions = [];
 
     territoryNames.forEach((territory) => {
-      const placeAndNameReg = new RegExp(`${territory} \\(.*?\\)`);
+      const escapedTerritory = territory
+        .replace("(", "\\(")
+        .replace(")", "\\)");
+      const placeAndNameReg = new RegExp(`${escapedTerritory} \\(.*?\\)`);
       const firstMentionString = gamelog.find((logString) =>
         placeAndNameReg.test(logString)
       );
 
       if (firstMentionString !== undefined) {
-        let [place, owner] = firstMentionString
-          .match(placeAndNameReg)[0]
-          .split("(");
-        place = place.trim();
-        owner = owner.slice(0, -1);
+        let placeAndOwner = firstMentionString.match(placeAndNameReg)[0];
+        let place = placeAndOwner.slice(0, placeAndOwner.lastIndexOf("(") - 1);
+        let owner = placeAndOwner.slice(placeAndOwner.lastIndexOf("(") + 1, -1);
 
         firstMentions.push([place, owner]);
       }
     });
-
     this.setState((curr) => {
       const copyOfTerritories = JSON.parse(JSON.stringify(curr.territories));
       firstMentions.forEach(([place, owner]) => {
