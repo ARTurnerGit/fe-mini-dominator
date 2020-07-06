@@ -188,14 +188,6 @@ class App extends React.Component {
         });
       }
       if (/attacked/.test(currentString)) {
-        // const attTerritory = currentString
-        //   .split("attacked")[0]
-        //   .split("(")[0]
-        //   .trim();
-        // const defTerritory = currentString
-        //   .split("attacked")[1]
-        //   .split("(")[0]
-        //   .trim();
         const [attString, defString] = currentString.split(" attacked ");
         const attTerritory = attString.slice(0, attString.lastIndexOf("(") - 1);
         const defTerritory = defString.slice(0, defString.lastIndexOf("(") - 1);
@@ -218,14 +210,6 @@ class App extends React.Component {
         });
       }
       if (/conquering/.test(currentString)) {
-        // const newOwner = currentString
-        //   .split("attacked")[0]
-        //   .match(/\(.+?\)/)[0]
-        //   .slice(1, -1);
-        // const territoryToChangeHands = currentString
-        //   .split("attacked")[1]
-        //   .split("(")[0]
-        //   .trim();
         const [newOwnerString, territoryString] = currentString.split(
           " attacked "
         );
@@ -246,14 +230,17 @@ class App extends React.Component {
         });
       }
       if (/occupied/.test(currentString)) {
-        const depTerritory = currentString
-          .split("occupied")[0]
-          .split("(")[0]
-          .trim();
-        const arrTerritory = currentString
-          .split("occupied")[1]
-          .split("with")[0]
-          .trim();
+        // const depTerritory = currentString
+        //   .split("occupied")[0]
+        //   .split("(")[0]
+        //   .trim();
+        // const arrTerritory = currentString
+        //   .split("occupied")[1]
+        //   .split("with")[0]
+        //   .trim();
+        const [depString, arrString] = currentString.split(" occupied ");
+        const depTerritory = depString.slice(0, depString.lastIndexOf("(") - 1);
+        const arrTerritory = arrString.split(" with")[0];
         const troopMove = parseInt(
           currentString.split("with")[1].match(/\d+/)[0]
         );
