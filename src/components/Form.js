@@ -1,4 +1,5 @@
 import React from "react";
+import { TextField } from "@material-ui/core";
 
 class Form extends React.Component {
   state = {
@@ -13,6 +14,12 @@ class Form extends React.Component {
   render() {
     return (
       <form className="form-container">
+        <TextField
+          label="Enter Game Number"
+          variant="outlined"
+          onChange={this.updateLocalGameNumber}
+          value={this.state.gameNumber}
+        />
         <p className="form-header">ENTER GAME NUMBER:</p>
         <input
           className="form-input"
