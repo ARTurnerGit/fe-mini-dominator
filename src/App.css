@@ -83,7 +83,7 @@
 .sidebar {
   position: absolute;
   margin: 0;
-  right: 0;
+  right: 0.5vw;
   top: 2.5vh;
   width: 28vw;
   height: 95vh;
