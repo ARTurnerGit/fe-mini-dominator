@@ -30,9 +30,6 @@
   width: 70vw;
   z-index: -1;
 }
-.map-div {
-  position: relative;
-}
 
 .territory {
   width: 18px;
@@ -85,22 +82,21 @@
 
 .sidebar {
   position: absolute;
+  margin: 0;
   right: 0;
   top: 0;
-  width: 30vw;
-  height: 100vh;
+  width: 25vw;
+  height: 95vh;
   display: flex;
   flex-direction: column;
 }
 .round-tracker {
   text-align: left;
   font-size: 30px;
-  color: white;
 }
 .log-msg {
   text-align: right;
   font-size: 20px;
-  color: white;
   margin: 2vh 0;
 }
 
@@ -131,7 +127,7 @@
 .stat-tracker {
   position: absolute;
   bottom: 0;
-  width: 100%;
+  width: 25vw;
   text-align: center;
 }
 .name-entry {
