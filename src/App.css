@@ -1,60 +1,40 @@
-* {
-  margin: 0;
-  padding: 0;
-  background-color: black;
-  color: white;
-}
 .form-container {
-  position: absolute;
-  border: 2px solid crimson;
-  border-radius: 5px;
-  top: 2vh;
-  left: 10vw;
-  width: 80vw;
-  text-align: center;
+  width: 40vw;
+  margin: 5vh auto;
+  padding: 5vh 5vw;
   display: flex;
-  justify-content: space-around;
-  align-items: center;
+  flex-direction: column;
 }
-.form-header {
-  font-size: 30px;
-  width: 80%;
-  margin: 1.5vh 1vw;
-}
-.form-input {
-  font-size: 30px;
-  width: 50%;
-  margin: 1.5vh 1vw;
-}
-.form-button {
-  font-size: 30px;
-  width: 50%;
-  margin: 1.5vh 1vw;
-}
-.iframe {
-  width: 80vw;
-  height: 80vh;
-  position: absolute;
-  top: 15vh;
-  left: 10vw;
-  border: 2px solid crimson;
-  border-radius: 5px;
-}
-.map-container {
-  position: "absolute";
-  height: 100vh;
-  justify-content: center;
-  z-index: -1;
+.form-container > * {
+  margin: 2vh auto;
 }
 
-.map {
-  height: 100%;
+.iframe-container {
+  padding: 2.5vh 2.5vw;
+  overflow: hidden;
+  width: 35vw;
+  height: 35vh;
+}
+.iframe {
+  height: 100vh;
+  width: 100vw;
+  transform: scale(0.35);
+  transform-origin: 0 0;
+}
+
+.map-container {
+  position: absolute;
+  top: 2.5vh;
+  left: 0.5vw;
+  height: 95vh;
+  width: 70vw;
+  z-index: -1;
 }
 
 .territory {
   width: 18px;
   height: 18px;
-  background-color: transparent;
+  background-color: #ccc7c777;
   color: white;
   font-weight: bold;
   border: 3px solid #918e8b;
@@ -102,23 +82,13 @@
 
 .sidebar {
   position: absolute;
-  right: 0;
-  top: 0;
-  width: 30vw;
-  height: 100vh;
+  margin: 0;
+  right: 0.5vw;
+  top: 2.5vh;
+  width: 28vw;
+  height: 95vh;
   display: flex;
   flex-direction: column;
-}
-.round-tracker {
-  text-align: left;
-  font-size: 30px;
-  color: white;
-}
-.log-msg {
-  text-align: right;
-  font-size: 20px;
-  color: white;
-  margin: 2vh 0;
 }
 
 .controller {
@@ -148,7 +118,7 @@
 .stat-tracker {
   position: absolute;
   bottom: 0;
-  width: 100%;
+  width: 25vw;
   text-align: center;
 }
 .name-entry {

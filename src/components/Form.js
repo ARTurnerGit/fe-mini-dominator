@@ -1,4 +1,6 @@
 import React from "react";
+import { Typography, Paper, Card, TextField, Button } from "@material-ui/core";
+import Iframe from "./Iframe";
 
 class Form extends React.Component {
   state = {
@@ -11,27 +13,43 @@ class Form extends React.Component {
   };
 
   render() {
+    const { gameNumber } = this.state;
     return (
-      <form className="form-container">
-        <p className="form-header">ENTER GAME NUMBER:</p>
-        <input
-          className="form-input"
-          type="text"
-          onChange={this.updateLocalGameNumber}
+      <Paper className="form-container" elevation={3}>
+        <Typography variant="h3" align="center">
+          Dominating 12 Visualiser
+        </Typography>
+        <TextField
+          error={/\D/.test(gameNumber)}
+          label="Enter Game Number"
+          errorText="Numbers only"
+          variant="outlined"
+          margin="normal"
           value={this.state.gameNumber}
+          onChange={this.updateLocalGameNumber}
         />
-        <button
-          className="form-button"
+        <Button
+          disabled={/\D/.test(gameNumber) || gameNumber === ""}
+          variant="contained"
+          margin="normal"
           onClick={(e) => {
             this.props.passGameNumber(e, this.state.gameNumber);
           }}
         >
           FIND GAME
-        </button>
-        <button className="form-button" onClick={this.props.extractGameData}>
-          CONFIRM
-        </button>
-      </form>
+        </Button>
+        {this.props.haveGameNumber && !this.props.gameConfirmed && (
+          <>
+            <Card raised={true} className="iframe-container">
+              <Iframe gameNumber={this.state.gameNumber} />
+            </Card>
+
+            <Button variant="contained" onClick={this.props.extractGameData}>
+              CONFIRM
+            </Button>
+          </>
+        )}
+      </Paper>
     );
   }
 }
