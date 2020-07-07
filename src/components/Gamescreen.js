@@ -5,16 +5,16 @@ import { Card } from "@material-ui/core";
 function Gamescreen({ territories, map, players }) {
   let mapHeight = parseInt(map.height.slice(0, -2));
   let mapWidth = parseInt(map.width.slice(0, -2));
-  let windowHeight = 0.95 * window.innerHeight;
-  let windowWidth = 0.7 * window.innerWidth;
+  let containerHeight = 0.95 * window.innerHeight;
+  let containerWidth = 0.7 * window.innerWidth;
 
-  let heightSF = windowHeight / mapHeight;
-  let widthSF = windowWidth / mapWidth;
+  let heightSF = containerHeight / mapHeight;
+  let widthSF = containerWidth / mapWidth;
 
   let sf = Math.min(widthSF, heightSF);
 
   return (
-    <Card raised={true} className="map-container">
+    <Card elevated={true} className="map-container">
       <img
         src={map.url}
         alt="game map"
