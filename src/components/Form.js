@@ -13,16 +13,20 @@ class Form extends React.Component {
   };
 
   render() {
+    const { gameNumber } = this.state;
     return (
       <Paper className="form-container" elevation={3}>
         <TextField
+          error={/\D/.test(gameNumber)}
           label="Enter Game Number"
+          errorText="Numbers only"
           variant="outlined"
           margin="normal"
           value={this.state.gameNumber}
           onChange={this.updateLocalGameNumber}
         />
         <Button
+          disabled={/\D/.test(gameNumber) || gameNumber === ""}
           variant="contained"
           margin="normal"
           onClick={(e) => {
