@@ -1,23 +1,20 @@
-* {
-  margin: 0;
-  padding: 0;
-}
 .form-container {
-  width: 80vw;
-  height: 80vh;
+  width: 40vw;
   margin: 10vh auto;
+  padding: 5vh 5vw;
   display: flex;
   flex-direction: column;
+}
+.form-container > input {
+  margin: 2vh auto;
+}
+.form-container > * {
+  margin: 2vh auto;
 }
 
 .iframe {
   width: 40vw;
   height: 40vh;
-  position: absolute;
-  top: 50vh;
-  left: 10vw;
-  border: 2px solid crimson;
-  border-radius: 5px;
 }
 .map-container {
   position: "absolute";

@@ -1,5 +1,5 @@
 import React from "react";
-import { Paper, TextField, Button } from "@material-ui/core";
+import { Paper, Card, TextField, Button } from "@material-ui/core";
 import Iframe from "./Iframe";
 
 class Form extends React.Component {
@@ -14,15 +14,17 @@ class Form extends React.Component {
 
   render() {
     return (
-      <Paper className="form-container">
+      <Paper className="form-container" elevation={3}>
         <TextField
           label="Enter Game Number"
           variant="outlined"
+          margin="normal"
           value={this.state.gameNumber}
           onChange={this.updateLocalGameNumber}
         />
         <Button
           variant="contained"
+          margin="normal"
           onClick={(e) => {
             this.props.passGameNumber(e, this.state.gameNumber);
           }}
@@ -30,11 +32,16 @@ class Form extends React.Component {
           FIND GAME
         </Button>
         {this.props.haveGameNumber && !this.props.gameConfirmed && (
-          <Iframe gameNumber={this.state.gameNumber} />
+          <>
+            <Card>
+              <Iframe gameNumber={this.state.gameNumber} />
+            </Card>
+
+            <Button variant="contained" onClick={this.props.extractGameData}>
+              CONFIRM
+            </Button>
+          </>
         )}
-        <Button variant="contained" onClick={this.props.extractGameData}>
-          CONFIRM
-        </Button>
       </Paper>
     );
   }
