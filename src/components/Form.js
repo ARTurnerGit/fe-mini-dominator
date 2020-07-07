@@ -37,7 +37,7 @@ class Form extends React.Component {
         </Button>
         {this.props.haveGameNumber && !this.props.gameConfirmed && (
           <>
-            <Card>
+            <Card className="iframe-container">
               <Iframe gameNumber={this.state.gameNumber} />
             </Card>
 
