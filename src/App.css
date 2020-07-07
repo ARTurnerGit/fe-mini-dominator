@@ -21,6 +21,7 @@
   transform: scale(0.35);
   transform-origin: 0 0;
 }
+
 .map-container {
   position: "absolute";
   height: 100vh;
