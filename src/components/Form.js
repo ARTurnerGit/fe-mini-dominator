@@ -29,12 +29,12 @@ class Form extends React.Component {
         >
           FIND GAME
         </Button>
-        <Button variant="contained" onClick={this.props.extractGameData}>
-          CONFIRM
-        </Button>
         {this.props.haveGameNumber && !this.props.gameConfirmed && (
           <Iframe gameNumber={this.state.gameNumber} />
         )}
+        <Button variant="contained" onClick={this.props.extractGameData}>
+          CONFIRM
+        </Button>
       </Paper>
     );
   }

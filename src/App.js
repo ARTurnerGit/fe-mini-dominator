@@ -2,7 +2,6 @@ import React from "react";
 import he from "he";
 import "./App.css";
 import Form from "./components/Form";
-import Iframe from "./components/Iframe";
 import Gamescreen from "./components/Gamescreen.js";
 import Logger from "./components/Logger.js";
 import Roundtracker from "./components/Roundtracker.js";
@@ -352,7 +351,6 @@ class App extends React.Component {
       territories,
       haveGameNumber,
       gameConfirmed,
-      gameNumber,
       roundCounter,
       playerToGo,
       gamelog,
@@ -369,7 +367,6 @@ class App extends React.Component {
             gameConfirmed={gameConfirmed}
           />
         )}
-        {/* {haveGameNumber && !gameConfirmed && <Iframe gameNumber={gameNumber} />} */}
         {gameConfirmed && (
           <>
             <Gamescreen map={map} territories={territories} players={players} />
