@@ -365,9 +365,11 @@ class App extends React.Component {
           <Form
             passGameNumber={this.passGameNumber}
             extractGameData={this.extractGameData}
+            haveGameNumber={haveGameNumber}
+            gameConfirmed={gameConfirmed}
           />
         )}
-        {haveGameNumber && !gameConfirmed && <Iframe gameNumber={gameNumber} />}
+        {/* {haveGameNumber && !gameConfirmed && <Iframe gameNumber={gameNumber} />} */}
         {gameConfirmed && (
           <>
             <Gamescreen map={map} territories={territories} players={players} />

@@ -1,5 +1,6 @@
 import React from "react";
 import { Paper, TextField, Button } from "@material-ui/core";
+import Iframe from "./Iframe";
 
 class Form extends React.Component {
   state = {
@@ -31,6 +32,9 @@ class Form extends React.Component {
         <Button variant="contained" onClick={this.props.extractGameData}>
           CONFIRM
         </Button>
+        {this.props.haveGameNumber && !this.props.gameConfirmed && (
+          <Iframe gameNumber={this.state.gameNumber} />
+        )}
       </Paper>
     );
   }
