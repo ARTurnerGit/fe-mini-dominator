@@ -370,7 +370,7 @@ class App extends React.Component {
         {gameConfirmed && (
           <>
             <Gamescreen map={map} territories={territories} players={players} />
-            <div className="sidebar">
+            {/* <div className="sidebar">
               <Roundtracker
                 roundCounter={roundCounter}
                 playerToGo={playerToGo}
@@ -383,7 +383,7 @@ class App extends React.Component {
                 logLength={gamelog.length}
               />
               <StatTracker players={players} playerToGo={playerToGo} />
-            </div>
+            </div> */}
           </>
         )}
       </div>

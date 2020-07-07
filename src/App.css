@@ -23,14 +23,12 @@
 }
 
 .map-container {
-  position: "absolute";
-  height: 100vh;
-  justify-content: center;
+  position: absolute;
+  top: 2.5vh;
+  left: 2.5vw;
+  height: 95vh;
+  width: 70vw;
   z-index: -1;
-}
-
-.map {
-  height: 100%;
 }
 
 .territory {
