@@ -1,5 +1,5 @@
 import React from "react";
-import { Paper, Card, TextField, Button } from "@material-ui/core";
+import { Typography, Paper, Card, TextField, Button } from "@material-ui/core";
 import Iframe from "./Iframe";
 
 class Form extends React.Component {
@@ -16,6 +16,9 @@ class Form extends React.Component {
     const { gameNumber } = this.state;
     return (
       <Paper className="form-container" elevation={3}>
+        <Typography variant="h3" align="center">
+          Dominating 12 Visualiser
+        </Typography>
         <TextField
           error={/\D/.test(gameNumber)}
           label="Enter Game Number"
