@@ -89,6 +89,7 @@ class App extends React.Component {
     const firstMentions = [];
 
     territoryNames.forEach((territory) => {
+      territory = he.decode(territory);
       const escapedTerritory = territory
         .replace("(", "\\(")
         .replace(")", "\\)");
@@ -102,14 +103,14 @@ class App extends React.Component {
         let placeAndOwner = firstMentionString.match(placeAndNameReg)[0];
         let place = placeAndOwner.slice(0, placeAndOwner.lastIndexOf("(") - 1);
         let owner = placeAndOwner.slice(placeAndOwner.lastIndexOf("(") + 1, -1);
-
         firstMentions.push([place, owner]);
       }
     });
     this.setState((curr) => {
       const copyOfTerritories = JSON.parse(JSON.stringify(curr.territories));
       firstMentions.forEach(([place, owner]) => {
-        copyOfTerritories[place].owner = owner;
+        let encodedPlace = he.encode(place, { decimal: true });
+        copyOfTerritories[encodedPlace].owner = owner;
       });
       return { territories: copyOfTerritories };
     });
@@ -162,11 +163,7 @@ class App extends React.Component {
     let currentString = gamelog[logCounter];
 
     if (/[^A-Za-z0-9\s,.\\(\\)]/.test(currentString)) {
-      if (/'/.test(currentString)) {
-        currentString = currentString.replace("'", "&#39;");
-      } else {
-        currentString = he.encode(currentString, { useNamedReferences: true });
-      }
+      currentString = he.encode(currentString, { decimal: true });
     }
     try {
       if (/Round \d/.test(currentString)) {
