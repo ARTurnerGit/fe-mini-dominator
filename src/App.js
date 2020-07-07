@@ -3,10 +3,7 @@ import he from "he";
 import "./App.css";
 import Form from "./components/Form";
 import Gamescreen from "./components/Gamescreen.js";
-import Logger from "./components/Logger.js";
-import Roundtracker from "./components/Roundtracker.js";
-import StatTracker from "./components/StatTracker.js";
-import Controller from "./components/Controller.js";
+import Sidebar from "./components/Sidebar.js";
 
 class App extends React.Component {
   state = {
@@ -370,20 +367,16 @@ class App extends React.Component {
         {gameConfirmed && (
           <>
             <Gamescreen map={map} territories={territories} players={players} />
-            <div className="sidebar">
-              <Roundtracker
-                roundCounter={roundCounter}
-                playerToGo={playerToGo}
-              />
-              <Logger msg={gamelog[logCounter]} />
-              <Controller
-                playNextInLog={this.playNextInLog}
-                handleReset={this.handleReset}
-                logCounter={logCounter}
-                logLength={gamelog.length}
-              />
-              <StatTracker players={players} playerToGo={playerToGo} />
-            </div>
+            <Sidebar
+              roundCounter={roundCounter}
+              playerToGo={playerToGo}
+              msg={gamelog[logCounter]}
+              playNextInLog={this.playNextInLog}
+              handleReset={this.handleReset}
+              logCounter={logCounter}
+              logLength={gamelog.length}
+              players={players}
+            />
           </>
         )}
       </div>
