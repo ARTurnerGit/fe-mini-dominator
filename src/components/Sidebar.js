@@ -16,7 +16,7 @@ function Sidebar({
   players,
 }) {
   return (
-    <Card className="sidebar">
+    <Card raised={true} className="sidebar">
       <Roundtracker roundCounter={roundCounter} playerToGo={playerToGo} />
       <Logger msg={msg} />
       <Controller

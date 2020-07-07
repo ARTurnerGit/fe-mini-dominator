@@ -14,7 +14,7 @@ function Gamescreen({ territories, map, players }) {
   let sf = Math.min(widthSF, heightSF);
 
   return (
-    <Card elevated={true} className="map-container">
+    <Card raised={true} className="map-container">
       <img
         src={map.url}
         alt="game map"
