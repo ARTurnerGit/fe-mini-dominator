@@ -30,6 +30,9 @@
   width: 70vw;
   z-index: -1;
 }
+.map-div {
+  position: relative;
+}
 
 .territory {
   width: 18px;
