@@ -22,7 +22,7 @@ class Form extends React.Component {
         <TextField
           error={/\D/.test(gameNumber)}
           label="Enter Game Number"
-          errorText="Numbers only"
+          helperText={/\D/.test(gameNumber) ? "Numbers only" : ""}
           variant="outlined"
           margin="normal"
           value={this.state.gameNumber}
