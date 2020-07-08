@@ -77,7 +77,6 @@ body .game-container {
 
 .sidebar {
   width: 30vw;
-  height: 95vh;
   display: flex;
   flex-direction: column;
 }
