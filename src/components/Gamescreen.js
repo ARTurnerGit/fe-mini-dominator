@@ -19,8 +19,8 @@ function Gamescreen({ territories, map, players }) {
       style={{
         height: `${mapHeight * sf}px`,
         width: `${mapWidth * sf}px`,
-        position: "relative",
         display: "inline-block",
+        position: "relative",
       }}
     >
       <img

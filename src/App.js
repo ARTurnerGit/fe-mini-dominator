@@ -374,6 +374,8 @@ class App extends React.Component {
               display: "flex",
               justifyContent: "space-around",
               alignItems: "center",
+              width: "100vw",
+              height: "100vh",
             }}
           >
             <Gamescreen map={map} territories={territories} players={players} />

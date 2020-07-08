@@ -21,12 +21,6 @@
   transform-origin: 0 0;
 }
 
-body .game-container {
-  /* display: flex; */
-  /* justify-content: space-around; */
-  padding-top: 2.5v;
-}
-
 .territory {
   width: 18px;
   height: 18px;
@@ -78,6 +72,7 @@ body .game-container {
 .sidebar {
   width: 30vw;
   display: flex;
+  flex-wrap: wrap;
   flex-direction: column;
 }
 
