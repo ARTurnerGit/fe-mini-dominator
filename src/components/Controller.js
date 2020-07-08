@@ -6,6 +6,7 @@ import {
   faFastBackward,
   faStepForward,
 } from "@fortawesome/free-solid-svg-icons";
+import { Button } from "@material-ui/core";
 
 class Controller extends React.Component {
   state = { intervalID: null };
@@ -35,18 +36,18 @@ class Controller extends React.Component {
   render() {
     return (
       <div className="controller">
-        <button onClick={this.props.handleReset}>
+        <Button variant="contained" onClick={this.props.handleReset}>
           <FontAwesomeIcon icon={faFastBackward} />
-        </button>
-        <button onClick={this.handlePlay}>
+        </Button>
+        <Button variant="contained" onClick={this.handlePlay}>
           <FontAwesomeIcon icon={faPlay} />
-        </button>
-        <button onClick={this.handlePause}>
+        </Button>
+        <Button variant="contained" onClick={this.handlePause}>
           <FontAwesomeIcon icon={faPause} />
-        </button>
-        <button onClick={this.props.playNextInLog}>
+        </Button>
+        <Button variant="contained" onClick={this.props.playNextInLog}>
           <FontAwesomeIcon icon={faStepForward}></FontAwesomeIcon>
-        </button>
+        </Button>
       </div>
     );
   }

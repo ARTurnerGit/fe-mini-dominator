@@ -1,11 +1,13 @@
 import React from "react";
-import { Typography } from "@material-ui/core";
+import { Box, Typography } from "@material-ui/core";
 
 function Roundtracker({ roundCounter, playerToGo }) {
   return (
-    <Typography variant="body1" align="left">
-      ROUND: {roundCounter} <br /> {playerToGo}
-    </Typography>
+    <Box style={{ height: "10vh" }}>
+      <Typography variant="body1" align="left">
+        ROUND: {roundCounter} <br /> {playerToGo}
+      </Typography>
+    </Box>
   );
 }
 
