@@ -14,7 +14,14 @@ function Gamescreen({ territories, map, players }) {
   let sf = Math.min(widthSF, heightSF);
 
   return (
-    <Card raised={true} className="map-container">
+    <Card
+      raised={true}
+      style={{
+        height: `${mapHeight * sf}px`,
+        width: `${mapWidth * sf}px`,
+        zIndex: "-1",
+      }}
+    >
       <img
         src={map.url}
         alt="game map"
