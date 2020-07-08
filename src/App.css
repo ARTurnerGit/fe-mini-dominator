@@ -21,18 +21,6 @@
   transform-origin: 0 0;
 }
 
-.game-container {
-}
-
-.map-container {
-  position: absolute;
-  top: 2.5vh;
-  left: 0.5vw;
-  height: 95vh;
-  width: 70vw;
-  z-index: -1;
-}
-
 .territory {
   width: 18px;
   height: 18px;
@@ -82,20 +70,14 @@
 }
 
 .sidebar {
-  position: absolute;
-  margin: 0;
-  right: 0.5vw;
-  top: 2.5vh;
   width: 28vw;
-  height: 95vh;
   display: flex;
+  flex-wrap: wrap;
   flex-direction: column;
 }
 
 .controller {
   width: 100%;
-  position: absolute;
-  top: 30%;
   margin: 0 auto;
   display: flex;
   justify-content: space-around;
@@ -115,9 +97,7 @@
 }
 
 .stat-tracker {
-  position: absolute;
-  bottom: 0;
-  width: 25vw;
+  width: 100%;
   text-align: center;
 }
 .name-entry {

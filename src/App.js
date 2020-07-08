@@ -366,7 +366,18 @@ class App extends React.Component {
           />
         )}
         {gameConfirmed && (
-          <Container className="game-container">
+          <Container
+            className="game-container"
+            disableGutters={true}
+            fixed={true}
+            style={{
+              display: "flex",
+              justifyContent: "space-around",
+              alignItems: "center",
+              width: "100vw",
+              height: "100vh",
+            }}
+          >
             <Gamescreen map={map} territories={territories} players={players} />
             <Sidebar
               roundCounter={roundCounter}
