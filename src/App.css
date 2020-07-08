@@ -22,15 +22,7 @@
 }
 
 .game-container {
-}
-
-.map-container {
-  position: absolute;
-  top: 2.5vh;
-  left: 0.5vw;
-  height: 95vh;
-  width: 70vw;
-  z-index: -1;
+  display: flex;
 }
 
 .territory {
