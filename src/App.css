@@ -22,10 +22,9 @@
 }
 
 body .game-container {
-  padding: 0;
-  display: flex;
-  justify-content: space-around;
-  align-items: center;
+  /* display: flex; */
+  /* justify-content: space-around; */
+  padding-top: 2.5v;
 }
 
 .territory {
