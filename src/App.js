@@ -311,7 +311,7 @@ class App extends React.Component {
           return { territories: updatedTerritories };
         });
       }
-      if (/ received a card /.test(currentString)) {
+      if (/ received a card./.test(currentString)) {
         let currentPlayer = currentString.split(" ")[0];
 
         this.setState((curr) => {
