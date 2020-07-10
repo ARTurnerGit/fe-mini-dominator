@@ -163,16 +163,30 @@ class App extends React.Component {
       currentString = he.encode(currentString, { decimal: true });
     }
     try {
-      if (/Round \d/.test(currentString)) {
+      if (/ Round \d /.test(currentString)) {
         this.setState((curr) => {
           return { roundCounter: curr.roundCounter + 1 };
         });
       }
       if (
-        /joined the game/.test(currentString) ||
-        /started the turn/.test(currentString)
+        / joined the game /.test(currentString) ||
+        / started the turn /.test(currentString)
       ) {
         this.setState({ playerToGo: currentString.split(" ")[0] });
+      }
+      if (/ troops on /.test(currentString)) {
+        const troopsReceived = parseInt(currentString.split(" received ")[1]);
+        const territoryReceiving = currentString.split(" on ")[1];
+
+        this.setState((curr) => {
+          let updatedTerritories = JSON.parse(JSON.stringify(curr.territories));
+
+          updatedTerritories[territoryReceiving].troops =
+            updatedTerritories[territoryReceiving].troops + troopsReceived;
+          updatedTerritories[territoryReceiving].highlighted = true;
+
+          return { territories: updatedTerritories };
+        });
       }
       if (/ reinforced /.test(currentString)) {
         const territory = currentString.slice(
@@ -285,21 +299,7 @@ class App extends React.Component {
           return { territories: updatedTerritories };
         });
       }
-      if (/troops on/.test(currentString)) {
-        const troopsReceived = parseInt(currentString.split("received")[1]);
-        const territoryReceiving = currentString.split(" on ")[1];
-
-        this.setState((curr) => {
-          let updatedTerritories = JSON.parse(JSON.stringify(curr.territories));
-
-          updatedTerritories[territoryReceiving].troops =
-            updatedTerritories[territoryReceiving].troops + troopsReceived;
-          updatedTerritories[territoryReceiving].highlighted = true;
-
-          return { territories: updatedTerritories };
-        });
-      }
-      if (/received a card/.test(currentString)) {
+      if (/ received a card /.test(currentString)) {
         let currentPlayer = currentString.split(" ")[0];
 
         this.setState((curr) => {
@@ -313,6 +313,7 @@ class App extends React.Component {
           return { players: playersCopy };
         });
       }
+
       if (/turning in/.test(currentString)) {
         let currentPlayer = currentString.split(" ")[0];
         this.setState((curr) => {
