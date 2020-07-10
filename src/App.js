@@ -188,6 +188,18 @@ class App extends React.Component {
           return { territories: updatedTerritories };
         });
       }
+      if (/ turning in /.test(currentString)) {
+        let currentPlayer = currentString.split(" ")[0];
+        this.setState((curr) => {
+          let playersCopy = JSON.parse(JSON.stringify(curr.players));
+          Object.entries(playersCopy).forEach(([playerName, playerObj]) => {
+            if (playerName === currentPlayer) {
+              playerObj.cards -= 3;
+            }
+          });
+          return { players: playersCopy };
+        });
+      }
       if (/ reinforced /.test(currentString)) {
         const territory = currentString.slice(
           0,
@@ -314,18 +326,6 @@ class App extends React.Component {
         });
       }
 
-      if (/turning in/.test(currentString)) {
-        let currentPlayer = currentString.split(" ")[0];
-        this.setState((curr) => {
-          let playersCopy = JSON.parse(JSON.stringify(curr.players));
-          Object.entries(playersCopy).forEach(([playerName, playerObj]) => {
-            if (playerName === currentPlayer) {
-              playerObj.cards -= 3;
-            }
-          });
-          return { players: playersCopy };
-        });
-      }
       if (/was defeated by/.test(currentString)) {
         let [loserName, winnerName] = currentString
           .slice(0, -1)
