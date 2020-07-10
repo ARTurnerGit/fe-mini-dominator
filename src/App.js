@@ -269,7 +269,7 @@ class App extends React.Component {
         const arrTerritory = arrString.slice(0, arrString.lastIndexOf("(") - 1);
         const depTerritory = depString.slice(0, depString.lastIndexOf("(") - 1);
         const troopMove = parseInt(
-          currentString.split("with")[1].match(/\d+/)[0]
+          currentString.split(" with ")[1].match(/\d+/)[0]
         );
         this.setState((curr) => {
           let updatedTerritories = JSON.parse(JSON.stringify(curr.territories));
