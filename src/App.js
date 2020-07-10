@@ -326,7 +326,7 @@ class App extends React.Component {
         });
       }
 
-      if (/was defeated by/.test(currentString)) {
+      if (/ was defeated by /.test(currentString)) {
         let [loserName, winnerName] = currentString
           .slice(0, -1)
           .split(" was defeated by ");
