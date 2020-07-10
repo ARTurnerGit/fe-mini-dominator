@@ -262,7 +262,7 @@ class App extends React.Component {
           return { territories: updatedTerritories };
         });
       }
-      if (/fortified/.test(currentString)) {
+      if (/ fortified /.test(currentString)) {
         const [arrString, depString] = currentString.split(
           " was fortified from "
         );
