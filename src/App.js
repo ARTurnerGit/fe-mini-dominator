@@ -169,8 +169,8 @@ class App extends React.Component {
         });
       }
       if (
-        / joined the game /.test(currentString) ||
-        / started the turn /.test(currentString)
+        / joined the game./.test(currentString) ||
+        / started the turn./.test(currentString)
       ) {
         this.setState({ playerToGo: currentString.split(" ")[0] });
       }
