@@ -163,7 +163,7 @@ class App extends React.Component {
       currentString = he.encode(currentString, { decimal: true });
     }
     try {
-      if (/ Round \d /.test(currentString)) {
+      if (/Round \d /.test(currentString)) {
         this.setState((curr) => {
           return { roundCounter: curr.roundCounter + 1 };
         });
@@ -370,7 +370,6 @@ class App extends React.Component {
           <Container
             className="game-container"
             disableGutters={true}
-            fixed={true}
             style={{
               display: "flex",
               justifyContent: "space-around",
