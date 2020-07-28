@@ -4,7 +4,6 @@ import "./App.css";
 import Form from "./components/Form";
 import Gamescreen from "./components/Gamescreen.js";
 import Sidebar from "./components/Sidebar.js";
-import { Container } from "@material-ui/core";
 
 class App extends React.Component {
   state = {
@@ -367,9 +366,8 @@ class App extends React.Component {
           />
         )}
         {gameConfirmed && (
-          <Container
+          <div
             className="game-container"
-            disableGutters={true}
             style={{
               display: "flex",
               justifyContent: "space-around",
@@ -389,7 +387,7 @@ class App extends React.Component {
               logLength={gamelog.length}
               players={players}
             />
-          </Container>
+          </div>
         )}
       </div>
     );
