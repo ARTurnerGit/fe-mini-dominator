@@ -4,6 +4,7 @@ import "./App.css";
 import Form from "./components/Form";
 import Gamescreen from "./components/Gamescreen.js";
 import Sidebar from "./components/Sidebar.js";
+import { Modal, CircularProgress } from "@material-ui/core";
 
 class App extends React.Component {
   state = {
@@ -17,6 +18,7 @@ class App extends React.Component {
     logCounter: null,
     roundCounter: 1,
     playerToGo: "",
+    requestingData: false,
   };
 
   passGameNumber = (e, inputGameNumber) => {
@@ -28,6 +30,7 @@ class App extends React.Component {
   };
 
   extractGameData = (e) => {
+    this.setState({ requestingData: true });
     e.preventDefault();
     let { gameNumber } = this.state;
     let proxyAddress = "https://dominator-proxy-server.herokuapp.com/";
@@ -46,6 +49,7 @@ class App extends React.Component {
         ...players,
         ...map,
         ...gamelog,
+        requestingData: false,
       });
     });
   };
@@ -354,9 +358,21 @@ class App extends React.Component {
       gamelog,
       logCounter,
       map,
+      requestingData,
     } = this.state;
     return (
       <div className="App">
+        <Modal
+          open={requestingData}
+          style={{
+            display: "flex",
+            justifyContent: "center",
+            alignItems: "center",
+          }}
+        >
+          <CircularProgress size="100px" style={{ outline: "none" }} />
+        </Modal>
+
         {!gameConfirmed && (
           <Form
             passGameNumber={this.passGameNumber}
