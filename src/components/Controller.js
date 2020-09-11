@@ -6,23 +6,29 @@ import {
   faFastBackward,
   faStepForward,
 } from "@fortawesome/free-solid-svg-icons";
-import { Button } from "@material-ui/core";
+import { Button, Slider, Typography } from "@material-ui/core";
 
 class Controller extends React.Component {
-  state = { intervalID: null };
+  state = { intervalID: null, sliderInterval: 1500, isPlaying: false };
 
   handlePlay = () => {
-    if (this.state.intervalID === null) {
+    let { sliderInterval, isPlaying } = this.state;
+
+    if (isPlaying === false) {
       let { playNextInLog } = this.props;
-      let intervalID = setInterval(playNextInLog, 100);
-      this.setState({ intervalID });
+      let intervalID = setInterval(playNextInLog, sliderInterval);
+      this.setState({ intervalID, isPlaying: true });
     }
   };
 
   handlePause = () => {
     let { intervalID } = this.state;
     clearInterval(intervalID);
-    this.setState({ intervalID: null });
+    this.setState({ intervalID: null, isPlaying: false });
+  };
+
+  handleSliderChange = (e, val) => {
+    this.setState({ sliderInterval: val });
   };
 
   componentDidUpdate(prevProps, prevState) {
@@ -32,23 +38,70 @@ class Controller extends React.Component {
     ) {
       this.handlePause();
     }
+    if (prevState.sliderInterval !== this.state.sliderInterval) {
+      let { intervalID, sliderInterval, isPlaying } = this.state;
+      let { playNextInLog } = this.props;
+
+      if (isPlaying) {
+        clearInterval(intervalID);
+        let newIntervalID = setInterval(playNextInLog, sliderInterval);
+        this.setState({ intervalID: newIntervalID });
+      }
+    }
   }
   render() {
+    const sliderMarks = [
+      { value: 100, label: "0.1s" },
+      { value: 1000, label: "1s" },
+      { value: 2000, label: "2s" },
+      { value: 3000, label: "3s" },
+    ];
     return (
-      <div className="controller">
-        <Button variant="contained" onClick={this.props.handleReset}>
-          <FontAwesomeIcon icon={faFastBackward} />
-        </Button>
-        <Button variant="contained" onClick={this.handlePlay}>
-          <FontAwesomeIcon icon={faPlay} />
-        </Button>
-        <Button variant="contained" onClick={this.handlePause}>
-          <FontAwesomeIcon icon={faPause} />
-        </Button>
-        <Button variant="contained" onClick={this.props.playNextInLog}>
-          <FontAwesomeIcon icon={faStepForward}></FontAwesomeIcon>
-        </Button>
-      </div>
+      <>
+        <div className="controller">
+          <Button
+            variant="contained"
+            onClick={() => {
+              this.handlePause();
+              this.props.handleReset();
+            }}
+          >
+            <FontAwesomeIcon icon={faFastBackward} />
+          </Button>
+          <Button variant="contained" onClick={this.handlePlay}>
+            <FontAwesomeIcon icon={faPlay} />
+          </Button>
+          <Button variant="contained" onClick={this.handlePause}>
+            <FontAwesomeIcon icon={faPause} />
+          </Button>
+          <Button
+            variant="contained"
+            disabled={this.state.isPlaying}
+            onClick={this.props.playNextInLog}
+          >
+            <FontAwesomeIcon icon={faStepForward}></FontAwesomeIcon>
+          </Button>
+        </div>
+        <div
+          style={{
+            display: "flex",
+            flexDirection: "column",
+            alignItems: "center",
+          }}
+        >
+          <Typography variant="body2">
+            <em>Playback event duration</em>
+          </Typography>
+          <Slider
+            value={this.state.sliderInterval}
+            min={100}
+            max={3000}
+            marks={sliderMarks}
+            onChangeCommitted={this.handleSliderChange}
+            style={{ width: "80%" }}
+          />
+        </div>
+      </>
     );
   }
 }
