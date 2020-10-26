@@ -1,6 +1,7 @@
 import React from "react";
 import { Typography, Paper, Card, TextField, Button } from "@material-ui/core";
 import Iframe from "./Iframe";
+import { navigate } from "@reach/router";
 
 class Form extends React.Component {
   state = {
@@ -44,7 +45,10 @@ class Form extends React.Component {
               <Iframe gameNumber={this.state.gameNumber} />
             </Card>
 
-            <Button variant="contained" onClick={this.props.extractGameData}>
+            <Button
+              variant="contained"
+              onClick={() => navigate(`/${this.state.gameNumber}`)}
+            >
               CONFIRM
             </Button>
           </>

@@ -1,5 +1,5 @@
 import React from "react";
-import { Router, navigate } from "@reach/router";
+import { Router } from "@reach/router";
 import he from "he";
 import "./App.css";
 import Home from "./pages/Home";
@@ -28,11 +28,8 @@ class App extends React.Component {
     });
   };
 
-  extractGameData = (e) => {
+  extractGameData = (gameNumber) => {
     this.setState({ requestingData: true });
-    e.preventDefault();
-    let { gameNumber } = this.state;
-    navigate(`/${gameNumber}`);
     let proxyAddress = "https://dominator-proxy-server.herokuapp.com/";
     let resourcesToRequest = ["/territories", "/map", "/players", "/gamelog"];
     let requests = resourcesToRequest.map((resource) => {
@@ -365,7 +362,6 @@ class App extends React.Component {
         <Home
           default
           passGameNumber={this.passGameNumber}
-          extractGameData={this.extractGameData}
           haveGameNumber={haveGameNumber}
           gameConfirmed={gameConfirmed}
         />
@@ -383,6 +379,7 @@ class App extends React.Component {
           handleReset={this.handleReset}
           logCounter={logCounter}
           logLength={gamelog.length}
+          extractGameData={this.extractGameData}
         />
       </Router>
     );
