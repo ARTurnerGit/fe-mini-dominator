@@ -383,7 +383,6 @@ class App extends React.Component {
           handleReset={this.handleReset}
           logCounter={logCounter}
           logLength={gamelog.length}
-          players={players}
         />
       </Router>
     );
