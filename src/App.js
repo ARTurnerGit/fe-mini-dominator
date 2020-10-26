@@ -2,10 +2,6 @@ import React from "react";
 import { Router, navigate } from "@reach/router";
 import he from "he";
 import "./App.css";
-import Form from "./components/Form";
-import Gamescreen from "./components/Gamescreen.js";
-import Sidebar from "./components/Sidebar.js";
-import { Modal, CircularProgress } from "@material-ui/core";
 import Home from "./pages/Home";
 import Game from "./pages/Game";
 
@@ -364,53 +360,6 @@ class App extends React.Component {
       map,
       requestingData,
     } = this.state;
-    // return (
-    //   <div className="App">
-    //     <Modal
-    //       open={requestingData}
-    //       style={{
-    //         display: "flex",
-    //         justifyContent: "center",
-    //         alignItems: "center",
-    //       }}
-    //     >
-    //       <CircularProgress size="100px" style={{ outline: "none" }} />
-    //     </Modal>
-
-    //     {!gameConfirmed && (
-    //       <Form
-    //         passGameNumber={this.passGameNumber}
-    //         extractGameData={this.extractGameData}
-    //         haveGameNumber={haveGameNumber}
-    //         gameConfirmed={gameConfirmed}
-    //       />
-    //     )}
-    //     {gameConfirmed && (
-    //       <div
-    //         className="game-container"
-    //         style={{
-    //           display: "flex",
-    //           justifyContent: "space-around",
-    //           alignItems: "center",
-    //           width: "100vw",
-    //           height: "100vh",
-    //         }}
-    //       >
-    //         <Gamescreen map={map} territories={territories} players={players} />
-    //         <Sidebar
-    //           roundCounter={roundCounter}
-    //           playerToGo={playerToGo}
-    //           msg={gamelog[logCounter]}
-    //           playNextInLog={this.playNextInLog}
-    //           handleReset={this.handleReset}
-    //           logCounter={logCounter}
-    //           logLength={gamelog.length}
-    //           players={players}
-    //         />
-    //       </div>
-    //     )}
-    //   </div>
-    // );
     return (
       <Router>
         <Home
