@@ -420,7 +420,22 @@ class App extends React.Component {
           haveGameNumber={haveGameNumber}
           gameConfirmed={gameConfirmed}
         />
-        <Game path="/:game_number" requestingData={requestingData} />
+        <Game
+          path="/:game_number"
+          requestingData={requestingData}
+          gameConfirmed={gameConfirmed}
+          map={map}
+          territories={territories}
+          players={players}
+          roundCounter={roundCounter}
+          playerToGo={playerToGo}
+          msg={gamelog[logCounter]}
+          playNextInLog={this.playNextInLog}
+          handleReset={this.handleReset}
+          logCounter={logCounter}
+          logLength={gamelog.length}
+          players={players}
+        />
       </Router>
     );
   }
