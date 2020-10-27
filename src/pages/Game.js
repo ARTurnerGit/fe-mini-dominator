@@ -10,8 +10,8 @@ class Game extends React.Component {
   }
   render() {
     const {
-      requestingData,
-      gameConfirmed,
+      requestingGameData,
+      haveGameData,
       map,
       territories,
       players,
@@ -26,7 +26,7 @@ class Game extends React.Component {
     return (
       <>
         <Modal
-          open={requestingData}
+          open={requestingGameData}
           style={{
             display: "flex",
             justifyContent: "center",
@@ -35,7 +35,7 @@ class Game extends React.Component {
         >
           <CircularProgress size="100px" style={{ outline: "none" }} />
         </Modal>
-        {gameConfirmed && (
+        {haveGameData && (
           <div
             className="game-container"
             style={{

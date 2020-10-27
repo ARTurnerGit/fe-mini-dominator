@@ -7,9 +7,8 @@ import Game from "./pages/Game";
 
 class App extends React.Component {
   state = {
-    gameNumber: "",
-    haveGameNumber: false,
-    gameConfirmed: false,
+    haveGameData: false,
+    requestingGameData: false,
     map: {},
     players: {},
     territories: {},
@@ -17,19 +16,10 @@ class App extends React.Component {
     logCounter: null,
     roundCounter: 1,
     playerToGo: "",
-    requestingData: false,
-  };
-
-  passGameNumber = (e, inputGameNumber) => {
-    e.preventDefault();
-    this.setState({
-      gameNumber: inputGameNumber,
-      haveGameNumber: true,
-    });
   };
 
   extractGameData = (gameNumber) => {
-    this.setState({ requestingData: true });
+    this.setState({ requestingGameData: true });
     let proxyAddress = "https://dominator-proxy-server.herokuapp.com/";
     let resourcesToRequest = ["/territories", "/map", "/players", "/gamelog"];
     let requests = resourcesToRequest.map((resource) => {
@@ -41,12 +31,12 @@ class App extends React.Component {
 
     Promise.all(promises).then(([territories, map, players, gamelog]) => {
       this.setState({
-        gameConfirmed: true,
+        haveGameData: true,
         ...territories,
         ...players,
         ...map,
         ...gamelog,
-        requestingData: false,
+        requestingGameData: false,
       });
     });
   };
@@ -348,27 +338,21 @@ class App extends React.Component {
     const {
       players,
       territories,
-      haveGameNumber,
-      gameConfirmed,
+      haveGameData,
       roundCounter,
       playerToGo,
       gamelog,
       logCounter,
       map,
-      requestingData,
+      requestingGameData,
     } = this.state;
     return (
       <Router>
-        <Home
-          default
-          passGameNumber={this.passGameNumber}
-          haveGameNumber={haveGameNumber}
-          gameConfirmed={gameConfirmed}
-        />
+        <Home default />
         <Game
           path="/:game_number"
-          requestingData={requestingData}
-          gameConfirmed={gameConfirmed}
+          haveGameData={haveGameData}
+          requestingGameData={requestingGameData}
           map={map}
           territories={territories}
           players={players}

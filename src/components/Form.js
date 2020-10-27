@@ -6,11 +6,7 @@ import { navigate } from "@reach/router";
 class Form extends React.Component {
   state = {
     gameNumber: "",
-  };
-
-  updateLocalGameNumber = (event) => {
-    const input = event.target.value;
-    this.setState({ gameNumber: input });
+    haveGameNumber: false,
   };
 
   render() {
@@ -27,19 +23,21 @@ class Form extends React.Component {
           variant="outlined"
           margin="normal"
           value={this.state.gameNumber}
-          onChange={this.updateLocalGameNumber}
+          onChange={(e) => {
+            this.setState({ gameNumber: e.target.value });
+          }}
         />
         <Button
           disabled={/\D/.test(gameNumber) || gameNumber === ""}
           variant="contained"
           margin="normal"
           onClick={(e) => {
-            this.props.passGameNumber(e, this.state.gameNumber);
+            this.setState({ haveGameNumber: true });
           }}
         >
           FIND GAME
         </Button>
-        {this.props.haveGameNumber && !this.props.gameConfirmed && (
+        {this.state.haveGameNumber && (
           <>
             <Card raised={true} className="iframe-container">
               <Iframe gameNumber={this.state.gameNumber} />
