@@ -5,7 +5,14 @@ import "./App.css";
 import Home from "./pages/Home";
 import Game from "./pages/Game";
 import { connect } from "react-redux";
-import { update } from "./reducers/boardReducer";
+import {
+  update,
+  incrementRound,
+  changePlayerToGo,
+  changeTerritoryTroops,
+  changeTerritoryOwner,
+  changePlayerCards,
+} from "./reducers/boardReducer";
 
 class App extends React.Component {
   state = {
@@ -63,7 +70,6 @@ class App extends React.Component {
   };
 
   updateStore = () => {
-    console.log("initialising the redux store");
     const {
       gamelog,
       logCounter,
@@ -74,7 +80,7 @@ class App extends React.Component {
     } = this.state;
 
     const updatedBoardState = {
-      currentString: gamelog[logCounter] || "placeholder",
+      currentString: gamelog[logCounter],
       roundCounter,
       playerToGo,
       territories: { ...territories },
@@ -85,10 +91,13 @@ class App extends React.Component {
   };
 
   componentDidUpdate(prevProps, prevState) {
+    if (
+      prevState.requestingGameData !== this.state.requestingGameData &&
+      this.state.haveGameData
+    ) {
+      this.checkForFirstMentions();
+    }
     if (prevState.logCounter !== this.state.logCounter) {
-      if (this.state.logCounter === 0) {
-        this.checkForFirstMentions();
-      }
       this.logWizard();
       this.countTerritoriesAndTroops();
       this.updateStore();
@@ -395,4 +404,11 @@ class App extends React.Component {
   }
 }
 
-export default connect(null, { update })(App);
+export default connect(null, {
+  update,
+  incrementRound,
+  changePlayerToGo,
+  changeTerritoryTroops,
+  changeTerritoryOwner,
+  changePlayerCards,
+})(App);

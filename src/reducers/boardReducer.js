@@ -6,18 +6,35 @@ export const slice = createSlice({
     board: [],
   },
   reducers: {
-    increment: (state) => {
-      state.value += 1;
-    },
-    decrement: (state) => {
-      state.value -= 1;
-    },
+    // this copies the whole state in one shot
     update: (state, action) => {
       state.board = [...state.board, action.payload];
+    },
+    incrementRound: (state, action) => {
+      return state;
+    },
+    changePlayerToGo: (state, action) => {
+      return state;
+    },
+    changeTerritoryTroops: (state, action) => {
+      return state;
+    },
+    changeTerritoryOwner: (state, action) => {
+      return state;
+    },
+    changePlayerCards: (state, action) => {
+      return state;
     },
   },
 });
 
-export const { increment, decrement, update } = slice.actions;
+export const {
+  update,
+  incrementRound,
+  changePlayerToGo,
+  changeTerritoryTroops,
+  changeTerritoryOwner,
+  changePlayerCards,
+} = slice.actions;
 
 export default slice.reducer;
