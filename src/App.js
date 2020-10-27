@@ -4,6 +4,8 @@ import he from "he";
 import "./App.css";
 import Home from "./pages/Home";
 import Game from "./pages/Game";
+import { connect } from "react-redux";
+import { initialise } from "./reducers/boardReducer";
 
 class App extends React.Component {
   state = {
@@ -62,12 +64,25 @@ class App extends React.Component {
 
   initialiseStore = () => {
     console.log("initialising the redux store");
+    const { gamelog, territories, players } = this.state;
+
+    const initialBoardState = {
+      currentString: gamelog[0],
+      roundCounter: null,
+      playerToGo: null,
+      territories: { ...territories },
+      players: { ...players },
+    };
+
+    this.props.initialise(initialBoardState);
   };
 
   componentDidUpdate(prevProps, prevState) {
     if (prevState.logCounter !== this.state.logCounter) {
       if (this.state.logCounter === 0) {
         this.checkForFirstMentions();
+      }
+      if (this.state.logCounter === 1) {
         this.initialiseStore();
       }
       this.logWizard();
@@ -375,4 +390,4 @@ class App extends React.Component {
   }
 }
 
-export default App;
+export default connect(null, { initialise })(App);
