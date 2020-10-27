@@ -5,7 +5,7 @@ import "./App.css";
 import Home from "./pages/Home";
 import Game from "./pages/Game";
 import { connect } from "react-redux";
-import { initialise } from "./reducers/boardReducer";
+import { update } from "./reducers/boardReducer";
 
 class App extends React.Component {
   state = {
@@ -62,19 +62,26 @@ class App extends React.Component {
     });
   };
 
-  initialiseStore = () => {
+  updateStore = () => {
     console.log("initialising the redux store");
-    const { gamelog, territories, players } = this.state;
+    const {
+      gamelog,
+      logCounter,
+      territories,
+      players,
+      roundCounter,
+      playerToGo,
+    } = this.state;
 
-    const initialBoardState = {
-      currentString: gamelog[0],
-      roundCounter: null,
-      playerToGo: null,
+    const updatedBoardState = {
+      currentString: gamelog[logCounter] || "placeholder",
+      roundCounter,
+      playerToGo,
       territories: { ...territories },
       players: { ...players },
     };
 
-    this.props.initialise(initialBoardState);
+    this.props.update(updatedBoardState);
   };
 
   componentDidUpdate(prevProps, prevState) {
@@ -82,11 +89,9 @@ class App extends React.Component {
       if (this.state.logCounter === 0) {
         this.checkForFirstMentions();
       }
-      if (this.state.logCounter === 1) {
-        this.initialiseStore();
-      }
       this.logWizard();
       this.countTerritoriesAndTroops();
+      this.updateStore();
     }
   }
 
@@ -390,4 +395,4 @@ class App extends React.Component {
   }
 }
 
-export default connect(null, { initialise })(App);
+export default connect(null, { update })(App);

@@ -2,7 +2,9 @@ import { createSlice } from "@reduxjs/toolkit";
 
 export const slice = createSlice({
   name: "boardReducer",
-  initialState: [],
+  initialState: {
+    board: [],
+  },
   reducers: {
     increment: (state) => {
       state.value += 1;
@@ -10,12 +12,12 @@ export const slice = createSlice({
     decrement: (state) => {
       state.value -= 1;
     },
-    initialise: (state, action) => {
-      return [...state, action.payload];
+    update: (state, action) => {
+      state.board = [...state.board, action.payload];
     },
   },
 });
 
-export const { increment, decrement, initialise } = slice.actions;
+export const { increment, decrement, update } = slice.actions;
 
 export default slice.reducer;
