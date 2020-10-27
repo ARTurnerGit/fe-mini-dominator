@@ -1,8 +1,8 @@
 import { configureStore } from "@reduxjs/toolkit";
-import testReducer from "../reducers/test";
+import boardReducer from "../reducers/boardReducer";
 
 export default configureStore({
   reducer: {
-    test: testReducer,
+    board: boardReducer,
   },
 });

@@ -1,10 +1,8 @@
 import { createSlice } from "@reduxjs/toolkit";
 
 export const slice = createSlice({
-  name: "test",
-  initialState: {
-    value: 0,
-  },
+  name: "boardReducer",
+  initialState: [],
   reducers: {
     increment: (state) => {
       state.value += 1;
@@ -12,9 +10,12 @@ export const slice = createSlice({
     decrement: (state) => {
       state.value -= 1;
     },
+    initialise: (state, action) => {
+      return [...state, action.payload];
+    },
   },
 });
 
-export const { increment, decrement } = slice.actions;
+export const { increment, decrement, initialise } = slice.actions;
 
 export default slice.reducer;

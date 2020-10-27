@@ -60,10 +60,15 @@ class App extends React.Component {
     });
   };
 
+  initialiseStore = () => {
+    console.log("initialising the redux store");
+  };
+
   componentDidUpdate(prevProps, prevState) {
     if (prevState.logCounter !== this.state.logCounter) {
       if (this.state.logCounter === 0) {
         this.checkForFirstMentions();
+        this.initialiseStore();
       }
       this.logWizard();
       this.countTerritoriesAndTroops();
