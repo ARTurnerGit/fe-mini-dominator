@@ -115,6 +115,16 @@ export const slice = createSlice({
       };
       state.board = [...state.board, nextState];
     },
+    updateString: (state, action) => {
+      const lastState = JSON.parse(
+        JSON.stringify(state.board[state.board.length - 1])
+      );
+      const nextState = {
+        ...lastState,
+        currentString: action.payload.currentString,
+      };
+      state.board = [...state.board, nextState];
+    },
   },
 });
 
@@ -127,6 +137,7 @@ export const {
   moveTroops,
   changePlayerCards,
   playerDefeated,
+  updateString,
 } = slice.actions;
 
 export default slice.reducer;

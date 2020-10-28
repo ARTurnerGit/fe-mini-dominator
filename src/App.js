@@ -14,6 +14,7 @@ import {
   moveTroops,
   changePlayerCards,
   playerDefeated,
+  updateString,
 } from "./reducers/boardReducer";
 
 class App extends React.Component {
@@ -382,15 +383,13 @@ class App extends React.Component {
 
     if (/Round \d /.test(currentString)) {
       this.props.incrementRound({ currentString });
-    }
-    if (
+    } else if (
       / joined the game./.test(currentString) ||
       / started the turn./.test(currentString)
     ) {
       const playerToGo = currentString.split(" ")[0];
       this.props.changePlayerToGo({ currentString, playerToGo });
-    }
-    if (/ troops on /.test(currentString)) {
+    } else if (/ troops on /.test(currentString)) {
       const troopsReceived = parseInt(currentString.split(" received ")[1]);
       const territoryReceiving = currentString.split(" on ")[1];
 
@@ -401,16 +400,14 @@ class App extends React.Component {
         territoryReceiving,
         troopsReceived,
       });
-    }
-    if (/ turning in /.test(currentString)) {
+    } else if (/ turning in /.test(currentString)) {
       let currentPlayer = currentString.split(" ")[0];
       this.props.changePlayerCards({
         currentString,
         playerReceiving: currentPlayer,
         cardsReceived: -3,
       });
-    }
-    if (/ reinforced /.test(currentString)) {
+    } else if (/ reinforced /.test(currentString)) {
       const troopsReceived = parseInt(currentString.split(" with ")[1]);
       const territoryReceiving = currentString.slice(
         0,
@@ -423,8 +420,7 @@ class App extends React.Component {
         territoryReceiving,
         troopsReceived,
       });
-    }
-    if (/ attacked /.test(currentString)) {
+    } else if (/ attacked /.test(currentString)) {
       // two cases here, could be just attacked or attacked and conquered
       const [attString, defString] = currentString.split(" attacked ");
       const attacker = attString.slice(attString.lastIndexOf("(") + 1, -1);
@@ -446,8 +442,7 @@ class App extends React.Component {
         attLosses,
         defLosses,
       });
-    }
-    if (/ occupied /.test(currentString)) {
+    } else if (/ occupied /.test(currentString)) {
       const [depString, arrString] = currentString.split(" occupied ");
       const depTerritory = depString.slice(0, depString.lastIndexOf("(") - 1);
       const arrTerritory = arrString.split(" with ")[0];
@@ -464,8 +459,7 @@ class App extends React.Component {
         depTerritory,
         troopMove,
       });
-    }
-    if (/ fortified /.test(currentString)) {
+    } else if (/ fortified /.test(currentString)) {
       const [arrString, depString] = currentString.split(
         " was fortified from "
       );
@@ -484,22 +478,21 @@ class App extends React.Component {
         depTerritory,
         troopMove,
       });
-    }
-    if (/ received a card./.test(currentString)) {
+    } else if (/ received a card./.test(currentString)) {
       let currentPlayer = currentString.split(" ")[0];
       this.props.changePlayerCards({
         currentString,
         playerReceiving: currentPlayer,
         cardsReceived: 1,
       });
-    }
-
-    if (/ was defeated by /.test(currentString)) {
+    } else if (/ was defeated by /.test(currentString)) {
       let [loserName, winnerName] = currentString
         .slice(0, -1)
         .split(" was defeated by ");
 
       this.props.playerDefeated({ currentString, loserName, winnerName });
+    } else {
+      this.props.updateString({ currentString });
     }
   };
 
@@ -548,4 +541,5 @@ export default connect(null, {
   moveTroops,
   changePlayerCards,
   playerDefeated,
+  updateString,
 })(App);
