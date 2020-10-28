@@ -19,8 +19,10 @@ import {
 
 class App extends React.Component {
   state = {
-    haveGameData: false,
     requestingGameData: false,
+    haveGameData: false,
+    readyToInitialiseStore: false,
+    storeIsReady: false,
     map: {},
     players: {},
     territories: {},
@@ -92,19 +94,35 @@ class App extends React.Component {
   };
 
   componentDidUpdate(prevProps, prevState) {
+    // previous version
+    // if (
+    //   prevState.requestingGameData !== this.state.requestingGameData &&
+    //   this.state.haveGameData
+    // ) {
+    //   this.checkForFirstMentions();
+    // }
+    // if (prevState.logCounter !== this.state.logCounter) {
+    //   if (this.state.logCounter === 0) {
+    //     this.initialiseStore();
+    //     this.storeWizard();
+    //   }
+    //   this.logWizard();
+    //   this.countTerritoriesAndTroops();
+    // }
+
+    // for use with the store
     if (
       prevState.requestingGameData !== this.state.requestingGameData &&
       this.state.haveGameData
     ) {
       this.checkForFirstMentions();
     }
-    if (prevState.logCounter !== this.state.logCounter) {
-      if (this.state.logCounter === 0) {
-        this.initialiseStore();
-      }
-      this.logWizard();
+    if (
+      prevState.readyToInitialiseStore !== this.state.readyToInitialiseStore &&
+      this.state.readyToInitialiseStore
+    ) {
+      this.initialiseStore();
       this.storeWizard();
-      this.countTerritoriesAndTroops();
     }
   }
 
@@ -137,7 +155,7 @@ class App extends React.Component {
         let encodedPlace = he.encode(place, { decimal: true });
         copyOfTerritories[encodedPlace].owner = owner;
       });
-      return { territories: copyOfTerritories };
+      return { territories: copyOfTerritories, readyToInitialiseStore: true };
     });
   };
 
@@ -150,26 +168,27 @@ class App extends React.Component {
   };
 
   handleReset = () => {
-    this.setState((curr) => {
-      let territoriesCopy = JSON.parse(JSON.stringify(curr.territories));
-      let playersCopy = JSON.parse(JSON.stringify(curr.players));
+    // this.setState((curr) => {
+    //   let territoriesCopy = JSON.parse(JSON.stringify(curr.territories));
+    //   let playersCopy = JSON.parse(JSON.stringify(curr.players));
 
-      for (let territory in territoriesCopy) {
-        territoriesCopy[territory].troops = 3;
-      }
+    //   for (let territory in territoriesCopy) {
+    //     territoriesCopy[territory].troops = 3;
+    //   }
 
-      for (let player in playersCopy) {
-        playersCopy[player].cards = 0;
-      }
+    //   for (let player in playersCopy) {
+    //     playersCopy[player].cards = 0;
+    //   }
 
-      return {
-        players: playersCopy,
-        territories: territoriesCopy,
-        logCounter: 0,
-        roundCounter: 1,
-        playerToGo: "",
-      };
-    });
+    //   return {
+    //     players: playersCopy,
+    //     territories: territoriesCopy,
+    //     logCounter: 0,
+    //     roundCounter: 1,
+    //     playerToGo: "",
+    //   };
+    // });
+    this.setState({ logCounter: 0 });
   };
 
   logWizard = () => {
@@ -374,126 +393,131 @@ class App extends React.Component {
 
   storeWizard = () => {
     // ...then check what happens in the log
-    const { gamelog, logCounter } = this.state;
-    let currentString = gamelog[logCounter];
+    // const { gamelog, logCounter } = this.state;
+    // let currentString = gamelog[logCounter];
 
-    if (/[^A-Za-z0-9\s,.\\(\\)]/.test(currentString)) {
-      currentString = he.encode(currentString, { decimal: true });
+    const { gamelog } = this.state;
+    for (let i = 1; i < gamelog.length; i++) {
+      let currentString = gamelog[i];
+      if (/[^A-Za-z0-9\s,.\\(\\)]/.test(currentString)) {
+        currentString = he.encode(currentString, { decimal: true });
+      }
+
+      if (/Round \d /.test(currentString)) {
+        this.props.incrementRound({ currentString });
+      } else if (
+        / joined the game./.test(currentString) ||
+        / started the turn./.test(currentString)
+      ) {
+        const playerToGo = currentString.split(" ")[0];
+        this.props.changePlayerToGo({ currentString, playerToGo });
+      } else if (/ troops on /.test(currentString)) {
+        const troopsReceived = parseInt(currentString.split(" received ")[1]);
+        const territoryReceiving = currentString.split(" on ")[1];
+
+        const highlighted = [territoryReceiving];
+        this.props.changeTerritoryTroops({
+          currentString,
+          highlighted,
+          territoryReceiving,
+          troopsReceived,
+        });
+      } else if (/ turning in /.test(currentString)) {
+        let currentPlayer = currentString.split(" ")[0];
+        this.props.changePlayerCards({
+          currentString,
+          playerReceiving: currentPlayer,
+          cardsReceived: -3,
+        });
+      } else if (/ reinforced /.test(currentString)) {
+        const troopsReceived = parseInt(currentString.split(" with ")[1]);
+        const territoryReceiving = currentString.slice(
+          0,
+          currentString.lastIndexOf("(") - 1
+        );
+        const highlighted = [territoryReceiving];
+        this.props.changeTerritoryTroops({
+          currentString,
+          highlighted,
+          territoryReceiving,
+          troopsReceived,
+        });
+      } else if (/ attacked /.test(currentString)) {
+        // two cases here, could be just attacked or attacked and conquered
+        const [attString, defString] = currentString.split(" attacked ");
+        const attacker = attString.slice(attString.lastIndexOf("(") + 1, -1);
+        const attTerritory = attString.slice(0, attString.lastIndexOf("(") - 1);
+        const defTerritory = defString.slice(0, defString.lastIndexOf("(") - 1);
+
+        const [defLosses, attLosses] = currentString
+          .split(" killing ")[1]
+          .match(/\d+/g);
+
+        const highlighted = [attTerritory, defTerritory];
+
+        this.props.attackTerritory({
+          currentString,
+          highlighted,
+          attacker,
+          attTerritory,
+          defTerritory,
+          attLosses,
+          defLosses,
+        });
+      } else if (/ occupied /.test(currentString)) {
+        const [depString, arrString] = currentString.split(" occupied ");
+        const depTerritory = depString.slice(0, depString.lastIndexOf("(") - 1);
+        const arrTerritory = arrString.split(" with ")[0];
+        const troopMove = parseInt(
+          currentString.split(" with ")[1].match(/\d+/)[0]
+        );
+
+        const highlighted = [arrTerritory, depTerritory];
+
+        this.props.moveTroops({
+          currentString,
+          highlighted,
+          arrTerritory,
+          depTerritory,
+          troopMove,
+        });
+      } else if (/ fortified /.test(currentString)) {
+        const [arrString, depString] = currentString.split(
+          " was fortified from "
+        );
+        const arrTerritory = arrString.slice(0, arrString.lastIndexOf("(") - 1);
+        const depTerritory = depString.slice(0, depString.lastIndexOf("(") - 1);
+        const troopMove = parseInt(
+          currentString.split(" with ")[1].match(/\d+/)[0]
+        );
+
+        const highlighted = [arrTerritory, depTerritory];
+
+        this.props.moveTroops({
+          currentString,
+          highlighted,
+          arrTerritory,
+          depTerritory,
+          troopMove,
+        });
+      } else if (/ received a card./.test(currentString)) {
+        let currentPlayer = currentString.split(" ")[0];
+        this.props.changePlayerCards({
+          currentString,
+          playerReceiving: currentPlayer,
+          cardsReceived: 1,
+        });
+      } else if (/ was defeated by /.test(currentString)) {
+        let [loserName, winnerName] = currentString
+          .slice(0, -1)
+          .split(" was defeated by ");
+
+        this.props.playerDefeated({ currentString, loserName, winnerName });
+      } else {
+        this.props.updateString({ currentString });
+      }
     }
-
-    if (/Round \d /.test(currentString)) {
-      this.props.incrementRound({ currentString });
-    } else if (
-      / joined the game./.test(currentString) ||
-      / started the turn./.test(currentString)
-    ) {
-      const playerToGo = currentString.split(" ")[0];
-      this.props.changePlayerToGo({ currentString, playerToGo });
-    } else if (/ troops on /.test(currentString)) {
-      const troopsReceived = parseInt(currentString.split(" received ")[1]);
-      const territoryReceiving = currentString.split(" on ")[1];
-
-      const highlighted = [territoryReceiving];
-      this.props.changeTerritoryTroops({
-        currentString,
-        highlighted,
-        territoryReceiving,
-        troopsReceived,
-      });
-    } else if (/ turning in /.test(currentString)) {
-      let currentPlayer = currentString.split(" ")[0];
-      this.props.changePlayerCards({
-        currentString,
-        playerReceiving: currentPlayer,
-        cardsReceived: -3,
-      });
-    } else if (/ reinforced /.test(currentString)) {
-      const troopsReceived = parseInt(currentString.split(" with ")[1]);
-      const territoryReceiving = currentString.slice(
-        0,
-        currentString.lastIndexOf("(") - 1
-      );
-      const highlighted = [territoryReceiving];
-      this.props.changeTerritoryTroops({
-        currentString,
-        highlighted,
-        territoryReceiving,
-        troopsReceived,
-      });
-    } else if (/ attacked /.test(currentString)) {
-      // two cases here, could be just attacked or attacked and conquered
-      const [attString, defString] = currentString.split(" attacked ");
-      const attacker = attString.slice(attString.lastIndexOf("(") + 1, -1);
-      const attTerritory = attString.slice(0, attString.lastIndexOf("(") - 1);
-      const defTerritory = defString.slice(0, defString.lastIndexOf("(") - 1);
-
-      const [defLosses, attLosses] = currentString
-        .split(" killing ")[1]
-        .match(/\d+/g);
-
-      const highlighted = [attTerritory, defTerritory];
-
-      this.props.attackTerritory({
-        currentString,
-        highlighted,
-        attacker,
-        attTerritory,
-        defTerritory,
-        attLosses,
-        defLosses,
-      });
-    } else if (/ occupied /.test(currentString)) {
-      const [depString, arrString] = currentString.split(" occupied ");
-      const depTerritory = depString.slice(0, depString.lastIndexOf("(") - 1);
-      const arrTerritory = arrString.split(" with ")[0];
-      const troopMove = parseInt(
-        currentString.split(" with ")[1].match(/\d+/)[0]
-      );
-
-      const highlighted = [arrTerritory, depTerritory];
-
-      this.props.moveTroops({
-        currentString,
-        highlighted,
-        arrTerritory,
-        depTerritory,
-        troopMove,
-      });
-    } else if (/ fortified /.test(currentString)) {
-      const [arrString, depString] = currentString.split(
-        " was fortified from "
-      );
-      const arrTerritory = arrString.slice(0, arrString.lastIndexOf("(") - 1);
-      const depTerritory = depString.slice(0, depString.lastIndexOf("(") - 1);
-      const troopMove = parseInt(
-        currentString.split(" with ")[1].match(/\d+/)[0]
-      );
-
-      const highlighted = [arrTerritory, depTerritory];
-
-      this.props.moveTroops({
-        currentString,
-        highlighted,
-        arrTerritory,
-        depTerritory,
-        troopMove,
-      });
-    } else if (/ received a card./.test(currentString)) {
-      let currentPlayer = currentString.split(" ")[0];
-      this.props.changePlayerCards({
-        currentString,
-        playerReceiving: currentPlayer,
-        cardsReceived: 1,
-      });
-    } else if (/ was defeated by /.test(currentString)) {
-      let [loserName, winnerName] = currentString
-        .slice(0, -1)
-        .split(" was defeated by ");
-
-      this.props.playerDefeated({ currentString, loserName, winnerName });
-    } else {
-      this.props.updateString({ currentString });
-    }
+    this.setState({ storeIsReady: true });
   };
 
   render() {
@@ -507,6 +531,7 @@ class App extends React.Component {
       logCounter,
       map,
       requestingGameData,
+      storeIsReady,
     } = this.state;
     return (
       <Router>
@@ -526,6 +551,7 @@ class App extends React.Component {
           logCounter={logCounter}
           logLength={gamelog.length}
           extractGameData={this.extractGameData}
+          storeIsReady={storeIsReady}
         />
       </Router>
     );
