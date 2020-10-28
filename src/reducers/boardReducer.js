@@ -7,11 +7,16 @@ export const slice = createSlice({
   },
   reducers: {
     // this copies the whole state in one shot
-    update: (state, action) => {
-      state.board = [...state.board, action.payload];
+    initialise: (state, action) => {
+      state.board = [action.payload];
     },
     incrementRound: (state, action) => {
-      return state;
+      const lastState = state.board[state.board.length - 1];
+      const nextState = {
+        ...lastState,
+        roundCounter: lastState.roundCounter + 1,
+      };
+      state.board = [...state.board, nextState];
     },
     changePlayerToGo: (state, action) => {
       return state;
@@ -29,7 +34,7 @@ export const slice = createSlice({
 });
 
 export const {
-  update,
+  initialise,
   incrementRound,
   changePlayerToGo,
   changeTerritoryTroops,
