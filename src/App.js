@@ -101,9 +101,9 @@ class App extends React.Component {
     if (prevState.logCounter !== this.state.logCounter) {
       if (this.state.logCounter === 0) {
         this.initialiseStore();
+        this.storeWizard();
       }
       this.logWizard();
-      this.storeWizard();
       this.countTerritoriesAndTroops();
     }
   }
@@ -374,125 +374,127 @@ class App extends React.Component {
 
   storeWizard = () => {
     // ...then check what happens in the log
-    const { gamelog, logCounter } = this.state;
-    let currentString = gamelog[logCounter];
+    const { gamelog } = this.state;
+    for (let i = 1; i < gamelog.length; i++) {
+      let currentString = gamelog[i];
 
-    if (/[^A-Za-z0-9\s,.\\(\\)]/.test(currentString)) {
-      currentString = he.encode(currentString, { decimal: true });
-    }
+      if (/[^A-Za-z0-9\s,.\\(\\)]/.test(currentString)) {
+        currentString = he.encode(currentString, { decimal: true });
+      }
 
-    if (/Round \d /.test(currentString)) {
-      this.props.incrementRound({ currentString });
-    } else if (
-      / joined the game./.test(currentString) ||
-      / started the turn./.test(currentString)
-    ) {
-      const playerToGo = currentString.split(" ")[0];
-      this.props.changePlayerToGo({ currentString, playerToGo });
-    } else if (/ troops on /.test(currentString)) {
-      const troopsReceived = parseInt(currentString.split(" received ")[1]);
-      const territoryReceiving = currentString.split(" on ")[1];
+      if (/Round \d /.test(currentString)) {
+        this.props.incrementRound({ currentString });
+      } else if (
+        / joined the game./.test(currentString) ||
+        / started the turn./.test(currentString)
+      ) {
+        const playerToGo = currentString.split(" ")[0];
+        this.props.changePlayerToGo({ currentString, playerToGo });
+      } else if (/ troops on /.test(currentString)) {
+        const troopsReceived = parseInt(currentString.split(" received ")[1]);
+        const territoryReceiving = currentString.split(" on ")[1];
 
-      const highlighted = [territoryReceiving];
-      this.props.changeTerritoryTroops({
-        currentString,
-        highlighted,
-        territoryReceiving,
-        troopsReceived,
-      });
-    } else if (/ turning in /.test(currentString)) {
-      let currentPlayer = currentString.split(" ")[0];
-      this.props.changePlayerCards({
-        currentString,
-        playerReceiving: currentPlayer,
-        cardsReceived: -3,
-      });
-    } else if (/ reinforced /.test(currentString)) {
-      const troopsReceived = parseInt(currentString.split(" with ")[1]);
-      const territoryReceiving = currentString.slice(
-        0,
-        currentString.lastIndexOf("(") - 1
-      );
-      const highlighted = [territoryReceiving];
-      this.props.changeTerritoryTroops({
-        currentString,
-        highlighted,
-        territoryReceiving,
-        troopsReceived,
-      });
-    } else if (/ attacked /.test(currentString)) {
-      // two cases here, could be just attacked or attacked and conquered
-      const [attString, defString] = currentString.split(" attacked ");
-      const attacker = attString.slice(attString.lastIndexOf("(") + 1, -1);
-      const attTerritory = attString.slice(0, attString.lastIndexOf("(") - 1);
-      const defTerritory = defString.slice(0, defString.lastIndexOf("(") - 1);
+        const highlighted = [territoryReceiving];
+        this.props.changeTerritoryTroops({
+          currentString,
+          highlighted,
+          territoryReceiving,
+          troopsReceived,
+        });
+      } else if (/ turning in /.test(currentString)) {
+        let currentPlayer = currentString.split(" ")[0];
+        this.props.changePlayerCards({
+          currentString,
+          playerReceiving: currentPlayer,
+          cardsReceived: -3,
+        });
+      } else if (/ reinforced /.test(currentString)) {
+        const troopsReceived = parseInt(currentString.split(" with ")[1]);
+        const territoryReceiving = currentString.slice(
+          0,
+          currentString.lastIndexOf("(") - 1
+        );
+        const highlighted = [territoryReceiving];
+        this.props.changeTerritoryTroops({
+          currentString,
+          highlighted,
+          territoryReceiving,
+          troopsReceived,
+        });
+      } else if (/ attacked /.test(currentString)) {
+        // two cases here, could be just attacked or attacked and conquered
+        const [attString, defString] = currentString.split(" attacked ");
+        const attacker = attString.slice(attString.lastIndexOf("(") + 1, -1);
+        const attTerritory = attString.slice(0, attString.lastIndexOf("(") - 1);
+        const defTerritory = defString.slice(0, defString.lastIndexOf("(") - 1);
 
-      const [defLosses, attLosses] = currentString
-        .split(" killing ")[1]
-        .match(/\d+/g);
+        const [defLosses, attLosses] = currentString
+          .split(" killing ")[1]
+          .match(/\d+/g);
 
-      const highlighted = [attTerritory, defTerritory];
+        const highlighted = [attTerritory, defTerritory];
 
-      this.props.attackTerritory({
-        currentString,
-        highlighted,
-        attacker,
-        attTerritory,
-        defTerritory,
-        attLosses,
-        defLosses,
-      });
-    } else if (/ occupied /.test(currentString)) {
-      const [depString, arrString] = currentString.split(" occupied ");
-      const depTerritory = depString.slice(0, depString.lastIndexOf("(") - 1);
-      const arrTerritory = arrString.split(" with ")[0];
-      const troopMove = parseInt(
-        currentString.split(" with ")[1].match(/\d+/)[0]
-      );
+        this.props.attackTerritory({
+          currentString,
+          highlighted,
+          attacker,
+          attTerritory,
+          defTerritory,
+          attLosses,
+          defLosses,
+        });
+      } else if (/ occupied /.test(currentString)) {
+        const [depString, arrString] = currentString.split(" occupied ");
+        const depTerritory = depString.slice(0, depString.lastIndexOf("(") - 1);
+        const arrTerritory = arrString.split(" with ")[0];
+        const troopMove = parseInt(
+          currentString.split(" with ")[1].match(/\d+/)[0]
+        );
 
-      const highlighted = [arrTerritory, depTerritory];
+        const highlighted = [arrTerritory, depTerritory];
 
-      this.props.moveTroops({
-        currentString,
-        highlighted,
-        arrTerritory,
-        depTerritory,
-        troopMove,
-      });
-    } else if (/ fortified /.test(currentString)) {
-      const [arrString, depString] = currentString.split(
-        " was fortified from "
-      );
-      const arrTerritory = arrString.slice(0, arrString.lastIndexOf("(") - 1);
-      const depTerritory = depString.slice(0, depString.lastIndexOf("(") - 1);
-      const troopMove = parseInt(
-        currentString.split(" with ")[1].match(/\d+/)[0]
-      );
+        this.props.moveTroops({
+          currentString,
+          highlighted,
+          arrTerritory,
+          depTerritory,
+          troopMove,
+        });
+      } else if (/ fortified /.test(currentString)) {
+        const [arrString, depString] = currentString.split(
+          " was fortified from "
+        );
+        const arrTerritory = arrString.slice(0, arrString.lastIndexOf("(") - 1);
+        const depTerritory = depString.slice(0, depString.lastIndexOf("(") - 1);
+        const troopMove = parseInt(
+          currentString.split(" with ")[1].match(/\d+/)[0]
+        );
 
-      const highlighted = [arrTerritory, depTerritory];
+        const highlighted = [arrTerritory, depTerritory];
 
-      this.props.moveTroops({
-        currentString,
-        highlighted,
-        arrTerritory,
-        depTerritory,
-        troopMove,
-      });
-    } else if (/ received a card./.test(currentString)) {
-      let currentPlayer = currentString.split(" ")[0];
-      this.props.changePlayerCards({
-        currentString,
-        playerReceiving: currentPlayer,
-        cardsReceived: 1,
-      });
-    } else if (/ was defeated by /.test(currentString)) {
-      let [loserName, winnerName] = currentString
-        .slice(0, -1)
-        .split(" was defeated by ");
+        this.props.moveTroops({
+          currentString,
+          highlighted,
+          arrTerritory,
+          depTerritory,
+          troopMove,
+        });
+      } else if (/ received a card./.test(currentString)) {
+        let currentPlayer = currentString.split(" ")[0];
+        this.props.changePlayerCards({
+          currentString,
+          playerReceiving: currentPlayer,
+          cardsReceived: 1,
+        });
+      } else if (/ was defeated by /.test(currentString)) {
+        let [loserName, winnerName] = currentString
+          .slice(0, -1)
+          .split(" was defeated by ");
 
-      this.props.playerDefeated({ currentString, loserName, winnerName });
-    } else {
-      this.props.updateString({ currentString });
+        this.props.playerDefeated({ currentString, loserName, winnerName });
+      } else {
+        this.props.updateString({ currentString });
+      }
     }
   };
 
