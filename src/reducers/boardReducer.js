@@ -6,7 +6,6 @@ export const slice = createSlice({
     board: [],
   },
   reducers: {
-    // this copies the whole state in one shot
     initialise: (state, action) => {
       state.board = [action.payload];
     },
@@ -44,6 +43,33 @@ export const slice = createSlice({
         highlighted: action.payload.highlighted,
         currentString: action.payload.currentString,
       };
+      state.board = [...state.board, nextState];
+    },
+    attackTerritory: (state, action) => {
+      // currently gets {currentString, highlighted, attacker, attTerritory, defTerritory, attLosses, defLosses}
+      const lastState = JSON.parse(
+        JSON.stringify(state.board[state.board.length - 1])
+      );
+
+      lastState.territories[action.payload.attTerritory].troops -=
+        action.payload.attLosses;
+      lastState.territories[action.payload.defTerritory].troops -=
+        action.payload.defLosses;
+
+      if (/ conquering /.test(action.payload.currentString)) {
+        lastState.territories[action.payload.defTerritory].owner =
+          action.payload.attacker;
+        if (lastState.territories[action.payload.attTerritory].troops === 2) {
+          lastState.territories[action.payload.attTerritory].troops = 1;
+          lastState.territories[action.payload.defTerritory].troops = 1;
+        }
+      }
+      const nextState = {
+        ...lastState,
+        currentString: action.payload.currentString,
+        highlighted: action.payload.highlighted,
+      };
+
       state.board = [...state.board, nextState];
     },
     changeTerritoryOwner: (state, action) => {
@@ -84,6 +110,7 @@ export const {
   incrementRound,
   changePlayerToGo,
   changeTerritoryTroops,
+  attackTerritory,
   changeTerritoryOwner,
   changePlayerCards,
   playerDefeated,

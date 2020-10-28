@@ -10,6 +10,7 @@ import {
   incrementRound,
   changePlayerToGo,
   changeTerritoryTroops,
+  attackTerritory,
   changeTerritoryOwner,
   changePlayerCards,
   playerDefeated,
@@ -426,53 +427,25 @@ class App extends React.Component {
     if (/ attacked /.test(currentString)) {
       // two cases here, could be just attacked or attacked and conquered
       const [attString, defString] = currentString.split(" attacked ");
+      const attacker = attString.slice(attString.lastIndexOf("(") + 1, -1);
       const attTerritory = attString.slice(0, attString.lastIndexOf("(") - 1);
       const defTerritory = defString.slice(0, defString.lastIndexOf("(") - 1);
+
       const [defLosses, attLosses] = currentString
         .split(" killing ")[1]
         .match(/\d+/g);
 
-      // this.setState((curr) => {
-      //   let updatedTerritories = JSON.parse(JSON.stringify(curr.territories));
+      const highlighted = [attTerritory, defTerritory];
 
-      //   updatedTerritories[attTerritory].troops =
-      //     updatedTerritories[attTerritory].troops - attLosses;
-      //   updatedTerritories[attTerritory].highlighted = true;
-
-      //   updatedTerritories[defTerritory].troops =
-      //     updatedTerritories[defTerritory].troops - defLosses;
-      //   updatedTerritories[defTerritory].highlighted = true;
-
-      //   if (
-      //     updatedTerritories[attTerritory].troops === 2 &&
-      //     / conquering /.test(currentString)
-      //   ) {
-      //     updatedTerritories[attTerritory].troops = 1;
-      //     updatedTerritories[defTerritory].troops = 1;
-      //   }
-
-      //   return { territories: updatedTerritories };
-      // });
-    }
-    if (/ conquering /.test(currentString)) {
-      const [newOwnerString, territoryString] = currentString.split(
-        " attacked "
-      );
-      const newOwner = newOwnerString.slice(
-        newOwnerString.lastIndexOf("(") + 1,
-        -1
-      );
-      const territoryToChangeHands = territoryString.slice(
-        0,
-        territoryString.lastIndexOf("(") - 1
-      );
-      // this.setState((curr) => {
-      //   let updatedTerritories = JSON.parse(JSON.stringify(curr.territories));
-
-      //   updatedTerritories[territoryToChangeHands].owner = newOwner;
-      //   updatedTerritories[territoryToChangeHands].highlighted = true;
-      //   return { territories: updatedTerritories };
-      // });
+      this.props.attackTerritory({
+        currentString,
+        highlighted,
+        attacker,
+        attTerritory,
+        defTerritory,
+        attLosses,
+        defLosses,
+      });
     }
     if (/ occupied /.test(currentString)) {
       const [depString, arrString] = currentString.split(" occupied ");
@@ -577,6 +550,7 @@ export default connect(null, {
   incrementRound,
   changePlayerToGo,
   changeTerritoryTroops,
+  attackTerritory,
   changeTerritoryOwner,
   changePlayerCards,
   playerDefeated,
