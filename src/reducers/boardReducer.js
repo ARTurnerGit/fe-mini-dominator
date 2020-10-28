@@ -10,11 +10,12 @@ export const slice = createSlice({
     initialise: (state, action) => {
       state.board = [action.payload];
     },
-    incrementRound: (state) => {
+    incrementRound: (state, action) => {
       const lastState = state.board[state.board.length - 1];
       const nextState = {
         ...lastState,
         roundCounter: lastState.roundCounter + 1,
+        currentString: action.payload.currentString,
       };
       state.board = [...state.board, nextState];
     },
@@ -22,12 +23,22 @@ export const slice = createSlice({
       const lastState = state.board[state.board.length - 1];
       const nextState = {
         ...lastState,
-        playerToGo: action.payload,
+        playerToGo: action.payload.playerToGo,
+        currentString: action.payload.currentString,
       };
       state.board = [...state.board, nextState];
     },
     changeTerritoryTroops: (state, action) => {
-      return state;
+      // currently gets {currentString, highlighted, territoryReceiving, troopsReceived}
+      const lastState = state.board[state.board.length - 1];
+      lastState.territories[action.payload.territoryReceiving].troops +=
+        action.payload.troopsReceived;
+      const nextState = {
+        ...lastState,
+        highlighted: action.payload.highlighted,
+        currentString: action.payload.currentString,
+      };
+      state.board = [...state.board, nextState];
     },
     changeTerritoryOwner: (state, action) => {
       return state;

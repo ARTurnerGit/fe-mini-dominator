@@ -379,19 +379,26 @@ class App extends React.Component {
     }
 
     if (/Round \d /.test(currentString)) {
-      this.props.incrementRound();
+      this.props.incrementRound({ currentString });
     }
     if (
       / joined the game./.test(currentString) ||
       / started the turn./.test(currentString)
     ) {
       const playerToGo = currentString.split(" ")[0];
-      this.props.changePlayerToGo(playerToGo);
-      // this.setState({ playerToGo: currentString.split(" ")[0] });
+      this.props.changePlayerToGo({ currentString, playerToGo });
     }
     if (/ troops on /.test(currentString)) {
       const troopsReceived = parseInt(currentString.split(" received ")[1]);
       const territoryReceiving = currentString.split(" on ")[1];
+
+      const highlighted = [territoryReceiving];
+      this.props.changeTerritoryTroops({
+        currentString,
+        highlighted,
+        territoryReceiving,
+        troopsReceived,
+      });
 
       // this.setState((curr) => {
       //   let updatedTerritories = JSON.parse(JSON.stringify(curr.territories));
