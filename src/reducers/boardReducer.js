@@ -10,7 +10,7 @@ export const slice = createSlice({
     initialise: (state, action) => {
       state.board = [action.payload];
     },
-    incrementRound: (state, action) => {
+    incrementRound: (state) => {
       const lastState = state.board[state.board.length - 1];
       const nextState = {
         ...lastState,
@@ -19,7 +19,12 @@ export const slice = createSlice({
       state.board = [...state.board, nextState];
     },
     changePlayerToGo: (state, action) => {
-      return state;
+      const lastState = state.board[state.board.length - 1];
+      const nextState = {
+        ...lastState,
+        playerToGo: action.payload,
+      };
+      state.board = [...state.board, nextState];
     },
     changeTerritoryTroops: (state, action) => {
       return state;

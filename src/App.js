@@ -385,6 +385,8 @@ class App extends React.Component {
       / joined the game./.test(currentString) ||
       / started the turn./.test(currentString)
     ) {
+      const playerToGo = currentString.split(" ")[0];
+      this.props.changePlayerToGo(playerToGo);
       // this.setState({ playerToGo: currentString.split(" ")[0] });
     }
     if (/ troops on /.test(currentString)) {
