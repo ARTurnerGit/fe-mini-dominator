@@ -5,4 +5,5 @@ export default configureStore({
   reducer: {
     board: boardReducer,
   },
+  middleware: [],
 });
