@@ -12,6 +12,7 @@ import {
   changeTerritoryTroops,
   changeTerritoryOwner,
   changePlayerCards,
+  playerDefeated,
 } from "./reducers/boardReducer";
 
 class App extends React.Component {
@@ -530,6 +531,9 @@ class App extends React.Component {
       let [loserName, winnerName] = currentString
         .slice(0, -1)
         .split(" was defeated by ");
+
+      this.props.playerDefeated({ currentString, loserName, winnerName });
+
       // this.setState((curr) => {
       //   let playersCopy = JSON.parse(JSON.stringify(curr.players));
 
@@ -584,4 +588,5 @@ export default connect(null, {
   changeTerritoryTroops,
   changeTerritoryOwner,
   changePlayerCards,
+  playerDefeated,
 })(App);

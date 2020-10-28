@@ -11,7 +11,9 @@ export const slice = createSlice({
       state.board = [action.payload];
     },
     incrementRound: (state, action) => {
-      const lastState = state.board[state.board.length - 1];
+      const lastState = JSON.parse(
+        JSON.stringify(state.board[state.board.length - 1])
+      );
       const nextState = {
         ...lastState,
         roundCounter: lastState.roundCounter + 1,
@@ -20,7 +22,9 @@ export const slice = createSlice({
       state.board = [...state.board, nextState];
     },
     changePlayerToGo: (state, action) => {
-      const lastState = state.board[state.board.length - 1];
+      const lastState = JSON.parse(
+        JSON.stringify(state.board[state.board.length - 1])
+      );
       const nextState = {
         ...lastState,
         playerToGo: action.payload.playerToGo,
@@ -30,7 +34,9 @@ export const slice = createSlice({
     },
     changeTerritoryTroops: (state, action) => {
       // currently gets {currentString, highlighted, territoryReceiving, troopsReceived}
-      const lastState = state.board[state.board.length - 1];
+      const lastState = JSON.parse(
+        JSON.stringify(state.board[state.board.length - 1])
+      );
       lastState.territories[action.payload.territoryReceiving].troops +=
         action.payload.troopsReceived;
       const nextState = {
@@ -45,9 +51,25 @@ export const slice = createSlice({
     },
     changePlayerCards: (state, action) => {
       // currently gets {currentString, playerReceiving, cardsReceived}
-      const lastState = state.board[state.board.length - 1];
+      const lastState = JSON.parse(
+        JSON.stringify(state.board[state.board.length - 1])
+      );
       lastState.cards[action.payload.playerReceiving] +=
         action.payload.cardsReceived;
+      const nextState = {
+        ...lastState,
+        currentString: action.payload.currentString,
+      };
+      state.board = [...state.board, nextState];
+    },
+    playerDefeated: (state, action) => {
+      // will receive {currentString, loserName, winnerName}
+      const lastState = JSON.parse(
+        JSON.stringify(state.board[state.board.length - 1])
+      );
+      const loserCards = lastState.cards[action.payload.loserName];
+      lastState.cards[action.payload.winnerName] += loserCards;
+      lastState.cards[action.payload.loserName] = 0;
       const nextState = {
         ...lastState,
         currentString: action.payload.currentString,
@@ -64,6 +86,7 @@ export const {
   changeTerritoryTroops,
   changeTerritoryOwner,
   changePlayerCards,
+  playerDefeated,
 } = slice.actions;
 
 export default slice.reducer;
