@@ -421,15 +421,9 @@ class App extends React.Component {
         territoryReceiving,
         troopsReceived,
       });
-      // this.setState((curr) => {
-      //   let updatedTerritories = JSON.parse(JSON.stringify(curr.territories));
-      //   updatedTerritories[territory].troops =
-      //     updatedTerritories[territory].troops + troopIncrease;
-      //   updatedTerritories[territory].highlighted = true;
-      //   return { territories: updatedTerritories };
-      // });
     }
     if (/ attacked /.test(currentString)) {
+      // two cases here, could be just attacked or attacked and conquered
       const [attString, defString] = currentString.split(" attacked ");
       const attTerritory = attString.slice(0, attString.lastIndexOf("(") - 1);
       const defTerritory = defString.slice(0, defString.lastIndexOf("(") - 1);
@@ -525,17 +519,11 @@ class App extends React.Component {
     }
     if (/ received a card./.test(currentString)) {
       let currentPlayer = currentString.split(" ")[0];
-
-      // this.setState((curr) => {
-      //   let playersCopy = JSON.parse(JSON.stringify(curr.players));
-      //   Object.entries(playersCopy).forEach(([playerName, playerObj]) => {
-      //     if (playerName === currentPlayer) {
-      //       playerObj.cards += 1;
-      //     }
-      //   });
-
-      //   return { players: playersCopy };
-      // });
+      this.props.changePlayerCards({
+        currentString,
+        playerReceiving: currentPlayer,
+        cardsReceived: 1,
+      });
     }
 
     if (/ was defeated by /.test(currentString)) {
