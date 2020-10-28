@@ -409,14 +409,18 @@ class App extends React.Component {
       });
     }
     if (/ reinforced /.test(currentString)) {
-      const territory = currentString.slice(
+      const troopsReceived = parseInt(currentString.split(" with ")[1]);
+      const territoryReceiving = currentString.slice(
         0,
         currentString.lastIndexOf("(") - 1
       );
-      const troopIncrease = parseInt(
-        currentString.split(" with ")[1].match(/\d+/)[0]
-      );
-
+      const highlighted = [territoryReceiving];
+      this.props.changeTerritoryTroops({
+        currentString,
+        highlighted,
+        territoryReceiving,
+        troopsReceived,
+      });
       // this.setState((curr) => {
       //   let updatedTerritories = JSON.parse(JSON.stringify(curr.territories));
       //   updatedTerritories[territory].troops =
