@@ -533,15 +533,6 @@ class App extends React.Component {
         .split(" was defeated by ");
 
       this.props.playerDefeated({ currentString, loserName, winnerName });
-
-      // this.setState((curr) => {
-      //   let playersCopy = JSON.parse(JSON.stringify(curr.players));
-
-      //   let cardsToTransfer = playersCopy[loserName].cards;
-      //   playersCopy[loserName].cards -= cardsToTransfer;
-      //   playersCopy[winnerName].cards += cardsToTransfer;
-      //   return { players: playersCopy };
-      // });
     }
   };
 
