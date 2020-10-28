@@ -72,8 +72,21 @@ export const slice = createSlice({
 
       state.board = [...state.board, nextState];
     },
-    changeTerritoryOwner: (state, action) => {
-      return state;
+    moveTroops: (state, action) => {
+      // currently gets {currentString, highlighted, arrTerritory, depTerritory, troopMove}
+      const lastState = JSON.parse(
+        JSON.stringify(state.board[state.board.length - 1])
+      );
+      lastState.territories[action.payload.arrTerritory].troops +=
+        action.payload.troopMove;
+      lastState.territories[action.payload.depTerritory].troops -=
+        action.payload.troopMove;
+      const nextState = {
+        ...lastState,
+        currentString: action.payload.currentString,
+        highlighted: action.payload.highlighted,
+      };
+      state.board = [...state.board, nextState];
     },
     changePlayerCards: (state, action) => {
       // currently gets {currentString, playerReceiving, cardsReceived}
@@ -111,7 +124,7 @@ export const {
   changePlayerToGo,
   changeTerritoryTroops,
   attackTerritory,
-  changeTerritoryOwner,
+  moveTroops,
   changePlayerCards,
   playerDefeated,
 } = slice.actions;

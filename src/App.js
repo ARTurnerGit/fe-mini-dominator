@@ -11,7 +11,7 @@ import {
   changePlayerToGo,
   changeTerritoryTroops,
   attackTerritory,
-  changeTerritoryOwner,
+  moveTroops,
   changePlayerCards,
   playerDefeated,
 } from "./reducers/boardReducer";
@@ -454,19 +454,16 @@ class App extends React.Component {
       const troopMove = parseInt(
         currentString.split(" with ")[1].match(/\d+/)[0]
       );
-      // this.setState((curr) => {
-      //   let updatedTerritories = JSON.parse(JSON.stringify(curr.territories));
 
-      //   updatedTerritories[depTerritory].troops =
-      //     updatedTerritories[depTerritory].troops - troopMove;
-      //   updatedTerritories[depTerritory].highlighted = true;
+      const highlighted = [arrTerritory, depTerritory];
 
-      //   updatedTerritories[arrTerritory].troops =
-      //     updatedTerritories[arrTerritory].troops + troopMove;
-      //   updatedTerritories[arrTerritory].highlighted = true;
-
-      //   return { territories: updatedTerritories };
-      // });
+      this.props.moveTroops({
+        currentString,
+        highlighted,
+        arrTerritory,
+        depTerritory,
+        troopMove,
+      });
     }
     if (/ fortified /.test(currentString)) {
       const [arrString, depString] = currentString.split(
@@ -551,7 +548,7 @@ export default connect(null, {
   changePlayerToGo,
   changeTerritoryTroops,
   attackTerritory,
-  changeTerritoryOwner,
+  moveTroops,
   changePlayerCards,
   playerDefeated,
 })(App);
