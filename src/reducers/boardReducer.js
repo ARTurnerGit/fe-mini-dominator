@@ -44,7 +44,15 @@ export const slice = createSlice({
       return state;
     },
     changePlayerCards: (state, action) => {
-      return state;
+      // currently gets {currentString, playerReceiving, cardsReceived}
+      const lastState = state.board[state.board.length - 1];
+      lastState.cards[action.payload.playerReceiving] +=
+        action.payload.cardsReceived;
+      const nextState = {
+        ...lastState,
+        currentString: action.payload.currentString,
+      };
+      state.board = [...state.board, nextState];
     },
   },
 });

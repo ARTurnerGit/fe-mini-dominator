@@ -399,28 +399,14 @@ class App extends React.Component {
         territoryReceiving,
         troopsReceived,
       });
-
-      // this.setState((curr) => {
-      //   let updatedTerritories = JSON.parse(JSON.stringify(curr.territories));
-
-      //   updatedTerritories[territoryReceiving].troops =
-      //     updatedTerritories[territoryReceiving].troops + troopsReceived;
-      //   updatedTerritories[territoryReceiving].highlighted = true;
-
-      //   return { territories: updatedTerritories };
-      // });
     }
     if (/ turning in /.test(currentString)) {
       let currentPlayer = currentString.split(" ")[0];
-      // this.setState((curr) => {
-      //   let playersCopy = JSON.parse(JSON.stringify(curr.players));
-      //   Object.entries(playersCopy).forEach(([playerName, playerObj]) => {
-      //     if (playerName === currentPlayer) {
-      //       playerObj.cards -= 3;
-      //     }
-      //   });
-      //   return { players: playersCopy };
-      // });
+      this.props.changePlayerCards({
+        currentString,
+        playerReceiving: currentPlayer,
+        cardsReceived: -3,
+      });
     }
     if (/ reinforced /.test(currentString)) {
       const territory = currentString.slice(
