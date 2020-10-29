@@ -22,12 +22,9 @@ class Game extends React.Component {
     readyToInitialiseStore: false,
     storeIsReady: false,
     map: {},
-    territories: {},
     players: {},
+    territories: {},
     gamelog: [],
-    logCounter: null,
-    roundCounter: 1,
-    playerToGo: "",
   };
 
   componentDidMount() {
@@ -235,36 +232,6 @@ class Game extends React.Component {
     this.setState({ storeIsReady: true });
   };
 
-  // countTerritoriesAndTroops = () => {
-  //   this.setState((curr) => {
-  //     let playersCopy = JSON.parse(JSON.stringify(curr.players));
-
-  //     Object.entries(playersCopy).forEach(([playerName, playerObj]) => {
-  //       playerObj.territories = 0;
-  //       playerObj.troops = 0;
-  //       Object.values(curr.territories).forEach((terrObj) => {
-  //         if (terrObj.owner === playerName) {
-  //           playerObj.territories += 1;
-  //           playerObj.troops += terrObj.troops;
-  //         }
-  //       });
-  //     });
-
-  //     return { players: playersCopy };
-  //   });
-  // };
-
-  playNextInLog = () => {
-    this.setState((curr) => {
-      if (curr.logCounter === null) return { logCounter: 0 };
-      else if (curr.logCounter < curr.gamelog.length)
-        return { logCounter: curr.logCounter + 1 };
-    });
-  };
-  handleReset = () => {
-    this.setState({ logCounter: 0 });
-  };
-
   componentDidUpdate(prevProps, prevState) {
     if (
       prevState.requestingGameData !== this.state.requestingGameData &&
@@ -282,16 +249,7 @@ class Game extends React.Component {
   }
 
   render() {
-    const {
-      storeIsReady,
-      map,
-      territories,
-      players,
-      roundCounter,
-      playerToGo,
-      gamelog,
-      logCounter,
-    } = this.state;
+    const { storeIsReady, map, players } = this.state;
     return !storeIsReady ? (
       <Modal
         open={true}
@@ -304,19 +262,7 @@ class Game extends React.Component {
         <CircularProgress size="100px" style={{ outline: "none" }} />
       </Modal>
     ) : (
-      // this will still need map (map data), players (colour data for formatting), everything else is either in the history or can be inferred from it.
-      <GameContainer
-        map={map}
-        territories={territories}
-        players={players}
-        roundCounter={roundCounter}
-        playerToGo={playerToGo}
-        msg={gamelog[logCounter]}
-        playNextInLog={this.playNextInLog}
-        handleReset={this.handleReset}
-        logCounter={logCounter}
-        logLength={gamelog.length}
-      />
+      <GameContainer map={map} players={players} />
     );
   }
 }

@@ -4,23 +4,55 @@ import Gamescreen from "../Gamescreen";
 import Sidebar from "../Sidebar";
 
 class GameContainer extends React.Component {
+  state = {
+    logCounter: 0,
+    currentPlayers: {},
+  };
   componentDidMount() {
-    // console.log(this.props.history[3]);
+    this.countTerritoriesAndTroops();
+  }
+
+  countTerritoriesAndTroops = () => {
+    const { players, history } = this.props;
+    const { logCounter } = this.state;
+
+    this.setState((curr) => {
+      let playersCopy = JSON.parse(JSON.stringify(players));
+
+      // this seems far too convoluted... surely can be done with fewer Object. methods?
+      Object.entries(playersCopy).forEach(([playerName, playerObj]) => {
+        playerObj.territories = 0;
+        playerObj.troops = 0;
+        Object.values(history[logCounter].territories).forEach((terrObj) => {
+          if (terrObj.owner === playerName) {
+            playerObj.territories += 1;
+            playerObj.troops += terrObj.troops;
+          }
+        });
+      });
+      return { currentPlayers: playersCopy };
+    });
+  };
+  playNextInLog = () => {
+    const { history } = this.props;
+    const { logCounter } = this.state;
+    if (logCounter < history.length) {
+      this.setState({ logCounter: logCounter + 1 });
+    }
+  };
+  handleReset = () => {
+    this.setState({ logCounter: 0 });
+  };
+
+  componentDidUpdate(prevProps, prevState) {
+    if (prevState.logCounter !== this.state.logCounter) {
+      this.countTerritoriesAndTroops();
+    }
   }
 
   render() {
-    const {
-      map,
-      territories,
-      players,
-      roundCounter,
-      playerToGo,
-      msg,
-      playNextInLog,
-      handleReset,
-      logCounter,
-      logLength,
-    } = this.props;
+    const { map, history } = this.props;
+    const { logCounter, currentPlayers } = this.state;
     return (
       <div
         className="game-container"
@@ -32,16 +64,20 @@ class GameContainer extends React.Component {
           height: "100vh",
         }}
       >
-        <Gamescreen map={map} territories={territories} players={players} />
+        <Gamescreen
+          map={map}
+          territories={history[logCounter].territories}
+          players={currentPlayers}
+        />
         <Sidebar
-          roundCounter={roundCounter}
-          playerToGo={playerToGo}
-          msg={msg}
-          playNextInLog={playNextInLog}
-          handleReset={handleReset}
+          roundCounter={history[logCounter].roundCounter}
+          playerToGo={history[logCounter].playerToGo}
+          msg={history[logCounter].currentString}
+          playNextInLog={this.playNextInLog}
+          handleReset={this.handleReset}
           logCounter={logCounter}
-          logLength={logLength}
-          players={players}
+          logLength={history.length}
+          players={currentPlayers}
         />
       </div>
     );
