@@ -2,7 +2,7 @@ import React from "react";
 import Territory from "./Territory.js";
 import { Card } from "@material-ui/core";
 
-function Gamescreen({ territories, map, players }) {
+function Gamescreen({ territories, map, players, highlighted }) {
   let mapHeight = parseInt(map.height.slice(0, -2));
   let mapWidth = parseInt(map.width.slice(0, -2));
   let containerHeight = 0.95 * window.innerHeight;
@@ -29,7 +29,12 @@ function Gamescreen({ territories, map, players }) {
         className="map"
         style={{ transform: `scale(${sf})`, transformOrigin: "0 0" }}
       />
-      <Territory territories={territories} sf={sf} players={players} />
+      <Territory
+        territories={territories}
+        sf={sf}
+        players={players}
+        highlighted={highlighted}
+      />
     </Card>
   );
 }
