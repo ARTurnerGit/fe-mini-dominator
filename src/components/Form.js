@@ -10,7 +10,7 @@ class Form extends React.Component {
   };
 
   render() {
-    const { gameNumber } = this.state;
+    const { gameNumber, haveGameNumber } = this.state;
     return (
       <Paper className="form-container" elevation={3}>
         <Typography variant="h3" align="center">
@@ -22,7 +22,7 @@ class Form extends React.Component {
           helperText={/\D/.test(gameNumber) ? "Numbers only" : ""}
           variant="outlined"
           margin="normal"
-          value={this.state.gameNumber}
+          value={gameNumber}
           onChange={(e) => {
             this.setState({ gameNumber: e.target.value });
           }}
@@ -37,15 +37,15 @@ class Form extends React.Component {
         >
           FIND GAME
         </Button>
-        {this.state.haveGameNumber && (
+        {haveGameNumber && (
           <>
             <Card raised={true} className="iframe-container">
-              <Iframe gameNumber={this.state.gameNumber} />
+              <Iframe gameNumber={gameNumber} />
             </Card>
 
             <Button
               variant="contained"
-              onClick={() => navigate(`/${this.state.gameNumber}`)}
+              onClick={() => navigate(`/${gameNumber}`)}
             >
               CONFIRM
             </Button>
