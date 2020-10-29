@@ -5,6 +5,7 @@ import {
   faPause,
   faFastBackward,
   faStepForward,
+  faStepBackward,
 } from "@fortawesome/free-solid-svg-icons";
 import { Button, Slider, Typography } from "@material-ui/core";
 
@@ -56,7 +57,13 @@ class Controller extends React.Component {
       { value: 2000, label: "2s" },
       { value: 3000, label: "3s" },
     ];
-    const { playNextInLog, handleReset, logCounter, logLength } = this.props;
+    const {
+      playNextInLog,
+      playPreviousInLog,
+      handleReset,
+      logCounter,
+      logLength,
+    } = this.props;
     const { isPlaying } = this.state;
     return (
       <>
@@ -70,6 +77,13 @@ class Controller extends React.Component {
             }}
           >
             <FontAwesomeIcon icon={faFastBackward} />
+          </Button>
+          <Button
+            variant="contained"
+            disabled={isPlaying || logCounter === 0}
+            onClick={playPreviousInLog}
+          >
+            <FontAwesomeIcon icon={faStepBackward}></FontAwesomeIcon>
           </Button>
           <Button
             variant="contained"

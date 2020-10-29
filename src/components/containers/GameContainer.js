@@ -40,6 +40,12 @@ class GameContainer extends React.Component {
       this.setState({ logCounter: logCounter + 1 });
     }
   };
+  playPreviousInLog = () => {
+    const { logCounter } = this.state;
+    if (logCounter > 0) {
+      this.setState({ logCounter: logCounter - 1 });
+    }
+  };
   handleReset = () => {
     this.setState({ logCounter: 0 });
   };
@@ -75,6 +81,7 @@ class GameContainer extends React.Component {
           playerToGo={history[logCounter].playerToGo}
           msg={history[logCounter].currentString}
           playNextInLog={this.playNextInLog}
+          playPreviousInLog={this.playPreviousInLog}
           handleReset={this.handleReset}
           logCounter={logCounter}
           logLength={history.length}

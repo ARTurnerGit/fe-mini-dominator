@@ -10,6 +10,7 @@ function Sidebar({
   playerToGo,
   msg,
   playNextInLog,
+  playPreviousInLog,
   handleReset,
   logCounter,
   logLength,
@@ -21,6 +22,7 @@ function Sidebar({
       <Logger msg={msg} />
       <Controller
         playNextInLog={playNextInLog}
+        playPreviousInLog={playPreviousInLog}
         handleReset={handleReset}
         logCounter={logCounter}
         logLength={logLength}
