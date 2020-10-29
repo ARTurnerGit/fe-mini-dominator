@@ -32,7 +32,11 @@ class GameContainer extends React.Component {
           height: "100vh",
         }}
       >
-        <Gamescreen map={map} territories={territories} players={players} />
+        <Gamescreen
+          map={map}
+          territories={this.props.history[0].territories}
+          players={players}
+        />
         <Sidebar
           roundCounter={roundCounter}
           playerToGo={playerToGo}

@@ -538,8 +538,6 @@ class App extends React.Component {
         <Home default />
         <Game
           path="/:game_number"
-          haveGameData={haveGameData}
-          requestingGameData={requestingGameData}
           map={map}
           territories={territories}
           players={players}

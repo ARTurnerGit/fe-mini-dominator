@@ -1,14 +1,15 @@
 import React from "react";
 import { Modal, CircularProgress } from "@material-ui/core";
-import Gamescreen from "../components/Gamescreen";
-import Sidebar from "../components/Sidebar";
 import GameContainer from "../components/containers/GameContainer";
 
 class Game extends React.Component {
+  state = {};
+
   componentDidMount() {
     const { extractGameData, game_number } = this.props;
     extractGameData(game_number);
   }
+
   render() {
     const {
       map,
