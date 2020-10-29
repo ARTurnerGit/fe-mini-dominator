@@ -67,6 +67,7 @@ class GameContainer extends React.Component {
         <Gamescreen
           map={map}
           territories={history[logCounter].territories}
+          highlighted={history[logCounter].highlighted}
           players={currentPlayers}
         />
         <Sidebar

@@ -2,7 +2,7 @@ import React from "react";
 
 // headscratcher: territories, when logged, shows all territories have the key of owner, some of which are empty strings. Line 12 only works correctly when in it's current form. Won't work if check terrObj.owner !== "" for some reason. Why is this?
 
-function Territory({ territories, sf, players }) {
+function Territory({ territories, sf, players, highlighted }) {
   return Object.entries(territories).map(([terrName, terrObj]) => {
     return (
       <div
@@ -12,7 +12,7 @@ function Territory({ territories, sf, players }) {
           (players[terrObj.owner] !== undefined
             ? `${players[terrObj.owner].colour} `
             : "") +
-          (terrObj.highlighted ? "highlighted" : "")
+          (highlighted.includes(terrName) ? "highlighted" : "")
         }
         style={{
           position: "absolute",

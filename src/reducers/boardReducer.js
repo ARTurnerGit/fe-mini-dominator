@@ -13,6 +13,7 @@ export const board = createSlice({
         ...previousState,
         roundCounter: previousState.roundCounter + 1,
         currentString: action.payload.currentString,
+        highlighted: [],
       };
       return [...state, nextState];
     },
@@ -22,6 +23,7 @@ export const board = createSlice({
         ...previousState,
         playerToGo: action.payload.playerToGo,
         currentString: action.payload.currentString,
+        highlighted: [],
       };
       return [...state, nextState];
     },
@@ -86,6 +88,7 @@ export const board = createSlice({
       const nextState = {
         ...previousState,
         currentString: action.payload.currentString,
+        highlighted: [],
       };
       return [...state, nextState];
     },
@@ -98,6 +101,7 @@ export const board = createSlice({
       const nextState = {
         ...previousState,
         currentString: action.payload.currentString,
+        highlighted: [],
       };
       return [...state, nextState];
     },
@@ -106,6 +110,7 @@ export const board = createSlice({
       const nextState = {
         ...previousState,
         currentString: action.payload.currentString,
+        highlighted: [],
       };
       return [...state, nextState];
     },
