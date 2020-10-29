@@ -49,11 +49,11 @@ class Game extends React.Component {
     Promise.all(promises).then(([territories, map, players, gamelog]) => {
       this.setState({
         haveGameData: true,
+        requestingGameData: false,
         ...territories,
         ...players,
         ...map,
         ...gamelog,
-        requestingGameData: false,
       });
     });
   };
@@ -262,26 +262,6 @@ class Game extends React.Component {
     });
   };
   handleReset = () => {
-    // this.setState((curr) => {
-    //   let territoriesCopy = JSON.parse(JSON.stringify(curr.territories));
-    //   let playersCopy = JSON.parse(JSON.stringify(curr.players));
-
-    //   for (let territory in territoriesCopy) {
-    //     territoriesCopy[territory].troops = 3;
-    //   }
-
-    //   for (let player in playersCopy) {
-    //     playersCopy[player].cards = 0;
-    //   }
-
-    //   return {
-    //     players: playersCopy,
-    //     territories: territoriesCopy,
-    //     logCounter: 0,
-    //     roundCounter: 1,
-    //     playerToGo: "",
-    //   };
-    // });
     this.setState({ logCounter: 0 });
   };
 
@@ -324,6 +304,7 @@ class Game extends React.Component {
         <CircularProgress size="100px" style={{ outline: "none" }} />
       </Modal>
     ) : (
+      // this will still need map (map data), players (colour data for formatting), everything else is either in the history or can be inferred from it.
       <GameContainer
         map={map}
         territories={territories}
