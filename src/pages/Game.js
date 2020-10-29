@@ -93,7 +93,7 @@ class Game extends React.Component {
 
     const initialBoardState = {
       currentString: gamelog[0],
-      roundCounter: null,
+      roundCounter: 0,
       playerToGo: null,
       highlighted: [],
       territories: { ...territories },
@@ -115,7 +115,10 @@ class Game extends React.Component {
         currentString = he.encode(currentString, { decimal: true });
       }
 
-      if (/Round \d /.test(currentString)) {
+      if (
+        /Round \d /.test(currentString) ||
+        /Game started./.test(currentString)
+      ) {
         this.props.incrementRound({ currentString });
       } else if (
         / joined the game./.test(currentString) ||
