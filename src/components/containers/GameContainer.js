@@ -9,10 +9,10 @@ class GameContainer extends React.Component {
     currentPlayers: {},
   };
   componentDidMount() {
-    this.countTerritoriesAndTroops();
+    this.countTerritoriesAndTroopsAndCards();
   }
 
-  countTerritoriesAndTroops = () => {
+  countTerritoriesAndTroopsAndCards = () => {
     const { players, history } = this.props;
     const { logCounter } = this.state;
 
@@ -23,6 +23,7 @@ class GameContainer extends React.Component {
       Object.entries(playersCopy).forEach(([playerName, playerObj]) => {
         playerObj.territories = 0;
         playerObj.troops = 0;
+        playerObj.cards = history[logCounter].cards[playerName];
         Object.values(history[logCounter].territories).forEach((terrObj) => {
           if (terrObj.owner === playerName) {
             playerObj.territories += 1;
@@ -52,7 +53,7 @@ class GameContainer extends React.Component {
 
   componentDidUpdate(prevProps, prevState) {
     if (prevState.logCounter !== this.state.logCounter) {
-      this.countTerritoriesAndTroops();
+      this.countTerritoriesAndTroopsAndCards();
     }
   }
 
