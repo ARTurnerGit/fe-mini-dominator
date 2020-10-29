@@ -56,28 +56,39 @@ class Controller extends React.Component {
       { value: 2000, label: "2s" },
       { value: 3000, label: "3s" },
     ];
+    const { playNextInLog, handleReset, logCounter, logLength } = this.props;
+    const { isPlaying } = this.state;
     return (
       <>
         <div className="controller">
           <Button
             variant="contained"
+            disabled={logCounter === 0}
             onClick={() => {
               this.handlePause();
-              this.props.handleReset();
+              handleReset();
             }}
           >
             <FontAwesomeIcon icon={faFastBackward} />
           </Button>
-          <Button variant="contained" onClick={this.handlePlay}>
+          <Button
+            variant="contained"
+            disabled={isPlaying}
+            onClick={this.handlePlay}
+          >
             <FontAwesomeIcon icon={faPlay} />
           </Button>
-          <Button variant="contained" onClick={this.handlePause}>
+          <Button
+            variant="contained"
+            disabled={!isPlaying}
+            onClick={this.handlePause}
+          >
             <FontAwesomeIcon icon={faPause} />
           </Button>
           <Button
             variant="contained"
-            disabled={this.state.isPlaying}
-            onClick={this.props.playNextInLog}
+            disabled={isPlaying || logCounter === logLength - 1}
+            onClick={playNextInLog}
           >
             <FontAwesomeIcon icon={faStepForward}></FontAwesomeIcon>
           </Button>
