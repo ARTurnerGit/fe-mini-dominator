@@ -116,7 +116,7 @@ class Game extends React.Component {
       }
 
       if (
-        /Round \d /.test(currentString) ||
+        /Round \d+ /.test(currentString) ||
         /Game started./.test(currentString)
       ) {
         this.props.incrementRound({ currentString });
