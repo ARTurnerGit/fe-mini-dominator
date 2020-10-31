@@ -32,6 +32,7 @@ export const board = createSlice({
       const previousState = JSON.parse(JSON.stringify(state[state.length - 1]));
       previousState.territories[action.payload.territoryReceiving].troops +=
         action.payload.troopsReceived;
+
       const nextState = {
         ...previousState,
         highlighted: action.payload.highlighted,
@@ -40,7 +41,7 @@ export const board = createSlice({
       return [...state, nextState];
     },
     attackTerritory: (state, action) => {
-      // currently gets {currentString, highlighted, attacker, attTerritory, defTerritory, attLosses, defLosses}
+      // currently gets {currentString, highlighted, attacker, defender, attTerritory, defTerritory, attLosses, defLosses}
       const previousState = JSON.parse(JSON.stringify(state[state.length - 1]));
 
       previousState.territories[action.payload.attTerritory].troops -=

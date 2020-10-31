@@ -75,16 +75,23 @@ class Game extends React.Component {
         let placeAndOwner = firstMentionString.match(placeAndNameReg)[0];
         let place = placeAndOwner.slice(0, placeAndOwner.lastIndexOf("(") - 1);
         let owner = placeAndOwner.slice(placeAndOwner.lastIndexOf("(") + 1, -1);
-        firstMentions.push([place, owner]);
+        if (owner !== "Neutral") {
+          firstMentions.push([place, owner]);
+        }
       }
     });
+
     this.setState((curr) => {
       const copyOfTerritories = JSON.parse(JSON.stringify(curr.territories));
+
       firstMentions.forEach(([place, owner]) => {
         let encodedPlace = he.encode(place, { decimal: true });
         copyOfTerritories[encodedPlace].owner = owner;
       });
-      return { territories: copyOfTerritories, readyToInitialiseStore: true };
+      return {
+        territories: copyOfTerritories,
+        readyToInitialiseStore: true,
+      };
     });
   };
 
@@ -161,6 +168,10 @@ class Game extends React.Component {
         // two cases here, could be just attacked or attacked and conquered
         const [attString, defString] = currentString.split(" attacked ");
         const attacker = attString.slice(attString.lastIndexOf("(") + 1, -1);
+        const defender = defString.slice(
+          defString.lastIndexOf("(") + 1,
+          defString.lastIndexOf(")")
+        );
         const attTerritory = attString.slice(0, attString.lastIndexOf("(") - 1);
         const defTerritory = defString.slice(0, defString.lastIndexOf("(") - 1);
 
@@ -174,6 +185,7 @@ class Game extends React.Component {
           currentString,
           highlighted,
           attacker,
+          defender,
           attTerritory,
           defTerritory,
           attLosses,

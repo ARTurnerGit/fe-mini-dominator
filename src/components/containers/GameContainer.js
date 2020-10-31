@@ -19,18 +19,21 @@ class GameContainer extends React.Component {
     this.setState((curr) => {
       let playersCopy = JSON.parse(JSON.stringify(players));
 
-      // this seems far too convoluted... surely can be done with fewer Object. methods?
-      Object.entries(playersCopy).forEach(([playerName, playerObj]) => {
-        playerObj.territories = 0;
-        playerObj.troops = 0;
-        playerObj.cards = history[logCounter].cards[playerName];
-        Object.values(history[logCounter].territories).forEach((terrObj) => {
-          if (terrObj.owner === playerName) {
-            playerObj.territories += 1;
-            playerObj.troops += terrObj.troops;
-          }
-        });
+      // Zero the territories and troops, set the cards to reflect the history
+      Object.keys(playersCopy).forEach((key) => {
+        playersCopy[key].territories = 0;
+        playersCopy[key].troops = 0;
+        playersCopy[key].cards = history[logCounter].cards[key];
       });
+
+      // Loop through the history, increment the territories and add the troops
+      Object.values(history[logCounter].territories).forEach((terrObj) => {
+        if (terrObj.owner !== "") {
+          playersCopy[terrObj.owner].territories += 1;
+          playersCopy[terrObj.owner].troops += terrObj.troops;
+        }
+      });
+
       return { currentPlayers: playersCopy };
     });
   };
