@@ -10,7 +10,7 @@ import {
 import { Button, Slider, Typography } from "@material-ui/core";
 
 class Controller extends React.Component {
-  state = { intervalID: null, sliderInterval: 1500, isPlaying: false };
+  state = { intervalID: null, sliderInterval: 1000, isPlaying: false };
 
   handlePlay = () => {
     let { sliderInterval, isPlaying } = this.state;
@@ -52,10 +52,10 @@ class Controller extends React.Component {
   }
   render() {
     const sliderMarks = [
-      { value: 100, label: "0.1s" },
+      { value: 50, label: "0.05s" },
+      { value: 500, label: "0.5s" },
       { value: 1000, label: "1s" },
       { value: 2000, label: "2s" },
-      { value: 3000, label: "3s" },
     ];
     const {
       playNextInLog,
@@ -120,7 +120,7 @@ class Controller extends React.Component {
           <Slider
             value={this.state.sliderInterval}
             min={100}
-            max={3000}
+            max={2000}
             marks={sliderMarks}
             onChangeCommitted={this.handleSliderChange}
             style={{ width: "80%" }}
