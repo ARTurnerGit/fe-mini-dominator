@@ -76,11 +76,11 @@
   flex-direction: column;
 }
 
+.roundTracker {
+  width: 100%;
+}
 .roundTracker button {
-  height: auto;
-  width: auto;
-  border-radius: 100%;
-  font-size: 100%;
+  min-width: 0;
 }
 
 .controller {
