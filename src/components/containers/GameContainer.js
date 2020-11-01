@@ -53,7 +53,8 @@ class GameContainer extends React.Component {
   handleReset = () => {
     this.setState({ logCounter: 0 });
   };
-  // may need to refactor these two to use while loops - it's clumsy to search through the history from the beginning the whole time.
+  // may need to refactor these two to use while loops - it's clumsy to search through the history from the beginning the whole time. Also may need to add logic to skip to game end if appropriate
+  // this currently advances the round OR to the player death
   goNextRound = () => {
     const { history } = this.props;
     const { logCounter } = this.state;
@@ -77,6 +78,7 @@ class GameContainer extends React.Component {
       this.setState({ logCounter: nextLogCounter });
     }
   };
+  // this goes back one round, straightforward
   goPrevRound = () => {
     const { history } = this.props;
     const { logCounter } = this.state;
@@ -93,6 +95,7 @@ class GameContainer extends React.Component {
       this.setState({ logCounter: nextLogCounter });
     }
   };
+  // this goes to the next instance of / started the turn./
   goNextPlayer = () => {
     const { history } = this.props;
     const { logCounter } = this.state;
@@ -108,10 +111,12 @@ class GameContainer extends React.Component {
       nextLogCounter++;
     }
 
-    if (nextLogCounter !== history.length) {
+    if (nextLogCounter < history.length) {
       this.setState({ logCounter: nextLogCounter });
     }
   };
+  // this goes to the previous instance of / started the turn./
+  // but actually this resets to the beginning of a player go, if you're inside their go, want it to go to the beginning of the previous players go instead
   goPrevPlayer = () => {
     const { history } = this.props;
     const { logCounter } = this.state;
@@ -127,7 +132,7 @@ class GameContainer extends React.Component {
       nextLogCounter--;
     }
 
-    if (nextLogCounter !== 0) {
+    if (nextLogCounter >= 0) {
       this.setState({ logCounter: nextLogCounter });
     }
   };
