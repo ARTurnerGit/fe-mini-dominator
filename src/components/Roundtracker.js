@@ -3,7 +3,7 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faArrowRight, faArrowLeft } from "@fortawesome/free-solid-svg-icons";
 import { Box, Grid, Button, Typography } from "@material-ui/core";
 
-function Roundtracker({ roundCounter, playerToGo, goNextRound }) {
+function Roundtracker({ roundCounter, playerToGo, goNextRound, goPrevRound }) {
   return (
     <Box className="roundTracker">
       <Grid container spacing={0} justify="center" align="baseline">
@@ -13,7 +13,12 @@ function Roundtracker({ roundCounter, playerToGo, goNextRound }) {
           </Typography>
         </Grid>
         <Grid item xs={2}>
-          <Button variant="contained" size="small" fullWidth={true}>
+          <Button
+            variant="contained"
+            size="small"
+            fullWidth={true}
+            onClick={() => goPrevRound()}
+          >
             <FontAwesomeIcon icon={faArrowLeft} />
           </Button>
         </Grid>
