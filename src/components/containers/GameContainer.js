@@ -66,6 +66,13 @@ class GameContainer extends React.Component {
         element.roundCounter === roundCounter + 1
     );
 
+    if (nextLogCounter === -1) {
+      const reg = new RegExp(`${playerToGo} was defeated`);
+      nextLogCounter = history.findIndex((element) =>
+        reg.test(element.currentString)
+      );
+    }
+
     if (nextLogCounter !== -1) {
       this.setState({ logCounter: nextLogCounter });
     }
