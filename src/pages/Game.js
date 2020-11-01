@@ -127,10 +127,7 @@ class Game extends React.Component {
         /Game started./.test(currentString)
       ) {
         this.props.incrementRound({ currentString });
-      } else if (
-        / joined the game./.test(currentString) ||
-        / started the turn./.test(currentString)
-      ) {
+      } else if (/ started the turn./.test(currentString)) {
         const playerToGo = currentString.split(" ")[0];
         this.props.changePlayerToGo({ currentString, playerToGo });
       } else if (/ troops on /.test(currentString)) {
