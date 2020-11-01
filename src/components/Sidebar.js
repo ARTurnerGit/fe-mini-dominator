@@ -14,6 +14,8 @@ function Sidebar({
   handleReset,
   goNextRound,
   goPrevRound,
+  goNextPlayer,
+  goPrevPlayer,
   logCounter,
   logLength,
   players,
@@ -25,6 +27,8 @@ function Sidebar({
         playerToGo={playerToGo}
         goNextRound={goNextRound}
         goPrevRound={goPrevRound}
+        goNextPlayer={goNextPlayer}
+        goPrevPlayer={goPrevPlayer}
       />
       <Logger msg={msg} />
       <Controller

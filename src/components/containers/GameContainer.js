@@ -53,6 +53,7 @@ class GameContainer extends React.Component {
   handleReset = () => {
     this.setState({ logCounter: 0 });
   };
+  // may need to refactor these two to use while loops - it's clumsy to search through the history from the beginning the whole time.
   goNextRound = () => {
     const { history } = this.props;
     const { logCounter } = this.state;
@@ -82,6 +83,44 @@ class GameContainer extends React.Component {
     );
 
     if (nextLogCounter !== -1) {
+      this.setState({ logCounter: nextLogCounter });
+    }
+  };
+  goNextPlayer = () => {
+    const { history } = this.props;
+    const { logCounter } = this.state;
+
+    let nextLogCounter = logCounter + 1;
+
+    const reg = / started the turn./;
+
+    while (
+      nextLogCounter < history.length &&
+      !reg.test(history[nextLogCounter].currentString)
+    ) {
+      nextLogCounter++;
+    }
+
+    if (nextLogCounter !== history.length) {
+      this.setState({ logCounter: nextLogCounter });
+    }
+  };
+  goPrevPlayer = () => {
+    const { history } = this.props;
+    const { logCounter } = this.state;
+
+    let nextLogCounter = logCounter - 1;
+
+    const reg = / started the turn./;
+
+    while (
+      nextLogCounter > 0 &&
+      !reg.test(history[nextLogCounter].currentString)
+    ) {
+      nextLogCounter--;
+    }
+
+    if (nextLogCounter !== 0) {
       this.setState({ logCounter: nextLogCounter });
     }
   };
@@ -121,6 +160,8 @@ class GameContainer extends React.Component {
           handleReset={this.handleReset}
           goNextRound={this.goNextRound}
           goPrevRound={this.goPrevRound}
+          goNextPlayer={this.goNextPlayer}
+          goPrevPlayer={this.goPrevPlayer}
           logCounter={logCounter}
           logLength={history.length}
           players={currentPlayers}
