@@ -12,13 +12,18 @@ function Sidebar({
   playNextInLog,
   playPreviousInLog,
   handleReset,
+  goNextRound,
   logCounter,
   logLength,
   players,
 }) {
   return (
     <Card raised={true} className="sidebar">
-      <Roundtracker roundCounter={roundCounter} playerToGo={playerToGo} />
+      <Roundtracker
+        roundCounter={roundCounter}
+        playerToGo={playerToGo}
+        goNextRound={goNextRound}
+      />
       <Logger msg={msg} />
       <Controller
         playNextInLog={playNextInLog}

@@ -101,7 +101,7 @@ class Game extends React.Component {
     const initialBoardState = {
       currentString: gamelog[0],
       roundCounter: 0,
-      playerToGo: null,
+      playerToGo: "-",
       highlighted: [],
       territories: { ...territories },
       cards: {},
@@ -240,6 +240,9 @@ class Game extends React.Component {
           .split(" was defeated by ");
 
         this.props.playerDefeated({ currentString, loserName, winnerName });
+      } else if (/ ended the turn./.test(currentString)) {
+        const playerToGo = "-";
+        this.props.changePlayerToGo({ currentString, playerToGo });
       } else {
         this.props.updateString({ currentString });
       }
