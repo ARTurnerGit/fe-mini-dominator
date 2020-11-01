@@ -58,12 +58,17 @@ class GameContainer extends React.Component {
     const { logCounter } = this.state;
 
     let nextLogCounter = logCounter;
+
     while (
+      history[nextLogCounter] &&
       history[nextLogCounter].roundCounter === history[logCounter].roundCounter
     ) {
       nextLogCounter++;
     }
-    this.setState({ logCounter: nextLogCounter });
+
+    if (nextLogCounter !== history.length) {
+      this.setState({ logCounter: nextLogCounter });
+    }
   };
 
   componentDidUpdate(prevProps, prevState) {
